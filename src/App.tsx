@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "./contants/routes";
+import NotFound from "./components/404/NotFound";
+import "./index.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const login = true;
+  const admin = true;
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Routes>
+        {PUBLIC_ROUTES.map(({ name, path, Element }) => (
+          <Route key={name} path={path} element={<Element />} />
+        ))}
+        {PRIVATE_ROUTES.map(({ name, path, Element, requireAdmin }) => {
+          return login && (!requireAdmin || (requireAdmin && admin)) ? (
+            <Route key={name} path={path} element={<Element />} />
+          ) : (
+            <Route key={"error"} path={path} element={<NotFound />} />
+          );
+        })}
+        <Route path='*' element={<NotFound />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
