@@ -37,3 +37,43 @@ export const formatCurrency = (number: number) => {
 
   return formattedNumber;
 };
+
+export const secondsToTime = (seconds: number) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (hours === 0) {
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+    return `${formattedMinutes}:${formattedSeconds}`;
+  } else {
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
+};
+
+export const secondsToTimeString = (seconds: number) => {
+  const days = Math.floor(seconds / 86400); // 86400 seconds in a day
+  const remainingSeconds = seconds % 86400;
+  const hours = Math.floor(remainingSeconds / 3600); // 3600 seconds in an hour
+  const minutes = Math.floor((remainingSeconds % 3600) / 60);
+
+  let result = "";
+
+  if (days > 0) {
+    result += `${days} ngày`;
+  }
+
+  if (hours > 0) {
+    result += `${result ? " " : ""}${hours} giờ`;
+  }
+
+  if (minutes > 0) {
+    result += `${result ? " " : ""}${minutes} phút`;
+  }
+
+  return result;
+};
