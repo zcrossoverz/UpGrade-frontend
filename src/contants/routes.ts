@@ -1,3 +1,4 @@
+import Setting from "@/views/Setting";
 import CourseDetails from "../views/CourseDetails";
 import Dashboard from "../views/Dashboard";
 import HomePage from "../views/Home";
@@ -19,6 +20,11 @@ export const PUBLIC_ROUTES: Array<IRoute> = [
     name: "course detail",
     path: "/c",
     Element: CourseDetails,
+  },
+  {
+    name: "course detail",
+    path: "/s",
+    Element: Setting,
   },
 ];
 

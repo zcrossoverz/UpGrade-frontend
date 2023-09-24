@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
+    "@radix-ui/react-switch": "^1.0.3",
     "@types/react-slick": "^0.23.10",
     "autoprefixer": "^10.4.15",
     "class-variance-authority": "^0.7.0",
