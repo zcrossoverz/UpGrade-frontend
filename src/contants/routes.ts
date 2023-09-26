@@ -2,6 +2,7 @@ import Setting from "@/views/Setting";
 import CourseDetails from "../views/CourseDetails";
 import Dashboard from "../views/Dashboard";
 import HomePage from "../views/Home";
+import MyCourses from "@/views/MyCourses";
 
 interface IRoute {
   name: string;
@@ -25,6 +26,11 @@ export const PUBLIC_ROUTES: Array<IRoute> = [
     name: "course detail",
     path: "/s",
     Element: Setting,
+  },
+  {
+    name: "course detail",
+    path: "/my-courses",
+    Element: MyCourses,
   },
 ];
 
