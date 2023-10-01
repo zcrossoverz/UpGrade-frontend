@@ -26,7 +26,7 @@ type Unit = {
   topics: Topic[];
 };
 
-type Course = {
+export type Course = {
   title: string;
   description: string;
   price: number;
@@ -92,8 +92,8 @@ function CourseDetails() {
           )}
           <div>
             {courseData && (
-              <div className='grid place-items-center sticky top-24'>
-                <div className='bg-gray-300 h-48 w-80 mt-2 rounded-xl'>sdf</div>
+              <div className='grid place-items-center sticky top-24 mb-40'>
+                <div className='bg-gray-300 h-48 w-80 mt-2 rounded-xl'></div>
                 <Enroll price={courseData.price} id={0} />
                 <div className='mt-4'>
                   <h3 className='text-md font-bold mb-1'>
