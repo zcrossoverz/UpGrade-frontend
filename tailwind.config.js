@@ -83,6 +83,9 @@ module.exports = {
       boxShadow: {
         full: "0px 0px 8px 4px #404040",
       },
+      minHeight: {
+        fitscreen: "calc(100vh - 160px)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

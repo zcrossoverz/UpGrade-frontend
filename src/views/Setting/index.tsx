@@ -52,7 +52,7 @@ function Setting() {
               ))}
             </div>
           </div>
-          <div className='col-span-6'>
+          <div className='col-span-6 min-h-fitscreen'>
             {currentTab === EnumTab.ACCOUNT && <AccountSetting />}
             {currentTab === EnumTab.SECURITY && <SecuritySetting />}
             {currentTab === EnumTab.NOTIFICATION && <NotificationSetting />}
