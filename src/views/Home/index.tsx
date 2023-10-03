@@ -78,7 +78,7 @@ function HomePage() {
       <div className='shadow-md z-40 fixed w-full'>
         <Header />
       </div>
-      <div className='z-0 px-36 pt-28'>
+      <div className='z-0 px-36 pt-24'>
         <Billboard />
       </div>
       <ListCourse title='Học viên đang xem' data={courses} />

@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 import avatarEmpty from "../../assets/avatar.jpg";
 import { BsBell, BsCart } from "react-icons/bs";
 import { formatCurrency } from "@/utils/convertNumber";
+import { commentTime } from "@/utils/time";
+import { BsFillCircleFill } from "react-icons/bs";
 
 function Header() {
   const isAuth = true;
-
-  const cartQuantity = 1;
 
   const allCartProducts = [
     {
@@ -67,87 +67,132 @@ function Header() {
 
   const cartProducts = allCartProducts.slice(0, 3);
 
+  const allNotifications = [
+    {
+      content:
+        "Khóa học Typescript 2022 vừa có bài học mới, hãy vào học ngay thôi",
+      link: "/orders",
+      status: "unread",
+      timestamp: 1696349854856,
+    },
+    {
+      content:
+        "Bạn đã thanh toán thành công khóa học Nestjs cơ bản và nâng cao",
+      link: "/orders",
+      status: "unread",
+      timestamp: 1696341854856,
+    },
+    {
+      content: "Bình luận của bạn vừa nhận được lượt tương tác, xem ngay nào",
+      link: "/orders",
+      status: "unread",
+      timestamp: 1696349870983,
+    },
+    {
+      content:
+        "ABC đã trả lời bình luận của bạn trong khóa học Nestjs cơ bản và nâng cao",
+      link: "/orders",
+      status: "unread",
+      timestamp: 1696349872983,
+    },
+    {
+      content: "Chúc mừng! Khóa học CSS của bạn vừa có người đăng ký mới",
+      link: "/orders",
+      status: "unread",
+      timestamp: 1696349871983,
+    },
+  ];
+
+  const notifications = allNotifications.slice(0, 5);
+
   return (
     <div className='bg-white border'>
-      <div className='grid grid-cols-3 px-12 pt-2'>
-        <div className='flex justify-start w-48 h-20'>
+      <div className='grid grid-cols-4 px-12'>
+        <div className='flex justify-start items-center w-40 h-12 mt-3'>
           <Link to={"/"}>
             <img src={logo} alt='logo upgrade' className='p-2 pl-4' />
           </Link>
         </div>
-        <div className='px-4 mt-4'>
+        <div className='flex items-center px-4 col-span-2'>
           <Input
-            extraClass='rounded-xl w-full'
+            extraClass='rounded-xl w-[450px] py-[4px] hover:border-[0.5px]'
             properties={{
               placeholder: "search",
             }}
           />
         </div>
-        <div className='flex justify-end py-8 px-2'>
+        <div className='flex justify-end py-6 px-2 mt-2'>
           {isAuth ? (
-            <div className='-mt-5 w-full flex justify-end items-center select-none'>
+            <div className='-mt-5 w-full flex justify-end items-center select-none pt-1'>
               <div className='p-1 hover:cursor-pointer text-gray-500 hover:text-red-400 mr-6 relative group transition duration-500 ease-out'>
                 <div className='relative'>
                   <BsCart className='text-2xl' />
-                  {cartQuantity > 0 && (
+                  {allCartProducts.length > 0 && (
                     <div className='select-none absolute -top-[9px] text-[10px] -right-[8px] bg-red-400 text-white rounded-2xl px-[8px] pt-[4px] pb-[2px] leading-tight flex items-center justify-center font-bold'>
-                      {cartQuantity}
+                      {allCartProducts.length}
                     </div>
                   )}
                 </div>
                 <div className='absolute right-0 top-0 z-10 hidden bg-grey-200 group-hover:block'>
                   <div className='absolute pt-12 right-0 -left-12'>
                     <div className='absolute border border-gray-300 bg-white w-96 z-100 right-0 shadow-2xl rounded-sm'>
-                      <div className='text-black h-full'>
-                        <div className='p-4'>
-                          {cartProducts.map((e, i) => (
-                            <div
-                              className='mt-4 grid grid-cols-5'
-                              key={i.toString()}
-                            >
-                              <div className='h-16 w-18'>
-                                <img
-                                  src={e.thumbnail_image}
-                                  className='h-full w-full'
-                                  alt='course thumbnail'
-                                />
+                      {allCartProducts.length === 0 ? (
+                        <div className='text-black h-full p-4 text-center'>
+                          Giỏ hàng trống
+                        </div>
+                      ) : (
+                        <div className='text-black h-full'>
+                          <div className='p-4'>
+                            {cartProducts.length > 0 &&
+                              cartProducts.map((e, i) => (
+                                <div
+                                  className='mt-4 grid grid-cols-5'
+                                  key={i.toString()}
+                                >
+                                  <div className='h-16 w-18'>
+                                    <img
+                                      src={e.thumbnail_image}
+                                      className='h-full w-full'
+                                      alt='course thumbnail'
+                                    />
+                                  </div>
+                                  <div className='col-span-4 ml-2'>
+                                    <div className='line-clamp-2 text-sm leading-[15px] h-8 font-semibold'>
+                                      {e.title}
+                                    </div>
+                                    <div className='mt-1 text-[12px] leading-[14px]'>
+                                      {e.lecturer}
+                                    </div>
+                                    <div className='text-gray-700 font-semibold'>
+                                      {formatCurrency(e.price)}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            {allCartProducts.length > 3 && (
+                              <div className='mt-2'>
+                                và {allCartProducts.length - 3} khóa học khác...
                               </div>
-                              <div className='col-span-4 ml-2'>
-                                <div className='line-clamp-2 text-sm leading-[15px] h-8 font-semibold'>
-                                  {e.title}
-                                </div>
-                                <div className='mt-1 text-[12px] leading-[14px]'>
-                                  {e.lecturer}
-                                </div>
-                                <div className='text-gray-700 font-semibold'>
-                                  {formatCurrency(e.price)}
-                                </div>
-                              </div>
+                            )}
+                          </div>
+                          <hr />
+                          <div className='p-4'>
+                            <div className='flex font-bold text-lg'>
+                              <p className='leading-loose text-gray-700 mr-2'>
+                                Tổng:
+                              </p>
+                              <p className='text-xl leading-relaxed '>
+                                {formatCurrency(90000000)}
+                              </p>
                             </div>
-                          ))}
-                          {allCartProducts.length > 3 && (
                             <div className='mt-2'>
-                              và {allCartProducts.length - 3} khóa học khác...
+                              <button className='py-3 px-4 flex w-full bg-gray-700 text-white justify-center rounded-sm shadow-xl'>
+                                Chuyển đến giỏ hàng
+                              </button>
                             </div>
-                          )}
-                        </div>
-                        <hr />
-                        <div className='p-4'>
-                          <div className='flex font-bold text-lg'>
-                            <p className='leading-loose text-gray-700 mr-2'>
-                              Tổng:
-                            </p>
-                            <p className='text-xl leading-relaxed '>
-                              {formatCurrency(90000000)}
-                            </p>
-                          </div>
-                          <div className='mt-2'>
-                            <button className='py-3 px-4 flex w-full bg-gray-700 text-white justify-center rounded-sm shadow-xl'>
-                              Chuyển đến giỏ hàng
-                            </button>
                           </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -155,15 +200,60 @@ function Header() {
               <div className='p-1 hover:cursor-pointer text-gray-500 hover:text-red-400 mr-8 relative group transition duration-500 ease-out'>
                 <div className='relative'>
                   <BsBell className='text-2xl' />
-                  {cartQuantity > 0 && (
+                  {allNotifications.length > 0 && (
                     <div className='select-none absolute -top-[9px] text-[10px] -right-[8px] bg-red-400 text-white rounded-2xl px-[8px] pt-[4px] pb-[2px] leading-tight flex items-center justify-center font-bold'>
-                      {cartQuantity}
+                      {allNotifications.length}
                     </div>
                   )}
                 </div>
                 <div className='absolute right-0 top-0 z-10 hidden bg-grey-200 group-hover:block'>
                   <div className='absolute pt-12 right-0 -left-12'>
-                    <div className='absolute bg-yellow-300 h-40 w-80 z-100 right-0'></div>
+                    <div className='absolute border border-gray-300 bg-white w-96 z-100 right-0 shadow-2xl rounded-sm'>
+                      {notifications.length === 0 ? (
+                        <div className='text-black h-full p-4 text-center'>
+                          Bạn không có thông báo nào
+                        </div>
+                      ) : (
+                        <div className='text-black h-full'>
+                          <div className='p-4'>
+                            {notifications.length > 0 &&
+                              notifications.map((e, i) => (
+                                <div
+                                  className='mt-4 grid grid-cols-8'
+                                  key={i.toString()}
+                                >
+                                  <div className='col-span-7'>
+                                    <div className='line-clamp-3 text-sm leading-[15px] h-8 font-medium'>
+                                      {e.content}
+                                    </div>
+                                    <div className='mt-1 text-[12px] leading-[14px]'>
+                                      {commentTime(e.timestamp)}
+                                    </div>
+                                  </div>
+                                  <div className='flex justify-end items-center col-span-1'>
+                                    <BsFillCircleFill className='text-sm text-red-400' />
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                          <hr className='mt-2' />
+                          <div className='p-4'>
+                            <div className='grid grid-cols-3'>
+                              <div className='col-span-2 text-sm font-semibold flex items-center'>
+                                <button className='text-indigo-600'>
+                                  Đánh dấu tất cả là đã đọc
+                                </button>
+                              </div>
+                              <div className='ml-2'>
+                                <button className='border text-md border-gray-500 hover:bg-gray-100 py-2 px-2 text-gray-600'>
+                                  Xem tất cả
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
