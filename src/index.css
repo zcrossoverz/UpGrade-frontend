@@ -75,3 +75,32 @@
     font-family: 'Quicksand', sans-serif;
   }
 }
+
+body {
+  overflow-x: auto;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  /* For Firefox */
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  /* display: none; */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

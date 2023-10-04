@@ -4,6 +4,7 @@ import Dashboard from "../views/Dashboard";
 import HomePage from "../views/Home";
 import MyCourses from "@/views/MyCourses";
 import Learning from "@/views/Learning";
+import Cart from "@/views/Cart";
 
 interface IRoute {
   name: string;
@@ -37,6 +38,11 @@ export const PUBLIC_ROUTES: Array<IRoute> = [
     name: "course detail",
     path: "/learning/:id",
     Element: Learning,
+  },
+  {
+    name: "course detail",
+    path: "/cart",
+    Element: Cart,
   },
 ];
 

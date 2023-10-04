@@ -215,11 +215,11 @@ function Header() {
                         </div>
                       ) : (
                         <div className='text-black h-full'>
-                          <div className='p-4'>
+                          <div className='p-4 max-h-96 overflow-auto'>
                             {notifications.length > 0 &&
                               notifications.map((e, i) => (
                                 <div
-                                  className='mt-4 grid grid-cols-8'
+                                  className='mt-1 grid grid-cols-8 hover:bg-gray-100 px-4 py-2'
                                   key={i.toString()}
                                 >
                                   <div className='col-span-7'>
