@@ -21,12 +21,12 @@ export const PUBLIC_ROUTES: Array<IRoute> = [
   },
   {
     name: "course detail",
-    path: "/c",
+    path: "/course-details/:id",
     Element: CourseDetails,
   },
   {
     name: "course detail",
-    path: "/s",
+    path: "/settings",
     Element: Setting,
   },
   {

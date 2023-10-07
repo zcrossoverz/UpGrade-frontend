@@ -265,7 +265,53 @@ function Header() {
                 />
                 <div className='absolute right-0 top-0 z-10 hidden bg-grey-200 group-hover:block'>
                   <div className='absolute pt-12 right-0 -left-12'>
-                    <div className='absolute bg-yellow-300 h-40 w-80 z-100 right-0'></div>
+                    <div className='absolute border border-gray-300 bg-white min-w-[250px] py-4 z-100 right-0 shadow-2xl rounded-sm px-4'>
+                      <div>
+                        <div className='grid grid-cols-6 mb-4'>
+                          <div className='col-span-2 flex justify-center items-center'>
+                            <img
+                              src={avatarEmpty}
+                              alt='avatar'
+                              className='w-12 h-12 rounded-full'
+                            />
+                          </div>
+                          <div className='col-span-4 flex flex-col'>
+                            <p className='w-full line-clamp-2'>Nhân Nguyễn</p>
+                            <p className='w-full text-sm text-gray-400'>
+                              @crossover
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <hr className='mb-4' />
+                      <div className='mb-4 text-md flex flex-col'>
+                        <Link className='cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'>
+                          Trang cá nhân
+                        </Link>
+                        <Link
+                          className='mt-1 cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
+                          to={`/my-courses`}
+                        >
+                          Khóa học của tôi
+                        </Link>
+                      </div>
+                      <hr className='mb-2' />
+                      <div className='mb-4 text-md flex flex-col'>
+                        <Link
+                          className='cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
+                          to={`/settings`}
+                        >
+                          Cài đặt
+                        </Link>
+
+                        <Link
+                          className='mt-1 cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
+                          to={`/logout`}
+                        >
+                          Đăng xuất
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
