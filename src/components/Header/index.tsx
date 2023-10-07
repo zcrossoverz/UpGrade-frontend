@@ -8,9 +8,10 @@ import { BsBell, BsCart } from "react-icons/bs";
 import { formatCurrency } from "@/utils/convertNumber";
 import { commentTime } from "@/utils/time";
 import { BsFillCircleFill } from "react-icons/bs";
+import Auth from "../Auth";
 
 function Header() {
-  const isAuth = true;
+  const isAuth = false;
 
   const allCartProducts = [
     {
@@ -285,7 +286,10 @@ function Header() {
                       </div>
                       <hr className='mb-4' />
                       <div className='mb-4 text-md flex flex-col'>
-                        <Link className='cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'>
+                        <Link
+                          className='cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
+                          to={`/settings`}
+                        >
                           Trang cá nhân
                         </Link>
                         <Link
@@ -317,7 +321,10 @@ function Header() {
               </div>
             </div>
           ) : (
-            <Button text='Đăng nhập' extraClass='bg-green text-white -mt-5' />
+            <div>
+              <Auth isPopupOpen={false} />
+              <Button text='Đăng nhập' extraClass='bg-green text-white -mt-5' />
+            </div>
           )}
         </div>
       </div>

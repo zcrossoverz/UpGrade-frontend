@@ -1,0 +1,136 @@
+import React, { useState } from "react";
+import { MdCancel } from "react-icons/md";
+import logo from "../../assets/logo_updrade.png";
+import { BsPeople } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
+
+enum typePopup {
+  LOGIN,
+  REGISTER,
+}
+
+enum typeComponent {
+  LOGIN_BY_ACCOUNT,
+  REGISTER_BY_ACCOUNT,
+  LOGIN_BY_GMAIL,
+  REGISTER_BY_GMAIL,
+  NONE,
+}
+
+const MainContent = ({
+  handleButton,
+}: {
+  handleButton: { handleAccountBtn: () => void; handleGmailBtn: () => void };
+}) => {
+  const { handleAccountBtn, handleGmailBtn } = handleButton;
+  return (
+    <div className='flex flex-col mb-10 font-medium'>
+      <button
+        className='flex px-8 text-md hover:bg-gray-200 py-2 border-[2px] border-gray-200 rounded-3xl min-w-[200px] max-w-[360px]'
+        onClick={handleAccountBtn}
+      >
+        <BsPeople className='text-2xl' />
+        <p className='w-full'>Sử dụng email</p>
+      </button>
+      <button
+        className='flex px-8 text-md hover:bg-gray-200 py-2 border-[2px] border-gray-200 rounded-3xl min-w-[200px] mt-2 max-w-[360px]'
+        onClick={handleGmailBtn}
+      >
+        <FcGoogle className='text-2xl' />
+        <p className='w-full'>Tiếp tục với Google</p>
+      </button>
+    </div>
+  );
+};
+
+const LoginByAccount = () => {
+  return <>LoginByAccount</>;
+};
+
+const RegisterByAccount = () => {
+  return <>RegisterByAccount</>;
+};
+
+const LoginByGmail = () => {
+  return <>LoginByGmail</>;
+};
+
+const RegisterByGmail = () => {
+  return <>RegisterByGmail</>;
+};
+
+function Auth({ isPopupOpen }: { isPopupOpen: boolean }) {
+  const [type, setType] = useState(typePopup.LOGIN);
+  const [tab, setTab] = useState(typeComponent.NONE);
+
+  return (
+    <div>
+      {isPopupOpen && (
+        <div className='fixed inset-0 flex items-center justify-center z-50 select-none'>
+          <div className='absolute inset-0 bg-black opacity-50'></div>
+          <div className='relative z-10 bg-white px-24 py-12 rounded-lg shadow-lg'>
+            <button>
+              <MdCancel className='absolute text-[32px] text-gray-500 hover:text-red-500 top-3 right-3' />
+            </button>
+            <div className='flex justify-center mb-8'>
+              <img src={logo} alt='logo upgrade' className='h-16' />
+            </div>
+            <h2 className='text-3xl font-semibold mb-14 text-center'>
+              {type === typePopup.LOGIN
+                ? "Đăng nhập UpGrade"
+                : "Đăng ký UpGrade"}
+            </h2>
+            {tab === typeComponent.NONE && (
+              <MainContent
+                handleButton={{
+                  handleAccountBtn: () => {
+                    if (type === typePopup.LOGIN) {
+                      setTab(typeComponent.LOGIN_BY_ACCOUNT);
+                    } else {
+                      setTab(typeComponent.REGISTER_BY_ACCOUNT);
+                    }
+                  },
+                  handleGmailBtn: () => {
+                    if (type === typePopup.LOGIN) {
+                      setTab(typeComponent.LOGIN_BY_GMAIL);
+                    } else {
+                      setTab(typeComponent.REGISTER_BY_GMAIL);
+                    }
+                  },
+                }}
+              />
+            )}
+            {tab === typeComponent.LOGIN_BY_ACCOUNT && <LoginByAccount />}
+            {tab === typeComponent.REGISTER_BY_ACCOUNT && <RegisterByAccount />}
+            {tab === typeComponent.LOGIN_BY_GMAIL && <LoginByGmail />}
+            {tab === typeComponent.REGISTER_BY_GMAIL && <RegisterByGmail />}
+            <div className='flex justify-center mb-10'>
+              <div className='flex'>
+                Bạn {type === typePopup.LOGIN ? "chưa" : "đã"} có tài khoản?{" "}
+                <button
+                  className='ml-1 text-red-500'
+                  onClick={() => {
+                    setType(
+                      type === typePopup.LOGIN
+                        ? typePopup.REGISTER
+                        : typePopup.LOGIN
+                    );
+                    setTab(typeComponent.NONE);
+                  }}
+                >
+                  {type === typePopup.LOGIN ? "Đăng nhập" : "Đăng ký"}
+                </button>
+              </div>
+            </div>
+            <div className='max-w-[360px] text-[12px] text-center text-gray-500'>
+              Việc bạn tiếp tục sử dụng trang web này đồng nghĩa với việc bạn
+              đồng ý với điều khoản sử dụng của chúng tôi
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Auth;
