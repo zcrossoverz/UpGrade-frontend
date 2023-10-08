@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/logo_updrade.png";
 import Input from "../Input/Input";
 import Button from "../Button/button";
@@ -105,6 +105,8 @@ function Header() {
   ];
 
   const notifications = allNotifications.slice(0, 5);
+
+  const [openPopupAuth, setOpenPopupAuth] = useState(false);
 
   return (
     <div className='bg-white border'>
@@ -322,8 +324,17 @@ function Header() {
             </div>
           ) : (
             <div>
-              <Auth isPopupOpen={false} />
-              <Button text='Đăng nhập' extraClass='bg-green text-white -mt-5' />
+              <Auth
+                isPopupOpen={openPopupAuth}
+                handleClose={() => setOpenPopupAuth(false)}
+              />
+              <Button
+                text='Đăng nhập'
+                extraClass='bg-green text-white -mt-5'
+                properties={{
+                  onClick: () => setOpenPopupAuth(true),
+                }}
+              />
             </div>
           )}
         </div>

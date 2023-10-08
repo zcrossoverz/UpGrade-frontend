@@ -3,6 +3,8 @@ import { MdCancel } from "react-icons/md";
 import logo from "../../assets/logo_updrade.png";
 import { BsPeople } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
+import { useCreateUser } from "@/hooks/useUser";
+import { toast } from "react-toastify";
 
 enum typePopup {
   LOGIN,
@@ -44,11 +46,88 @@ const MainContent = ({
 };
 
 const LoginByAccount = () => {
-  return <>LoginByAccount</>;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  return (
+    <div className='mt-8 flex justify-center flex-col'>
+      <div className='w-full px-8'>
+        <input
+          type='text'
+          placeholder='Địa chỉ email'
+          className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className='w-full px-8 mt-4'>
+        <input
+          type='password'
+          placeholder='Mật khẩu'
+          className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className='w-full px-8 mt-4 mb-8'>
+        <button className='w-full text-center bg-red-400 text-white py-2 px-4 rounded-3xl'>
+          Đăng nhập
+        </button>
+      </div>
+    </div>
+  );
 };
 
 const RegisterByAccount = () => {
-  return <>RegisterByAccount</>;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+
+  const { data, isLoading, mutateAsync } = useCreateUser();
+
+  const handleRegister = async () => {
+    if (password !== rePassword) {
+      toast.error("Mật khẩu không khớp");
+      return;
+    }
+    await mutateAsync({ email, password });
+  };
+
+  return (
+    <div className='mt-8 flex justify-center flex-col'>
+      <div className='w-full px-8'>
+        <input
+          type='text'
+          placeholder='Địa chỉ email'
+          className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className='w-full px-8 mt-4'>
+        <input
+          type='password'
+          placeholder='Mật khẩu'
+          onChange={(e) => setPassword(e.target.value)}
+          className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
+        />
+      </div>
+      <div className='w-full px-8 mt-4'>
+        <input
+          type='password'
+          placeholder='Nhập lại mật khẩu'
+          onChange={(e) => setRePassword(e.target.value)}
+          className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
+        />
+      </div>
+      <div className='w-full px-8 mt-4 mb-8'>
+        <button
+          className='w-full text-center bg-red-400 text-white py-2 px-4 rounded-3xl'
+          onClick={handleRegister}
+          disabled={isLoading}
+        >
+          {isLoading ? "Loading" : "Đăng ký"}
+        </button>
+      </div>
+    </div>
+  );
 };
 
 const LoginByGmail = () => {
@@ -59,17 +138,23 @@ const RegisterByGmail = () => {
   return <>RegisterByGmail</>;
 };
 
-function Auth({ isPopupOpen }: { isPopupOpen: boolean }) {
+function Auth({
+  isPopupOpen,
+  handleClose,
+}: {
+  isPopupOpen: boolean;
+  handleClose: () => void;
+}) {
   const [type, setType] = useState(typePopup.LOGIN);
   const [tab, setTab] = useState(typeComponent.NONE);
 
   return (
     <div>
       {isPopupOpen && (
-        <div className='fixed inset-0 flex items-center justify-center z-50 select-none'>
+        <div className='fixed inset-0 flex items-center justify-center z-50 select-none transition duration-500 ease-in-out'>
           <div className='absolute inset-0 bg-black opacity-50'></div>
           <div className='relative z-10 bg-white px-24 py-12 rounded-lg shadow-lg'>
-            <button>
+            <button onClick={handleClose}>
               <MdCancel className='absolute text-[32px] text-gray-500 hover:text-red-500 top-3 right-3' />
             </button>
             <div className='flex justify-center mb-8'>
@@ -118,7 +203,7 @@ function Auth({ isPopupOpen }: { isPopupOpen: boolean }) {
                     setTab(typeComponent.NONE);
                   }}
                 >
-                  {type === typePopup.LOGIN ? "Đăng nhập" : "Đăng ký"}
+                  {type === typePopup.LOGIN ? "Đăng ký" : "Đăng nhập"}
                 </button>
               </div>
             </div>
