@@ -8,10 +8,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { getToken } from "./utils/authentication";
 
 function App() {
-  const login = true;
   const admin = true;
+
+  const tokenExists = getToken() !== null;
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -33,7 +35,7 @@ function App() {
             <Route key={name} path={path} element={<Element />} />
           ))}
           {PRIVATE_ROUTES.map(({ name, path, Element, requireAdmin }) => {
-            return login && (!requireAdmin || (requireAdmin && admin)) ? (
+            return tokenExists && (!requireAdmin || (requireAdmin && admin)) ? (
               <Route key={name} path={path} element={<Element />} />
             ) : (
               <Route key={"error"} path={path} element={<NotFound />} />

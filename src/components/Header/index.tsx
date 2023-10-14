@@ -9,10 +9,9 @@ import { formatCurrency } from "@/utils/convertNumber";
 import { commentTime } from "@/utils/time";
 import { BsFillCircleFill } from "react-icons/bs";
 import Auth from "../Auth";
+import { useAuth, useLogout } from "@/hooks/useAuth";
 
 function Header() {
-  const isAuth = false;
-
   const allCartProducts = [
     {
       title: "NestJS Zero to Hero - Modern TypeScript Back-end Development",
@@ -108,6 +107,10 @@ function Header() {
 
   const [openPopupAuth, setOpenPopupAuth] = useState(false);
 
+  const { isAuthenticated, data } = useAuth();
+
+  const logout = useLogout();
+
   return (
     <div className='bg-white border'>
       <div className='grid grid-cols-4 px-12'>
@@ -125,7 +128,7 @@ function Header() {
           />
         </div>
         <div className='flex justify-end py-6 px-2 mt-2'>
-          {isAuth ? (
+          {isAuthenticated ? (
             <div className='-mt-5 w-full flex justify-end items-center select-none pt-1'>
               <div className='p-1 hover:cursor-pointer text-gray-500 hover:text-red-400 mr-6 relative group transition duration-500 ease-out'>
                 <div className='relative'>
@@ -279,7 +282,9 @@ function Header() {
                             />
                           </div>
                           <div className='col-span-4 flex flex-col'>
-                            <p className='w-full line-clamp-2'>Nhân Nguyễn</p>
+                            <p className='w-full line-clamp-2'>
+                              {data?.data.fullname}
+                            </p>
                             <p className='w-full text-sm text-gray-400'>
                               @crossover
                             </p>
@@ -310,12 +315,12 @@ function Header() {
                           Cài đặt
                         </Link>
 
-                        <Link
-                          className='mt-1 cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
-                          to={`/logout`}
+                        <button
+                          className='mt-1 cursor-pointer hover:bg-gray-100 px-2 py-1 w-full text-left text-md'
+                          onClick={() => logout()}
                         >
                           Đăng xuất
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </div>

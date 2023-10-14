@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdCancel } from "react-icons/md";
 import logo from "../../assets/logo_updrade.png";
 import { BsPeople } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { useCreateUser } from "@/hooks/useUser";
 import { toast } from "react-toastify";
+import { useLogin } from "@/hooks/useAuth";
 
 enum typePopup {
   LOGIN,
@@ -45,9 +46,15 @@ const MainContent = ({
   );
 };
 
-const LoginByAccount = () => {
+const LoginByAccount = ({ handleClose }: { handleClose: () => void }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { isLoading, isSuccess, mutateAsync } = useLogin();
+
+  useEffect(() => {
+    isSuccess && handleClose();
+  }, [handleClose, isSuccess]);
 
   return (
     <div className='mt-8 flex justify-center flex-col'>
@@ -64,12 +71,18 @@ const LoginByAccount = () => {
           type='password'
           placeholder='Mật khẩu'
           className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       <div className='w-full px-8 mt-4 mb-8'>
-        <button className='w-full text-center bg-red-400 text-white py-2 px-4 rounded-3xl'>
-          Đăng nhập
+        <button
+          className='w-full text-center bg-red-400 text-white py-2 px-4 rounded-3xl'
+          onClick={() => {
+            mutateAsync({ email, password });
+          }}
+          disabled={isLoading}
+        >
+          {isLoading ? "..." : "Đăng nhập"}
         </button>
       </div>
     </div>
@@ -81,7 +94,7 @@ const RegisterByAccount = () => {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
 
-  const { data, isLoading, mutateAsync } = useCreateUser();
+  const { isLoading, mutateAsync } = useCreateUser();
 
   const handleRegister = async () => {
     if (password !== rePassword) {
@@ -185,7 +198,9 @@ function Auth({
                 }}
               />
             )}
-            {tab === typeComponent.LOGIN_BY_ACCOUNT && <LoginByAccount />}
+            {tab === typeComponent.LOGIN_BY_ACCOUNT && (
+              <LoginByAccount handleClose={handleClose} />
+            )}
             {tab === typeComponent.REGISTER_BY_ACCOUNT && <RegisterByAccount />}
             {tab === typeComponent.LOGIN_BY_GMAIL && <LoginByGmail />}
             {tab === typeComponent.REGISTER_BY_GMAIL && <RegisterByGmail />}
