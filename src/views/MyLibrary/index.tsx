@@ -3,9 +3,10 @@ import Header from "@/components/Header";
 import ListCourse from "@/components/ListCourse";
 import React from "react";
 
-function MyCourses() {
+function MyLibrary() {
   const courses = [
     {
+      id: 8,
       title: "NestJS Zero to Hero - Modern TypeScript Back-end Development",
       lecturer: "Ariel Weinberger",
       rate: 4.7,
@@ -15,6 +16,7 @@ function MyCourses() {
         "https://img-c.udemycdn.com/course/240x135/2053219_e620_2.jpg",
     },
     {
+      id: 7,
       title: "Flutter & Dart - The Complete Guide [2023 Edition]",
       lecturer: "Maximilian Schwarzmuller",
       rate: 4.6,
@@ -24,6 +26,7 @@ function MyCourses() {
         "https://img-c.udemycdn.com/course/240x135/1708340_7108_5.jpg",
     },
     {
+      id: 5,
       title: "iOS & Swift - The Complete iOS App Development Bootcamp",
       lecturer: "Dr. Angela Yu",
       rate: 4.7,
@@ -33,6 +36,8 @@ function MyCourses() {
         "https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg",
     },
     {
+      id: 3,
+
       title: "The Complete 2023 Web Development Bootcamp",
       lecturer: "Dr. Angela Yu",
       rate: 4.7,
@@ -42,6 +47,7 @@ function MyCourses() {
         "https://img-c.udemycdn.com/course/240x135/1565838_e54e_16.jpg",
     },
     {
+      id: 1,
       title: "The Ultimate Guide to Game Development with Unity (Official)",
       lecturer: "Dr. Jonathan",
       rate: 4.2,
@@ -51,6 +57,7 @@ function MyCourses() {
         "https://img-c.udemycdn.com/course/240x135/1328572_b05d_5.jpg",
     },
     {
+      id: 1,
       title: "TensorFlow Developer Certificate in 2023: Zero to Mastery",
       lecturer: "Dr. Davis",
       rate: 4.4,
@@ -66,11 +73,11 @@ function MyCourses() {
         <Header />
       </div>
       <div className='pt-28'>
-        <ListCourse title='Khoá học của tôi' data={courses} />
+        <ListCourse title='Khoá học của tôi' data={courses} isEnroll={true} />
       </div>
       <Footer />
     </div>
   );
 }
 
-export default MyCourses;
+export default MyLibrary;

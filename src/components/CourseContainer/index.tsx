@@ -1,14 +1,17 @@
 import { formatCurrency, formatNumber } from "@/utils/convertNumber";
 import React, { useMemo } from "react";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 interface ICourse {
+  id: number;
   title: string;
   lecturer: string;
   rate: number;
   rate_number: number;
   price: number;
   thumbnail_image: string;
+  isEnroll: boolean;
 }
 
 function CourseContainer({
@@ -18,6 +21,8 @@ function CourseContainer({
   rate_number,
   price,
   thumbnail_image,
+  id,
+  isEnroll,
 }: ICourse) {
   const starArr = useMemo(() => {
     const fullStar = "full";
@@ -36,7 +41,9 @@ function CourseContainer({
     stars = stars.concat(Array(emptyStars).fill(emptyStar));
 
     return stars;
-  }, []);
+  }, [rate]);
+
+  const navigate = useNavigate();
 
   return (
     <div className=''>
@@ -47,11 +54,19 @@ function CourseContainer({
             backgroundImage: `url(${thumbnail_image})`,
           }}
         />
-        <div className='absolute inset-0 bg-black bg-opacity-0 h-full hover:bg-opacity-60'>
+        <button
+          className='absolute inset-0 bg-black bg-opacity-0 h-full hover:bg-opacity-60'
+          onClick={() => {
+            if (!isEnroll) navigate(`/course-details/${id}`);
+            else navigate(`/learning/${id}`);
+          }}
+        >
           <div className='flex items-center justify-center px-30 w-full h-full opacity-0 hover:opacity-100 hover:scale-105 transition duration-500 ease-out rounded-2xl'>
-            <p className='bg-white px-4 py-1 rounded-2xl'>Xem khóa học</p>
+            <p className='bg-white px-4 py-1 rounded-2xl'>
+              {isEnroll ? "Tiếp tục bài học" : "Xem khóa học"}
+            </p>
           </div>
-        </div>
+        </button>
       </div>
       <p className='mt-2 font-bold text-lg line-clamp-2 hover:cursor-pointer'>
         {title}

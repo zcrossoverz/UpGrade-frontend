@@ -4,9 +4,11 @@ import Slider from "react-slick";
 const ListCourse = ({
   title,
   data,
+  isEnroll,
 }: {
   title: string;
   data: {
+    id: number;
     title: string;
     lecturer: string;
     rate: number;
@@ -14,6 +16,7 @@ const ListCourse = ({
     price: number;
     thumbnail_image: string;
   }[];
+  isEnroll: boolean;
 }) => {
   return (
     <div>
@@ -28,7 +31,7 @@ const ListCourse = ({
         className='flex flex-wrap gap-4 justify-center content-center mx-32 pt-0 pb-14'
       >
         {data.map((e, i) => (
-          <CourseContainer key={i.toString()} {...e} />
+          <CourseContainer key={i.toString()} {...e} isEnroll={isEnroll} />
         ))}
       </Slider>
       {/* </div> */}

@@ -18,6 +18,7 @@ import { TbWriting } from "react-icons/tb";
 function HomePage() {
   const courses = [
     {
+      id: 1,
       title: "NestJS Zero to Hero - Modern TypeScript Back-end Development",
       lecturer: "Ariel Weinberger",
       rate: 4.7,
@@ -27,6 +28,7 @@ function HomePage() {
         "https://img-c.udemycdn.com/course/240x135/2053219_e620_2.jpg",
     },
     {
+      id: 7,
       title: "Flutter & Dart - The Complete Guide [2023 Edition]",
       lecturer: "Maximilian Schwarzmuller",
       rate: 4.6,
@@ -36,6 +38,7 @@ function HomePage() {
         "https://img-c.udemycdn.com/course/240x135/1708340_7108_5.jpg",
     },
     {
+      id: 8,
       title: "iOS & Swift - The Complete iOS App Development Bootcamp",
       lecturer: "Dr. Angela Yu",
       rate: 4.7,
@@ -45,6 +48,7 @@ function HomePage() {
         "https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg",
     },
     {
+      id: 3,
       title: "The Complete 2023 Web Development Bootcamp",
       lecturer: "Dr. Angela Yu",
       rate: 4.7,
@@ -54,6 +58,7 @@ function HomePage() {
         "https://img-c.udemycdn.com/course/240x135/1565838_e54e_16.jpg",
     },
     {
+      id: 2,
       title: "The Ultimate Guide to Game Development with Unity (Official)",
       lecturer: "Dr. Jonathan",
       rate: 4.2,
@@ -63,6 +68,7 @@ function HomePage() {
         "https://img-c.udemycdn.com/course/240x135/1328572_b05d_5.jpg",
     },
     {
+      id: 9,
       title: "TensorFlow Developer Certificate in 2023: Zero to Mastery",
       lecturer: "Dr. Davis",
       rate: 4.4,
@@ -81,8 +87,12 @@ function HomePage() {
       <div className='z-0 px-36 pt-24'>
         <Billboard />
       </div>
-      <ListCourse title='Học viên đang xem' data={courses} />
-      <ListCourse title='Khóa học mới cập nhật' data={courses} />
+      <ListCourse title='Học viên đang xem' data={courses} isEnroll={false} />
+      <ListCourse
+        title='Khóa học mới cập nhật'
+        data={courses}
+        isEnroll={false}
+      />
       <div>
         <p className='px-32 py-4 text-2xl font-bold'>Các lĩnh vực hàng đầu</p>
         <div className='flex flex-wrap gap-x-14 gap-y-4 justify-center content-center mx-32 pt-0 pb-14'>

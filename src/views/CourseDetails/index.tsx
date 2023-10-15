@@ -40,6 +40,10 @@ function CourseDetails() {
   const [courseData, setCourseData] = useState<Course>();
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     const getData = async () => {
       const data = await courseApi.getCourseDetail();
       setCourseData(data);

@@ -24,6 +24,7 @@ export const useAuth = () => {
   return {
     isAuthenticated: getToken() !== null,
     ...query,
+    data: query.data?.data?.data,
   };
 };
 

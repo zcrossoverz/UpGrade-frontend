@@ -48,6 +48,10 @@ function Learning() {
   const [tabs, setTabs] = useState<EnumTab>(EnumTab.CONTENT);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     const getData = async () => {
       const data = await courseApi.getCourseDetail();
       setCourseData(data);

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "../../assets/logo_updrade.png";
 import Input from "../Input/Input";
 import Button from "../Button/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import avatarEmpty from "../../assets/avatar.jpg";
 import { BsBell, BsCart } from "react-icons/bs";
 import { formatCurrency } from "@/utils/convertNumber";
@@ -107,7 +107,8 @@ function Header() {
 
   const [openPopupAuth, setOpenPopupAuth] = useState(false);
 
-  const { isAuthenticated, data } = useAuth();
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   const logout = useLogout();
 
@@ -128,7 +129,7 @@ function Header() {
           />
         </div>
         <div className='flex justify-end py-6 px-2 mt-2'>
-          {isAuthenticated ? (
+          {auth.isAuthenticated ? (
             <div className='-mt-5 w-full flex justify-end items-center select-none pt-1'>
               <div className='p-1 hover:cursor-pointer text-gray-500 hover:text-red-400 mr-6 relative group transition duration-500 ease-out'>
                 <div className='relative'>
@@ -192,7 +193,10 @@ function Header() {
                               </p>
                             </div>
                             <div className='mt-2'>
-                              <button className='py-3 px-4 flex w-full bg-gray-700 text-white justify-center rounded-sm shadow-xl'>
+                              <button
+                                className='py-3 px-4 flex w-full bg-gray-700 text-white justify-center rounded-sm shadow-xl'
+                                onClick={() => navigate("/cart")}
+                              >
                                 Chuyển đến giỏ hàng
                               </button>
                             </div>
@@ -283,10 +287,14 @@ function Header() {
                           </div>
                           <div className='col-span-4 flex flex-col'>
                             <p className='w-full line-clamp-2'>
-                              {data?.data.fullname}
+                              {auth.data?.firstName || auth.data?.lastName
+                                ? `${auth.data?.firstName} ${auth.data?.lastName}`
+                                : `user#${auth.data?.id}`}
                             </p>
                             <p className='w-full text-sm text-gray-400'>
-                              @crossover
+                              {auth.data?.username
+                                ? `@${auth.data?.username}`
+                                : auth.data?.email}
                             </p>
                           </div>
                         </div>
@@ -297,13 +305,13 @@ function Header() {
                           className='cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
                           to={`/settings`}
                         >
-                          Trang cá nhân
+                          Khóa học của tôi
                         </Link>
                         <Link
                           className='mt-1 cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
-                          to={`/my-courses`}
+                          to={`/my-library`}
                         >
-                          Khóa học của tôi
+                          Thư viện của tôi
                         </Link>
                       </div>
                       <hr className='mb-2' />

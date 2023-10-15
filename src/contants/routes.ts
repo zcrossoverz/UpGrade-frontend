@@ -2,9 +2,9 @@ import Setting from "@/views/Setting";
 import CourseDetails from "../views/CourseDetails";
 import Dashboard from "../views/Dashboard";
 import HomePage from "../views/Home";
-import MyCourses from "@/views/MyCourses";
 import Learning from "@/views/Learning";
 import Cart from "@/views/Cart";
+import MyLibrary from "@/views/MyLibrary";
 
 interface IRoute {
   name: string;
@@ -31,8 +31,8 @@ export const PUBLIC_ROUTES: Array<IRoute> = [
   },
   {
     name: "course detail",
-    path: "/my-courses",
-    Element: MyCourses,
+    path: "/my-library",
+    Element: MyLibrary,
   },
   {
     name: "course detail",
