@@ -1,16 +1,23 @@
 import Setting from "@/views/Setting";
 import CourseDetails from "../views/CourseDetails";
-import Dashboard from "../views/Dashboard";
 import HomePage from "../views/Home";
 import Learning from "@/views/Learning";
 import Cart from "@/views/Cart";
 import MyLibrary from "@/views/MyLibrary";
+import CourseManagement from "@/views/AdminDashboard/pages/CourseManagement";
+import Dashboard from "@/views/AdminDashboard/pages/Dashboard";
+import Communication from "@/views/AdminDashboard/pages/Communication";
+import Performance from "@/views/AdminDashboard/pages/Performance";
+import Tools from "@/views/AdminDashboard/pages/Tools";
+import Student from "@/views/AdminDashboard/pages/Performance/Student";
+import Review from "@/views/Learning/Review";
 
 interface IRoute {
   name: string;
   path: string;
   Element: () => JSX.Element;
   requireAdmin?: boolean;
+  children?: Array<IRoute>;
 }
 
 export const PUBLIC_ROUTES: Array<IRoute> = [
@@ -24,6 +31,14 @@ export const PUBLIC_ROUTES: Array<IRoute> = [
     path: "/course-details/:id",
     Element: CourseDetails,
   },
+  {
+    name: "course detail",
+    path: "/cart",
+    Element: Cart,
+  },
+];
+
+export const PRIVATE_ROUTES: Array<IRoute> = [
   {
     name: "course detail",
     path: "/settings",
@@ -40,17 +55,47 @@ export const PUBLIC_ROUTES: Array<IRoute> = [
     Element: Learning,
   },
   {
-    name: "course detail",
-    path: "/cart",
-    Element: Cart,
-  },
-];
-
-export const PRIVATE_ROUTES: Array<IRoute> = [
-  {
-    name: "dashboard",
-    path: "/dashboard",
+    name: "Tổng quan",
+    path: "",
     Element: Dashboard,
+    requireAdmin: true,
+  },
+  {
+    name: "Khóa học",
+    path: "/course-management",
+    Element: CourseManagement,
+    requireAdmin: true,
+  },
+  {
+    name: "Tương tác",
+    path: "/communication",
+    Element: Communication,
+    requireAdmin: true,
+  },
+  {
+    name: "Hiệu suất",
+    path: "/performance",
+    Element: Performance,
+    requireAdmin: true,
+    children: [
+      {
+        name: "Học viên",
+        path: "/performance/question",
+        Element: Student,
+        requireAdmin: true,
+      },
+      {
+        name: "Đánh giá",
+        path: "/performance/question",
+        Element: Review,
+        requireAdmin: true,
+      },
+    ],
+  },
+  {
+    name: "Công cụ",
+    path: "/tools",
+    Element: Tools,
     requireAdmin: true,
   },
 ];

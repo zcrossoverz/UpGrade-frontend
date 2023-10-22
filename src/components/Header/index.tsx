@@ -267,7 +267,7 @@ function Header() {
                   </div>
                 </div>
               </div>
-              <div className='relative group'>
+              <div className='relative group hover:cursor-pointer'>
                 <img
                   src={avatarEmpty}
                   alt='avatar'
@@ -303,7 +303,7 @@ function Header() {
                       <div className='mb-4 text-md flex flex-col'>
                         <Link
                           className='cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
-                          to={`/settings`}
+                          to={`/course-management`}
                         >
                           Khóa học của tôi
                         </Link>

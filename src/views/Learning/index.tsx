@@ -77,12 +77,12 @@ function Learning() {
           <p className='mr-8'>Tiến độ của bạn</p>
         </div>
       </div>
-      <div className='h-[500px]'>
+      <div className='h-[500px] bg-gray-800'>
         <ReactPlayer
           width='100%'
           height='100%'
           {...configPlayer}
-          url='https://www.youtube.com/watch?v=LXb3EKWsInQ'
+          url='https://drive.google.com/uc?export=download&id=1V3oL_JXv63ycaRue6CKgWx2UoCU-Vj29'
           // url='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'
         />
       </div>
