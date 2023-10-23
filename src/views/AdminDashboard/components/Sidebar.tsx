@@ -11,7 +11,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`text-white absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0`}
+      className={`text-white absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gray-800 duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0`}
     >
       <div className='flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5'>
         <NavLink to=''>
@@ -35,11 +35,13 @@ const Sidebar = () => {
                 <Link
                   key={i.toString()}
                   to={path.replace("/", "")}
-                  className={`mt-[5px] py-2 hover:bg-gray-600 px-4 min-w-[230px] rounded-sm ${
-                    currentPath === path ? "bg-gray-600" : ""
-                  }`}
+                  className={`mt-[5px] relative group min-w-[230px]`}
                 >
-                  <div className='flex justify-between'>
+                  <div
+                    className={`flex justify-between py-2 px-4 rounded-sm group-hover:bg-gray-600 ${
+                      currentPath === path ? "bg-gray-600" : ""
+                    }`}
+                  >
                     {name}
                     <div
                       className={`flex items-center justify-center ${
@@ -49,7 +51,24 @@ const Sidebar = () => {
                       <MdKeyboardArrowDown />
                     </div>
                   </div>
-                  {/* <div className='ml-4'>sdf</div> */}
+                  <div
+                    className={`ml-4 hidden ${
+                      children !== undefined && "group-hover:block"
+                    }`}
+                  >
+                    <div className='flex flex-col bg-gray-800'>
+                      {children &&
+                        children.map(({ name, path }, i) => (
+                          <Link
+                            key={i.toString()}
+                            to={path.replace("/", "")}
+                            className='mt-[5px] py-2 px-4 min-w-[180px] rounded-sm text-gray-400 hover:text-white'
+                          >
+                            {name}
+                          </Link>
+                        ))}
+                    </div>
+                  </div>
                 </Link>
               ))}
             </div>

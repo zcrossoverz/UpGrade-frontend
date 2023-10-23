@@ -98,4 +98,16 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     Element: Tools,
     requireAdmin: true,
   },
+  {
+    name: "Người dùng",
+    path: "/tools",
+    Element: Tools,
+    requireAdmin: true,
+  },
+  {
+    name: "Thiết lập",
+    path: "/tools",
+    Element: Tools,
+    requireAdmin: true,
+  },
 ];
