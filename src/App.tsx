@@ -14,7 +14,7 @@ import AdminDashboard from "./views/AdminDashboard";
 function App() {
   const admin = true;
 
-  const tokenExists = true; //getToken() !== null;
+  const tokenExists = getToken() !== null;
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -36,7 +36,7 @@ function App() {
             <Route key={name} path={path} element={<Element />} />
           ))}
           {PRIVATE_ROUTES.filter(
-            ({ requireAdmin }) => requireAdmin === undefined || false
+            ({ adminRoute }) => adminRoute === undefined || false
           ).map(({ name, path, Element }) => {
             return tokenExists ? (
               <Route key={name} path={path} element={<Element />} />
@@ -44,26 +44,28 @@ function App() {
               <Route key={"error"} path={path} element={<NotFound />} />
             );
           })}
-          <Route path='/admin' element={<AdminDashboard />}>
-            {PRIVATE_ROUTES.filter(
-              ({ requireAdmin }) => requireAdmin === true
-            ).map(({ name, path, Element, requireAdmin }) => {
-              return tokenExists &&
-                (!requireAdmin || (requireAdmin && admin)) ? (
-                <Route
-                  key={name}
-                  path={path.replace("/", "")}
-                  element={<Element />}
-                />
-              ) : (
-                <Route
-                  key={"error"}
-                  path={path.replace("/", "")}
-                  element={<NotFound />}
-                />
-              );
-            })}
-          </Route>
+          {tokenExists && (
+            <Route path='/admin' element={<AdminDashboard />}>
+              {PRIVATE_ROUTES.filter(
+                ({ adminRoute }) => adminRoute === true
+              ).map(({ name, path, Element, requireAdmin }) => {
+                return tokenExists &&
+                  (!requireAdmin || (requireAdmin && admin)) ? (
+                  <Route
+                    key={name}
+                    path={path.replace("/", "")}
+                    element={<Element />}
+                  />
+                ) : (
+                  <Route
+                    key={"error"}
+                    path={path.replace("/", "")}
+                    element={<NotFound />}
+                  />
+                );
+              })}
+            </Route>
+          )}
           <Route path='*' element={<NotFound />} />
         </Routes>
       </QueryClientProvider>

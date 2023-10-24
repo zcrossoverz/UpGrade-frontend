@@ -50,7 +50,7 @@ function Header() {
   const logout = useLogout();
 
   return (
-    <div className='bg-white border sticky top-0 shadow-sm'>
+    <div className='bg-white border sticky top-0 z-50 shadow-sm'>
       <div className='grid grid-cols-4 px-12'>
         <div className='flex justify-start items-center w-40 h-12 mt-3'></div>
         <div className='flex items-center px-4 col-span-2'></div>
@@ -65,7 +65,7 @@ function Header() {
                   </div>
                 )}
               </div>
-              <div className='absolute right-0 top-0 z-10 hidden bg-grey-200 group-hover:block'>
+              <div className='absolute right-0 top-0 z-100 hidden bg-grey-200 group-hover:block'>
                 <div className='absolute pt-12 right-0 -left-12'>
                   <div className='absolute border border-gray-300 bg-white w-96 z-100 right-0 shadow-2xl rounded-sm'>
                     {notifications.length === 0 ? (
@@ -122,7 +122,7 @@ function Header() {
                 alt='avatar'
                 className='w-10 h-10 rounded-full'
               />
-              <div className='absolute right-0 top-0 z-10 hidden bg-grey-200 group-hover:block'>
+              <div className='absolute right-0 top-0 z-100 hidden bg-grey-200 group-hover:block'>
                 <div className='absolute pt-12 right-0 -left-12'>
                   <div className='absolute border border-gray-300 bg-white min-w-[250px] py-4 z-100 right-0 shadow-2xl rounded-sm px-4'>
                     <div>

@@ -17,6 +17,7 @@ interface IRoute {
   path: string;
   Element: () => JSX.Element;
   requireAdmin?: boolean;
+  adminRoute?: boolean;
   children?: Array<IRoute>;
 }
 
@@ -59,36 +60,37 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     path: "",
     Element: Dashboard,
     requireAdmin: true,
+    adminRoute: true,
   },
   {
     name: "Khóa học",
     path: "/course-management",
     Element: CourseManagement,
-    requireAdmin: true,
+    adminRoute: true,
   },
   {
     name: "Tương tác",
     path: "/communication",
     Element: Communication,
-    requireAdmin: true,
+    adminRoute: true,
   },
   {
     name: "Hiệu suất",
     path: "/performance",
     Element: Performance,
-    requireAdmin: true,
+    adminRoute: true,
     children: [
       {
         name: "Học viên",
         path: "/performance/question",
         Element: Student,
-        requireAdmin: true,
+        adminRoute: true,
       },
       {
         name: "Đánh giá",
         path: "/performance/question",
         Element: Review,
-        requireAdmin: true,
+        adminRoute: true,
       },
     ],
   },
@@ -96,18 +98,20 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     name: "Công cụ",
     path: "/tools",
     Element: Tools,
-    requireAdmin: true,
+    adminRoute: true,
   },
   {
     name: "Người dùng",
     path: "/tools",
     Element: Tools,
     requireAdmin: true,
+    adminRoute: true,
   },
   {
     name: "Thiết lập",
     path: "/tools",
     Element: Tools,
     requireAdmin: true,
+    adminRoute: true,
   },
 ];

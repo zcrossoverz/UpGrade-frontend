@@ -2,12 +2,13 @@ import { PRIVATE_ROUTES } from "@/contants/routes";
 import React from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { useAuth } from "@/hooks/useAuth";
 
 const Sidebar = () => {
   const location = useLocation();
   const currentPath = location.pathname.replace("/admin", "");
 
-  console.log(currentPath);
+  const { isAdmin } = useAuth();
 
   return (
     <aside
@@ -29,48 +30,52 @@ const Sidebar = () => {
               MENU
             </h3>
             <div className='flex flex-col'>
-              {PRIVATE_ROUTES.filter(
-                ({ requireAdmin }) => requireAdmin === true
-              ).map(({ name, path, children }, i) => (
-                <Link
-                  key={i.toString()}
-                  to={path.replace("/", "")}
-                  className={`mt-[5px] relative group min-w-[230px]`}
-                >
-                  <div
-                    className={`flex justify-between py-2 px-4 rounded-sm group-hover:bg-gray-600 ${
-                      currentPath === path ? "bg-gray-600" : ""
-                    }`}
+              {PRIVATE_ROUTES.filter(({ adminRoute }) => adminRoute === true)
+                .filter(
+                  ({ requireAdmin }) =>
+                    (requireAdmin === undefined ? false : requireAdmin) ===
+                    isAdmin
+                )
+                .map(({ name, path, children }, i) => (
+                  <Link
+                    key={i.toString()}
+                    to={path.replace("/", "")}
+                    className={`mt-[5px] relative group min-w-[230px]`}
                   >
-                    {name}
                     <div
-                      className={`flex items-center justify-center ${
-                        children === undefined && "hidden"
+                      className={`flex justify-between py-2 px-4 rounded-sm group-hover:bg-gray-600 ${
+                        currentPath === path ? "bg-gray-600" : ""
                       }`}
                     >
-                      <MdKeyboardArrowDown />
+                      {name}
+                      <div
+                        className={`flex items-center justify-center ${
+                          children === undefined && "hidden"
+                        }`}
+                      >
+                        <MdKeyboardArrowDown />
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    className={`ml-4 hidden ${
-                      children !== undefined && "group-hover:block"
-                    }`}
-                  >
-                    <div className='flex flex-col bg-gray-800'>
-                      {children &&
-                        children.map(({ name, path }, i) => (
-                          <Link
-                            key={i.toString()}
-                            to={path.replace("/", "")}
-                            className='mt-[5px] py-2 px-4 min-w-[180px] rounded-sm text-gray-400 hover:text-white'
-                          >
-                            {name}
-                          </Link>
-                        ))}
+                    <div
+                      className={`ml-4 hidden ${
+                        children !== undefined && "group-hover:block"
+                      }`}
+                    >
+                      <div className='flex flex-col bg-gray-800'>
+                        {children &&
+                          children.map(({ name, path }, i) => (
+                            <Link
+                              key={i.toString()}
+                              to={path.replace("/", "")}
+                              className='mt-[5px] py-2 px-4 min-w-[180px] rounded-sm text-gray-400 hover:text-white'
+                            >
+                              {name}
+                            </Link>
+                          ))}
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
             </div>
           </div>
         </nav>

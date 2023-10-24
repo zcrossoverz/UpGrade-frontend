@@ -3,7 +3,7 @@ import placeHolderCourseImg from "../../../../assets/placeholder_course.jpg";
 
 function CourseItem() {
   return (
-    <div className='flex border-[1px] border-gray-200 mt-4 select-none'>
+    <div className='flex border-[1px] border-gray-200 mt-4 select-none z-10'>
       <div>
         <img
           src={placeHolderCourseImg}

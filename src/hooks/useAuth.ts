@@ -25,6 +25,7 @@ export const useAuth = () => {
     isAuthenticated: getToken() !== null,
     ...query,
     data: query.data?.data?.data,
+    isAdmin: query.data?.data?.data?.role === "admin",
   };
 };
 

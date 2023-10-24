@@ -1,5 +1,5 @@
 import userApi from "@/apis/user.api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 
@@ -25,4 +25,28 @@ export const useCreateUser = () => {
   );
 
   return createUserMutation;
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  const updateUserMutation = useMutation(
+    (updateDto: {
+      firstName?: string;
+      lastName?: string;
+      password?: string;
+      bio?: string;
+      email?: string;
+    }) => userApi.updateUser(updateDto),
+    {
+      onSuccess: () => {
+        toast.success("User update successfully");
+        queryClient.invalidateQueries(["validateToken"]);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        toast.error(error.response?.data?.message);
+      },
+    }
+  );
+
+  return updateUserMutation;
 };

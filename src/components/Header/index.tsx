@@ -303,7 +303,7 @@ function Header() {
                       <div className='mb-4 text-md flex flex-col'>
                         <Link
                           className='cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
-                          to={`/course-management`}
+                          to={`/admin/course-management`}
                         >
                           Khóa học của tôi
                         </Link>
