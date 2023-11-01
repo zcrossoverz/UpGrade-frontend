@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import CourseItem from "./CourseItem";
+import CreateCourseModal from "./CreateCourseModal";
 
 function CourseManagement() {
+  const [showCreateCourseModal, setShowCreateCourseModal] = useState(false);
+
   return (
     <div>
       <div className='px-4 py-4 bg-white shadow-sm rounded-sm'>
-        {/* header */}
+        <CreateCourseModal
+          isPopupOpen={showCreateCourseModal}
+          handleClose={() => setShowCreateCourseModal(false)}
+        />
         <div className='flex justify-between items-center mt-4'>
           <div className='flex'>
             <div className='border flex'>
@@ -27,7 +33,10 @@ function CourseManagement() {
             </div>
           </div>
           <div>
-            <button className='bg-violet-600/80 text-white py-[8px] px-3'>
+            <button
+              className='bg-violet-600/80 text-white py-[8px] px-3'
+              onClick={() => setShowCreateCourseModal(true)}
+            >
               Khóa học mới
             </button>
           </div>

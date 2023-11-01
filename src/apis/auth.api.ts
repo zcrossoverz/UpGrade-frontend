@@ -15,6 +15,9 @@ const authApi = {
   async logout() {
     return http.post(`${PREFIX}/revokeToken`, {});
   },
+  async refreshToken() {
+    return http.post(`${PREFIX}/refreshToken`, {});
+  },
 };
 
 export default authApi;

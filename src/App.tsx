@@ -10,47 +10,36 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { getToken } from "./utils/authentication";
 import AdminDashboard from "./views/AdminDashboard";
+import { useAuth } from "./hooks/useAuth";
 
 function App() {
-  const admin = true;
+  const { isAdmin } = useAuth();
 
   const tokenExists = getToken() !== null;
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-        retry: 1,
-      },
-    },
-  });
-
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <ToastContainer />
-        <ReactQueryDevtools initialIsOpen={false} />
-        <Routes>
-          {PUBLIC_ROUTES.map(({ name, path, Element }) => (
+      <ToastContainer />
+      <ReactQueryDevtools initialIsOpen={false} />
+      <Routes>
+        {PUBLIC_ROUTES.map(({ name, path, Element }) => (
+          <Route key={name} path={path} element={<Element />} />
+        ))}
+        {PRIVATE_ROUTES.filter(
+          ({ adminRoute }) => adminRoute === undefined || false
+        ).map(({ name, path, Element }) => {
+          return tokenExists ? (
             <Route key={name} path={path} element={<Element />} />
-          ))}
-          {PRIVATE_ROUTES.filter(
-            ({ adminRoute }) => adminRoute === undefined || false
-          ).map(({ name, path, Element }) => {
-            return tokenExists ? (
-              <Route key={name} path={path} element={<Element />} />
-            ) : (
-              <Route key={"error"} path={path} element={<NotFound />} />
-            );
-          })}
-          {tokenExists && (
-            <Route path='/admin' element={<AdminDashboard />}>
-              {PRIVATE_ROUTES.filter(
-                ({ adminRoute }) => adminRoute === true
-              ).map(({ name, path, Element, requireAdmin }) => {
+          ) : (
+            <Route key={"error"} path={path} element={<NotFound />} />
+          );
+        })}
+        {tokenExists && (
+          <Route path='/admin' element={<AdminDashboard />}>
+            {PRIVATE_ROUTES.filter(({ adminRoute }) => adminRoute === true).map(
+              ({ name, path, Element, requireAdmin }) => {
                 return tokenExists &&
-                  (!requireAdmin || (requireAdmin && admin)) ? (
+                  (!requireAdmin || (requireAdmin && isAdmin)) ? (
                   <Route
                     key={name}
                     path={path.replace("/", "")}
@@ -63,14 +52,32 @@ function App() {
                     element={<NotFound />}
                   />
                 );
-              })}
-            </Route>
-          )}
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-      </QueryClientProvider>
+              }
+            )}
+          </Route>
+        )}
+        <Route path='*' element={<NotFound />} />
+      </Routes>
     </>
   );
 }
 
-export default App;
+function MainApp() {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        retry: 1,
+      },
+    },
+  });
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  );
+}
+
+export default MainApp;

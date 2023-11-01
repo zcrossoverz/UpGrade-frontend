@@ -152,15 +152,9 @@ function Header() {
                     <div className='mb-4 text-md flex flex-col'>
                       <Link
                         className='cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
-                        to={`/course-management`}
+                        to={`/`}
                       >
-                        Khóa học của tôi
-                      </Link>
-                      <Link
-                        className='mt-1 cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
-                        to={`/my-library`}
-                      >
-                        Thư viện của tôi
+                        Về trang chủ
                       </Link>
                     </div>
                     <hr className='mb-2' />

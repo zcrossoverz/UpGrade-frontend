@@ -1,4 +1,6 @@
+import authApi from "@/apis/auth.api";
 import userApi from "@/apis/user.api";
+import { setToken } from "@/utils/authentication";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
@@ -27,6 +29,10 @@ export const useCreateUser = () => {
   return createUserMutation;
 };
 
+export const useRefetchToken = () => {
+  return useQuery(["refetchToken"], authApi.refreshToken);
+};
+
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   const updateUserMutation = useMutation(
@@ -38,8 +44,13 @@ export const useUpdateUser = () => {
       email?: string;
     }) => userApi.updateUser(updateDto),
     {
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.success("User update successfully");
+        const token = await authApi.refreshToken();
+        if (token.data?.data) {
+          setToken(token.data?.data);
+        }
+
         queryClient.invalidateQueries(["validateToken"]);
       },
       onError: (error: AxiosError<{ message: string }>) => {
