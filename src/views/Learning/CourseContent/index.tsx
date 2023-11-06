@@ -5,10 +5,27 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { secondsToTime } from "@/utils/convertNumber";
-import { Course } from "@/views/CourseDetails";
 import React from "react";
 
-function CourseContent({ courseData }: { courseData: Course | undefined }) {
+function CourseContent({
+  courseData,
+}: {
+  courseData:
+    | {
+        units: {
+          id: number;
+          title: string;
+          topics: {
+            id: number;
+            title: string;
+            video_url: string;
+            duration: number;
+            description: string;
+          }[];
+        }[];
+      }
+    | undefined;
+}) {
   return (
     <Accordion type='single' collapsible>
       {courseData?.units.map(({ title, topics }, i) => (
@@ -20,9 +37,7 @@ function CourseContent({ courseData }: { courseData: Course | undefined }) {
             <AccordionContent className={`${i == 0 && "pt-4"}`}>
               <div className='flex justify-between'>
                 <p className='px-14 text-base font-normal'>{el.title}</p>
-                <p className='px-4'>
-                  {secondsToTime(Number(el.attributes.length))}
-                </p>
+                <p className='px-4'>{secondsToTime(Number(el.duration))}</p>
               </div>
             </AccordionContent>
           ))}

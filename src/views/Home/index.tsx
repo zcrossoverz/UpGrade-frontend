@@ -65,7 +65,7 @@ function HomePage() {
       rate_number: 7895,
       price: 899000,
       thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/1328572_b05d_5.jpg",
+        "https://drive.google.com/uc?id=1ZS7flMxYJ_p_Aectn_RxaFsnt67RGD21&export=download",
     },
     {
       id: 9,

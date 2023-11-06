@@ -1,24 +1,63 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useGetListCategories } from "@/hooks/useCategory";
+import { useCreateCourse } from "@/hooks/useCourse";
 import React, { useState } from "react";
 import { MdCancel } from "react-icons/md";
 
-const Step1 = () => {
+const Step1 = ({
+  updateFormData,
+  defaultData,
+}: {
+  updateFormData: (field: string, value: any) => void;
+  defaultData: any;
+}) => {
+  const { data, isSuccess } = useGetListCategories();
+
   return (
     <div className='w-full'>
       <h3 className='text-left font-medium'>Chọn lĩnh vực</h3>
       <div className='my-2'>
-        <select className='border border-gray-500 w-full px-2 py-3 text-sm pr-8 rounded-md'>
-          <option value='' className='py-4'>
-            Công nghệ thông tin
-          </option>
-          <option value=''>Marketing</option>
-          <option value=''>Kinh doanh</option>
-        </select>
+        {isSuccess && (
+          <select
+            className='border border-gray-500 w-full px-2 py-3 text-sm pr-8 rounded-md'
+            onChange={(e) => {
+              updateFormData("category", e.target.value);
+            }}
+            defaultValue={defaultData.category}
+          >
+            <option value='' disabled selected>
+              Chọn lĩnh vực
+            </option>
+            {data.datas.map(
+              (
+                {
+                  name,
+                  id,
+                }: {
+                  name: string;
+                  id: number;
+                },
+                i: any
+              ) => (
+                <option key={i.toString()} value={id}>
+                  {name}
+                </option>
+              )
+            )}
+          </select>
+        )}
       </div>
     </div>
   );
 };
 
-const Step2 = () => {
+const Step2 = ({
+  updateFormData,
+  defaultData,
+}: {
+  updateFormData: (field: string, value: any) => void;
+  defaultData: any;
+}) => {
   return (
     <div className='w-full'>
       <div className='my-2'>
@@ -27,7 +66,11 @@ const Step2 = () => {
             <p className='text-left font-medium'>Tên khóa học</p>
             <input
               type='text'
+              defaultValue={defaultData.title}
               className='py-2 px-4 border border-gray-400 mt-2 outline-none rounded-md w-full'
+              onChange={(e) => {
+                updateFormData("title", e.target.value);
+              }}
             />
           </div>
           <div className='mt-4'>
@@ -35,6 +78,10 @@ const Step2 = () => {
             <textarea
               rows={3}
               className='py-2 px-4 border border-gray-400 mt-2 outline-none rounded-md w-full'
+              defaultValue={defaultData.description}
+              onChange={(e) => {
+                updateFormData("description", e.target.value);
+              }}
             />
           </div>
         </div>
@@ -43,7 +90,11 @@ const Step2 = () => {
   );
 };
 
-const Step3 = () => {
+const Step3 = ({
+  updateFormData,
+}: {
+  updateFormData: (field: string, value: any) => void;
+}) => {
   return (
     <div className='w-full'>
       <div className='my-2'>
@@ -53,6 +104,12 @@ const Step3 = () => {
             <input
               type='file'
               className=' border border-gray-400 mt-2 outline-none w-full'
+              onChange={(e) => {
+                const image = e.target.files;
+                if (image?.length) {
+                  updateFormData("thumbnail", image[0]);
+                }
+              }}
             />
           </div>
         </div>
@@ -70,9 +127,29 @@ function CreateCourseModal({
 }) {
   const [step, setStep] = useState<number>(0);
 
-  const steps = [<Step1 />, <Step2 />, <Step3 />];
+  const [formData, setFormData] = useState({});
 
-  const handleSubmit = () => {};
+  const { isLoading, mutateAsync } = useCreateCourse();
+
+  const handleSubmit = async () => {
+    await mutateAsync(formData);
+    setStep(0);
+    setFormData({});
+    handleClose();
+  };
+
+  const updateFormData = (key: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const steps = [
+    <Step1 updateFormData={updateFormData} defaultData={formData} />,
+    <Step2 updateFormData={updateFormData} defaultData={formData} />,
+    <Step3 updateFormData={updateFormData} />,
+  ];
 
   const handlePrevClick = () => {
     setStep((prevStep) => {
@@ -107,6 +184,7 @@ function CreateCourseModal({
               <button
                 onClick={() => {
                   setStep(0);
+                  setFormData({});
                   handleClose();
                 }}
               >
@@ -118,7 +196,15 @@ function CreateCourseModal({
             <div className='min-w-[220px] text-[12px] text-center text-gray-500'>
               <div className='flex justify-end w-full'>
                 <button
-                  onClick={step === 0 ? handleClose : handlePrevClick}
+                  onClick={
+                    step === 0
+                      ? () => {
+                          setStep(0);
+                          setFormData({});
+                          handleClose();
+                        }
+                      : handlePrevClick
+                  }
                   className='mr-4 px-4 py-2 border border-gray-400 text-black text-md rounded-md hover:bg-gray-300 hover:shadow-md'
                 >
                   {step === 0 ? "Hủy bỏ" : "Quay lại"}
@@ -129,7 +215,11 @@ function CreateCourseModal({
                   }
                   className='px-6 py-2 border border-gray-300 text-white bg-red-400 text-md rounded-md hover:bg-red-500 hover:shadow-md'
                 >
-                  {step === steps.length - 1 ? "Khởi tạo khóa học" : "Tiếp tục"}
+                  {step === steps.length - 1
+                    ? isLoading
+                      ? "..."
+                      : "Khởi tạo khóa học"
+                    : "Tiếp tục"}
                 </button>
               </div>
             </div>

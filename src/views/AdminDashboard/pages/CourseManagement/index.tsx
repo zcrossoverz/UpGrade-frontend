@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import CourseItem from "./CourseItem";
 import CreateCourseModal from "./CreateCourseModal";
+import { useGetMyCourses } from "@/hooks/useCourse";
 
 function CourseManagement() {
   const [showCreateCourseModal, setShowCreateCourseModal] = useState(false);
+
+  const { data } = useGetMyCourses();
 
   return (
     <div>
@@ -42,10 +45,19 @@ function CourseManagement() {
           </div>
         </div>
         <div className='mt-8 min-h-[450px]'>
-          <CourseItem />
-          <CourseItem />
-          <CourseItem />
-          <CourseItem />
+          {data &&
+            data.datas.map(
+              (
+                data: {
+                  thumbnail_url: string;
+                  description: string;
+                  title: string;
+                  updated_at: string;
+                  id: number;
+                },
+                i: number
+              ) => <CourseItem key={i.toString()} data={data} />
+            )}
         </div>
       </div>
     </div>

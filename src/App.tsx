@@ -37,14 +37,31 @@ function App() {
         {tokenExists && (
           <Route path='/admin' element={<AdminDashboard />}>
             {PRIVATE_ROUTES.filter(({ adminRoute }) => adminRoute === true).map(
-              ({ name, path, Element, requireAdmin }) => {
+              ({ name, path, Element, requireAdmin, children }) => {
                 return tokenExists &&
                   (!requireAdmin || (requireAdmin && isAdmin)) ? (
-                  <Route
-                    key={name}
-                    path={path.replace("/", "")}
-                    element={<Element />}
-                  />
+                  children !== undefined ? (
+                    <>
+                      {children.map((child) => (
+                        <Route
+                          key={child.name}
+                          path={path.replace("/", "") + child.path}
+                          element={<child.Element />}
+                        />
+                      ))}
+                      <Route
+                        key={name}
+                        path={path.replace("/", "")}
+                        element={<Element />}
+                      />
+                    </>
+                  ) : (
+                    <Route
+                      key={name}
+                      path={path.replace("/", "")}
+                      element={<Element />}
+                    />
+                  )
                 ) : (
                   <Route
                     key={"error"}

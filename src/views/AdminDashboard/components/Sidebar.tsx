@@ -15,7 +15,7 @@ const Sidebar = () => {
       className={`text-white absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gray-800 duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0`}
     >
       <div className='flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5'>
-        <NavLink to={isAdmin ? "" : "/admin/course-management"}>
+        <NavLink to={isAdmin ? "/admin/overview" : "/admin/course-management"}>
           <div className='flex mt-4 ml-2 font-bold text-xl'>
             <p className='text-red-500'>Up</p>
             <p>Grade</p>
@@ -42,13 +42,19 @@ const Sidebar = () => {
                   >
                     <div
                       className={`flex justify-between py-2 px-4 rounded-sm group-hover:bg-gray-600 ${
-                        currentPath === path ? "bg-gray-600" : ""
+                        currentPath.includes(path) ? "bg-gray-600" : ""
                       }`}
                     >
                       {name}
                       <div
                         className={`flex items-center justify-center ${
-                          children === undefined && "hidden"
+                          children === undefined
+                            ? "hidden"
+                            : children.filter(
+                                ({ hiddenInMenu }) => hiddenInMenu != true
+                              ).length === 0
+                            ? "hidden"
+                            : ""
                         }`}
                       >
                         <MdKeyboardArrowDown />
@@ -61,15 +67,17 @@ const Sidebar = () => {
                     >
                       <div className='flex flex-col bg-gray-800'>
                         {children &&
-                          children.map(({ name, path }, i) => (
-                            <Link
-                              key={i.toString()}
-                              to={path.replace("/", "")}
-                              className='mt-[5px] py-2 px-4 min-w-[180px] rounded-sm text-gray-400 hover:text-white'
-                            >
-                              {name}
-                            </Link>
-                          ))}
+                          children
+                            .filter(({ hiddenInMenu }) => hiddenInMenu != true)
+                            .map((e, i) => (
+                              <Link
+                                key={i.toString()}
+                                to={path.replace("/", "") + e.path}
+                                className='mt-[5px] py-2 px-4 min-w-[180px] rounded-sm text-gray-400 hover:text-white'
+                              >
+                                {e.name}
+                              </Link>
+                            ))}
                       </div>
                     </div>
                   </Link>

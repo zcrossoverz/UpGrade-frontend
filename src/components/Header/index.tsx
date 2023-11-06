@@ -305,7 +305,7 @@ function Header() {
                           className='cursor-pointer hover:bg-gray-100 px-2 py-1 w-full'
                           to={
                             auth.isAdmin
-                              ? "/admin"
+                              ? "/admin/overview"
                               : "`/admin/course-management`"
                           }
                         >

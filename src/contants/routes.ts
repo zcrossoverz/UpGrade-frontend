@@ -11,6 +11,7 @@ import Performance from "@/views/AdminDashboard/pages/Performance";
 import Tools from "@/views/AdminDashboard/pages/Tools";
 import Student from "@/views/AdminDashboard/pages/Performance/Student";
 import Review from "@/views/Learning/Review";
+import CourseEdit from "@/views/AdminDashboard/pages/CourseManagement/CourseEdit";
 
 interface IRoute {
   name: string;
@@ -18,6 +19,7 @@ interface IRoute {
   Element: () => JSX.Element;
   requireAdmin?: boolean;
   adminRoute?: boolean;
+  hiddenInMenu?: boolean;
   children?: Array<IRoute>;
 }
 
@@ -52,12 +54,12 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
   },
   {
     name: "course detail",
-    path: "/learning/:id",
+    path: "/learning/:course_id/:id",
     Element: Learning,
   },
   {
     name: "Tổng quan",
-    path: "",
+    path: "/overview",
     Element: Dashboard,
     requireAdmin: true,
     adminRoute: true,
@@ -67,6 +69,15 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     path: "/course-management",
     Element: CourseManagement,
     adminRoute: true,
+    children: [
+      {
+        name: "Chỉnh sửa khóa học",
+        path: "/edit/:id",
+        Element: CourseEdit,
+        adminRoute: true,
+        hiddenInMenu: true,
+      },
+    ],
   },
   {
     name: "Tương tác",
