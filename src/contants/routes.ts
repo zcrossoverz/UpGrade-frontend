@@ -72,7 +72,7 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     children: [
       {
         name: "Chỉnh sửa khóa học",
-        path: "/edit/:id",
+        path: "/edit/:course_id",
         Element: CourseEdit,
         adminRoute: true,
         hiddenInMenu: true,

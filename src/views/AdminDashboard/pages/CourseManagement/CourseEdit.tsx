@@ -1,7 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Loader from "@/components/Loader";
+import Table from "@/components/Table";
+import { useGetCourse } from "@/hooks/useCourse";
 import React from "react";
 import { BsSearch } from "react-icons/bs";
+import { useParams } from "react-router-dom";
 
 function CourseEdit() {
+  const { course_id } = useParams();
+  const { isLoading, data } = useGetCourse(Number(course_id));
+  console.log(data);
+
   return (
     <div>
       <h1 className='-mt-4'>Chỉnh sửa khóa học</h1>
@@ -33,9 +42,59 @@ function CourseEdit() {
         </div>
         <div className='mt-8 min-h-[350px]'>
           <hr className='-mt-6' />
-          <div className='flex justify-center items-center min-h-[200px]'>
-            <p className='text-gray-600'>Chưa có bài học nào</p>
-          </div>
+          {isLoading ? (
+            <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
+              <Loader />
+            </div>
+          ) : data.units.length > 0 ? (
+            <div className='flex justify-center mt-6 w-full'>
+              <Table
+                data={data.units.map(
+                  (
+                    e: {
+                      title: string;
+                      updated_at: string;
+                      created_at: string;
+                      topics: any[];
+                    },
+                    i: number
+                  ) => ({
+                    order: (i + 1).toString(),
+                    title: e.title,
+                    updateDate: e.updated_at,
+                    createDate: e.created_at,
+                    numberTopics: e.topics.length,
+                  })
+                )}
+                headerLabel={[
+                  {
+                    key: "order",
+                    title: "#",
+                  },
+                  {
+                    key: "title",
+                    title: "Tiêu đề",
+                  },
+                  {
+                    key: "numberTopics",
+                    title: "Số chủ đề",
+                  },
+                  {
+                    key: "updateDate",
+                    title: "CẬP NHẬT LÚC",
+                  },
+                  {
+                    key: "createDate",
+                    title: "KHỞI TẠO LÚC",
+                  },
+                ]}
+              />
+            </div>
+          ) : (
+            <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
+              <p className='text-gray-600'>Chưa có bài học nào</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
