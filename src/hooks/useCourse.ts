@@ -48,3 +48,51 @@ export const useGetTopic = (id: number) => {
     data: query.data?.data?.data,
   };
 };
+
+export const useCreateUnit = (course_id: any) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation((data: any) => courseApi.createUnit(data), {
+    onSuccess: () => {
+      toast.success("Unit created successfully");
+      queryClient.invalidateQueries([key, course_id]);
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateUnit = (course_id: any) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation((data: any) => courseApi.updateUnit(data), {
+    onSuccess: () => {
+      toast.success("Unit update successfully");
+      queryClient.invalidateQueries([key, course_id]);
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useDeleteUnit = (course_id: any) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (unit_id: number) => courseApi.deleteUnit(unit_id),
+    {
+      onSuccess: () => {
+        toast.success("Unit delete successfully");
+        queryClient.invalidateQueries([key, course_id]);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        toast.error(error.response?.data?.message);
+      },
+    }
+  );
+
+  return mutation;
+};

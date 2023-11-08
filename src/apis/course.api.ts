@@ -5,6 +5,8 @@ const PREFIX = "course";
 
 const TOPIC = "topic";
 
+const UNIT = "unit";
+
 const courseApi = {
   async getCourseDetail(id: number) {
     return http.get(`${PREFIX}/${id}`);
@@ -24,6 +26,26 @@ const courseApi = {
 
   async getTopic(id: number) {
     return http.post(`${TOPIC}/get/${id}`);
+  },
+
+  async createUnit(data: {
+    title: string;
+    course_id: number;
+    description: string;
+  }) {
+    return http.post(`${UNIT}/create`, data);
+  },
+
+  async updateUnit(data: {
+    title: string;
+    unit_id: number;
+    description: string;
+  }) {
+    return http.post(`${UNIT}/update`, data);
+  },
+
+  async deleteUnit(unit_id: number) {
+    return http.post(`${UNIT}/delete/${unit_id}`);
   },
 };
 

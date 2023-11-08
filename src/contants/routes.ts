@@ -11,7 +11,7 @@ import Performance from "@/views/AdminDashboard/pages/Performance";
 import Tools from "@/views/AdminDashboard/pages/Tools";
 import Student from "@/views/AdminDashboard/pages/Performance/Student";
 import Review from "@/views/Learning/Review";
-import CourseEdit from "@/views/AdminDashboard/pages/CourseManagement/CourseEdit";
+import UnitManagement from "@/views/AdminDashboard/pages/CourseManagement/UnitManagement";
 
 interface IRoute {
   name: string;
@@ -71,9 +71,9 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     adminRoute: true,
     children: [
       {
-        name: "Chỉnh sửa khóa học",
+        name: "Quản lý nội dung khóa học",
         path: "/edit/:course_id",
-        Element: CourseEdit,
+        Element: UnitManagement,
         adminRoute: true,
         hiddenInMenu: true,
       },

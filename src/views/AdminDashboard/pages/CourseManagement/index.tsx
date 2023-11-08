@@ -3,15 +3,16 @@ import { BsSearch } from "react-icons/bs";
 import CourseItem from "./CourseItem";
 import CreateCourseModal from "./CreateCourseModal";
 import { useGetMyCourses } from "@/hooks/useCourse";
+import Loader from "@/components/Loader";
 
 function CourseManagement() {
   const [showCreateCourseModal, setShowCreateCourseModal] = useState(false);
 
-  const { data } = useGetMyCourses();
+  const { data, isLoading } = useGetMyCourses();
 
   return (
     <div>
-      <div className='px-4 py-4 bg-white shadow-sm rounded-sm'>
+      <div className='px-4 py-4 bg-white shadow-sm rounded-sm min-h-[500px]'>
         <CreateCourseModal
           isPopupOpen={showCreateCourseModal}
           handleClose={() => setShowCreateCourseModal(false)}
@@ -44,21 +45,27 @@ function CourseManagement() {
             </button>
           </div>
         </div>
-        <div className='mt-8 min-h-[450px]'>
-          {data &&
-            data.datas.map(
-              (
-                data: {
-                  thumbnail_url: string;
-                  description: string;
-                  title: string;
-                  updated_at: string;
-                  id: number;
-                },
-                i: number
-              ) => <CourseItem key={i.toString()} data={data} />
-            )}
-        </div>
+        {isLoading ? (
+          <div className='relative flex justify-center items-center min-h-[200px] mt-8'>
+            <Loader />
+          </div>
+        ) : (
+          <div className='mt-8 min-h-[450px]'>
+            {data &&
+              data.datas.map(
+                (
+                  data: {
+                    thumbnail_url: string;
+                    description: string;
+                    title: string;
+                    updated_at: string;
+                    id: number;
+                  },
+                  i: number
+                ) => <CourseItem key={i.toString()} data={data} />
+              )}
+          </div>
+        )}
       </div>
     </div>
   );

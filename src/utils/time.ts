@@ -24,3 +24,8 @@ export const commentTime = (timestamp: number) => {
     return commentTime.toLocaleDateString(); // If it's been more than a week, display the date
   }
 };
+
+export const formatTime = (time: string) => {
+  const date = new Date(time);
+  return date.toLocaleString("vi-VN", { timeZone: "UTC" });
+};

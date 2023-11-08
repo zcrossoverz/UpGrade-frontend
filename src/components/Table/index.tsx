@@ -1,12 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
+import {
+  AiOutlineEdit,
+  AiOutlineDelete,
+  AiOutlineFileSearch,
+} from "react-icons/ai";
 
 function Table({
   headerLabel,
   data,
+  handleEdit,
+  handleDelete,
+  handleView,
 }: {
   headerLabel: { title: string; key: string }[];
   data: Array<{ [key: string]: string }>;
+  handleEdit?: any;
+  handleDelete?: any;
+  handleView?: any;
 }) {
   return (
     <div className='relative overflow-x-auto shadow-md sm:rounded-lg w-full'>
@@ -18,7 +29,7 @@ function Table({
                 {item.title}
               </th>
             ))}
-            <th scope='col' className='px-6 py-3 text-right'>
+            <th scope='col' className='px-6 py-3'>
               Hành động
             </th>
           </tr>
@@ -32,13 +43,22 @@ function Table({
                     {row[key]}
                   </td>
                 ))}
-                <td className='px-6 py-4'>
-                  <a
-                    href='#'
-                    className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                <td className='px-6 py-4 text-right flex'>
+                  <button
+                    className='px-1 text-blue-500 hover:text-blue-700 text-xl'
+                    onClick={() => handleView(row)}
                   >
-                    Edit
-                  </a>
+                    <AiOutlineFileSearch />
+                  </button>
+                  <button className='px-1 text-emerald-500 hover:text-blue-700 text-xl'>
+                    <AiOutlineEdit onClick={() => handleEdit(row)} />
+                  </button>
+                  <button
+                    className='px-1 text-red-500 hover:text-blue-700 text-xl'
+                    onClick={() => handleDelete(row)}
+                  >
+                    <AiOutlineDelete />
+                  </button>
                 </td>
               </tr>
             ) : (
@@ -48,13 +68,25 @@ function Table({
                     {row[key]}
                   </td>
                 ))}
-                <td className='px-6 py-4 text-right'>
-                  <a
-                    href='#'
-                    className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                <td className='px-6 py-4 text-right flex'>
+                  <button
+                    className='px-1 text-blue-500 hover:text-blue-700 text-xl'
+                    onClick={() => handleView(row)}
                   >
-                    Edit
-                  </a>
+                    <AiOutlineFileSearch />
+                  </button>
+                  <button
+                    className='px-1 text-emerald-500 hover:text-blue-700 text-xl'
+                    onClick={() => handleEdit(row)}
+                  >
+                    <AiOutlineEdit />
+                  </button>
+                  <button
+                    className='px-1 text-red-500 hover:text-blue-700 text-xl'
+                    onClick={() => handleDelete(row)}
+                  >
+                    <AiOutlineDelete />
+                  </button>
                 </td>
               </tr>
             )
