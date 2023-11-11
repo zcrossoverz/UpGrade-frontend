@@ -12,6 +12,7 @@ import Tools from "@/views/AdminDashboard/pages/Tools";
 import Student from "@/views/AdminDashboard/pages/Performance/Student";
 import Review from "@/views/Learning/Review";
 import UnitManagement from "@/views/AdminDashboard/pages/CourseManagement/UnitManagement";
+import TopicManagement from "@/views/AdminDashboard/pages/CourseManagement/TopicManagement";
 
 interface IRoute {
   name: string;
@@ -74,6 +75,13 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
         name: "Quản lý nội dung khóa học",
         path: "/edit/:course_id",
         Element: UnitManagement,
+        adminRoute: true,
+        hiddenInMenu: true,
+      },
+      {
+        name: "Quản lý nội dung chương",
+        path: "/edit/:course_id/:unit_id",
+        Element: TopicManagement,
         adminRoute: true,
         hiddenInMenu: true,
       },

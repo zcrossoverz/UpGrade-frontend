@@ -49,6 +49,16 @@ export const useGetTopic = (id: number) => {
   };
 };
 
+export const useGetListTopics = (id: number) => {
+  const query = useQuery([key, key_topic, "list_topics", id], () =>
+    courseApi.getListTopics(id)
+  );
+  return {
+    ...query,
+    data: query.data?.data?.data,
+  };
+};
+
 export const useCreateUnit = (course_id: any) => {
   const queryClient = useQueryClient();
   const mutation = useMutation((data: any) => courseApi.createUnit(data), {
@@ -87,6 +97,57 @@ export const useDeleteUnit = (course_id: any) => {
       onSuccess: () => {
         toast.success("Unit delete successfully");
         queryClient.invalidateQueries([key, course_id]);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        toast.error(error.response?.data?.message);
+      },
+    }
+  );
+
+  return mutation;
+};
+
+export const useCreateTopic = (unit_id: number) => {
+  const queryClient = useQueryClient();
+  const createMutation = useMutation(
+    (data: any) => courseApi.createTopic(data),
+    {
+      onSuccess: () => {
+        toast.success("Topic created successfully");
+        queryClient.invalidateQueries([key, key_topic, "list_topics", unit_id]);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        toast.error(error.response?.data?.message);
+      },
+    }
+  );
+
+  return createMutation;
+};
+
+export const useUpdateTopic = (unit_id: number) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation((data: any) => courseApi.updateTopic(data), {
+    onSuccess: () => {
+      toast.success("Topic update successfully");
+      queryClient.invalidateQueries([key, key_topic, "list_topics", unit_id]);
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
+
+  return mutation;
+};
+
+export const useDeleteTopic = (unit_id: number) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (topic_id: number) => courseApi.deleteTopic(topic_id),
+    {
+      onSuccess: () => {
+        toast.success("Topic delete successfully");
+        queryClient.invalidateQueries([key, key_topic, "list_topics", unit_id]);
       },
       onError: (error: AxiosError<{ message: string }>) => {
         toast.error(error.response?.data?.message);

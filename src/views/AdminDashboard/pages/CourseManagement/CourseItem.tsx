@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function CourseItem({
   data,
@@ -20,10 +21,11 @@ function CourseItem({
   return (
     <div className='flex border-[1px] border-gray-200 mt-4 select-none z-10'>
       <div>
-        <img
-          src={thumbnail_url}
+        <LazyLoadImage
           alt='placeholder-course'
-          className='h-28 w-38'
+          height={110}
+          width={234}
+          src={thumbnail_url}
         />
       </div>
       <div className='relative group flex flex-col w-full justify-between pl-6 pt-2 hover:text-gray-100'>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import CourseItem from "./CourseItem";
-import CreateCourseModal from "./CreateCourseModal";
+import CreateCourseModal from "./courses/CreateCourseModal";
 import { useGetMyCourses } from "@/hooks/useCourse";
 import Loader from "@/components/Loader";
 

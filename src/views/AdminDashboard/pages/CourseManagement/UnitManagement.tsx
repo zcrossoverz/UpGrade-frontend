@@ -5,7 +5,7 @@ import { useDeleteUnit, useGetCourse } from "@/hooks/useCourse";
 import { formatTime } from "@/utils/time";
 import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CreateUnitModal from "./units/CreateUnitModal";
 import UpdateUnitModal from "./units/UpdateUnitModal";
 import ModalDelete from "@/components/ModalDelete";
@@ -14,6 +14,7 @@ function UnitManagement() {
   const { course_id } = useParams();
   const { isLoading, data } = useGetCourse(Number(course_id));
 
+  const navigate = useNavigate();
   const [openCreateUnit, setOpenCreateUnit] = useState(false);
   const [updateUnitModal, setUpdateUnitModal] = useState({
     isOpen: false,
@@ -125,6 +126,9 @@ function UnitManagement() {
               <Table
                 handleEdit={selectUpdateUnit}
                 handleDelete={selectDeleteUnit}
+                handleView={(data: { unit_id: number }) =>
+                  navigate(`./${data.unit_id}`)
+                }
                 data={data.units.map(
                   (
                     e: {

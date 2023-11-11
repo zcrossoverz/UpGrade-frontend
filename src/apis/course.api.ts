@@ -24,10 +24,6 @@ const courseApi = {
     return http.post(`${PREFIX}/get-my-courses`);
   },
 
-  async getTopic(id: number) {
-    return http.post(`${TOPIC}/get/${id}`);
-  },
-
   async createUnit(data: {
     title: string;
     course_id: number;
@@ -46,6 +42,36 @@ const courseApi = {
 
   async deleteUnit(unit_id: number) {
     return http.post(`${UNIT}/delete/${unit_id}`);
+  },
+
+  async getListTopics(unit_id: number) {
+    return http.post(`${TOPIC}/get-list-topic/`, {
+      unit_id,
+    });
+  },
+
+  async createTopic(data: any) {
+    return http.post(`${TOPIC}/create`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
+
+  async updateTopic(data: {
+    topic_id: number;
+    title: string;
+    description: string;
+  }) {
+    return http.post(`${TOPIC}/update`, data);
+  },
+
+  async deleteTopic(topic_id: number) {
+    return http.post(`${TOPIC}/delete/${topic_id}`);
+  },
+
+  async getTopic(id: number) {
+    return http.post(`${TOPIC}/get/${id}`);
   },
 };
 

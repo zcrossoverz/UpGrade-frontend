@@ -1,88 +1,93 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Loader from "@/components/Loader";
 import Table from "@/components/Table";
-import { useDeleteUnit, useGetCourse } from "@/hooks/useCourse";
+import { useDeleteTopic, useGetListTopics } from "@/hooks/useCourse";
 import { formatTime } from "@/utils/time";
 import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useParams } from "react-router-dom";
-import CreateUnitModal from "./units/CreateUnitModal";
-import UpdateUnitModal from "./units/UpdateUnitModal";
 import ModalDelete from "@/components/ModalDelete";
+import { secondsToTime } from "@/utils/convertNumber";
+import CreateTopicModal from "./topics/CreateTopicModal";
+import UpdateTopicModal from "./topics/UpdateTopicModal";
 
 function TopicManagement() {
-  const { course_id } = useParams();
-  const { isLoading, data } = useGetCourse(Number(course_id));
+  const { unit_id } = useParams();
+  const { isLoading, data } = useGetListTopics(Number(unit_id));
 
-  const [openCreateUnit, setOpenCreateUnit] = useState(false);
-  const [updateUnitModal, setUpdateUnitModal] = useState({
+  const [openCreateTopic, setOpenCreateTopic] = useState(false);
+  const [updateTopicModal, setUpdateTopicModal] = useState({
     isOpen: false,
-    unit: {},
+    topic: {},
   });
-  const [deleteUnitModal, setDeleteUnitModal] = useState({
+  const [deleteTopicModal, setDeleteTopicModal] = useState({
     isOpen: false,
-    unit_id: -1,
+    topic_id: -1,
     title: "",
   });
 
-  const selectUpdateUnit = (data: { title: string; description: string }) => {
-    setUpdateUnitModal({
+  const selectUpdateTopic = (data: {
+    title: string;
+    description: string;
+    unit_id: number;
+  }) => {
+    setUpdateTopicModal({
       isOpen: true,
-      unit: { ...data },
+      topic: { ...data },
     });
   };
 
-  const selectDeleteUnit = (data: { title: string; unit_id: number }) => {
-    setDeleteUnitModal({
+  const selectDeleteTopic = (data: { title: string; topic_id: number }) => {
+    setDeleteTopicModal({
       isOpen: true,
       title: `Xóa ${data.title}`,
-      unit_id: data.unit_id,
+      topic_id: data.topic_id,
     });
   };
 
-  const deleteUnitHook = useDeleteUnit(Number(course_id));
+  const deleteTopicHook = useDeleteTopic(Number(unit_id));
 
   return (
     <div>
       <h1 className='-mt-4'>Quản lý nội dung chương</h1>
-      {openCreateUnit && (
-        <CreateUnitModal
-          index={data?.units.length}
-          handleClose={() => setOpenCreateUnit(false)}
-          course_id={Number(course_id)}
+      {openCreateTopic && (
+        <CreateTopicModal
+          index={data?.datas?.length}
+          handleClose={() => setOpenCreateTopic(false)}
+          unit_id={Number(unit_id)}
         />
       )}
-      {updateUnitModal.isOpen && (
-        <UpdateUnitModal
-          data={updateUnitModal.unit}
+      {updateTopicModal.isOpen && (
+        <UpdateTopicModal
+          data={updateTopicModal.topic}
           handleClose={() =>
-            setUpdateUnitModal({
+            setUpdateTopicModal({
               isOpen: false,
-              unit: {},
+              topic: {},
             })
           }
-          course_id={Number(course_id)}
+          unit_id={Number(unit_id)}
         />
       )}
-      {deleteUnitModal.isOpen && (
+      {deleteTopicModal.isOpen && (
         <ModalDelete
-          isLoading={deleteUnitHook.isLoading}
+          isLoading={deleteTopicHook.isLoading}
           handleClose={() => {
-            setDeleteUnitModal({
-              unit_id: -1,
+            setDeleteTopicModal({
+              topic_id: -1,
               isOpen: false,
               title: "",
             });
           }}
           handleSubmit={async () => {
-            await deleteUnitHook.mutateAsync(deleteUnitModal.unit_id);
-            setDeleteUnitModal({
-              unit_id: -1,
+            await deleteTopicHook.mutateAsync(deleteTopicModal.topic_id);
+            setDeleteTopicModal({
+              topic_id: -1,
               isOpen: false,
               title: "",
             });
           }}
-          title={deleteUnitModal.title}
+          title={deleteTopicModal.title}
         />
       )}
       <div className='bg-white px-4 py-8 mt-4 shadow-md rounded-sm'>
@@ -108,9 +113,9 @@ function TopicManagement() {
           <div>
             <button
               className='bg-violet-600/80 text-white py-[8px] px-3'
-              onClick={() => setOpenCreateUnit(true)}
+              onClick={() => setOpenCreateTopic(true)}
             >
-              Thêm chương mới
+              Thêm bài học mới
             </button>
           </div>
         </div>
@@ -120,19 +125,20 @@ function TopicManagement() {
             <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
               <Loader />
             </div>
-          ) : data.units.length > 0 ? (
+          ) : data.datas.length > 0 ? (
             <div className='flex justify-center mt-6 w-full'>
               <Table
-                handleEdit={selectUpdateUnit}
-                handleDelete={selectDeleteUnit}
-                data={data.units.map(
+                handleEdit={selectUpdateTopic}
+                handleDelete={selectDeleteTopic}
+                data={data.datas.map(
                   (
                     e: {
                       title: string;
                       updated_at: string;
                       created_at: string;
-                      topics: any[];
                       id: number;
+                      description: string;
+                      duration: number;
                     },
                     i: number
                   ) => ({
@@ -140,8 +146,9 @@ function TopicManagement() {
                     title: e.title,
                     updateDate: formatTime(e.updated_at),
                     createDate: formatTime(e.created_at),
-                    numberTopics: e.topics.length,
-                    unit_id: e.id,
+                    description: e.description,
+                    topic_id: e.id,
+                    duration: secondsToTime(e.duration),
                   })
                 )}
                 headerLabel={[
@@ -154,8 +161,12 @@ function TopicManagement() {
                     title: "Tiêu đề",
                   },
                   {
-                    key: "numberTopics",
-                    title: "Số chủ đề",
+                    key: "description",
+                    title: "Mô tả",
+                  },
+                  {
+                    key: "duration",
+                    title: "Thời lượng",
                   },
                   {
                     key: "updateDate",
