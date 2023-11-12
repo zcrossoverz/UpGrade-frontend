@@ -48,6 +48,7 @@ function UnitManagement() {
       <h1 className='-mt-4'>Quản lý nội dung khóa học</h1>
       {openCreateUnit && (
         <CreateUnitModal
+          drive_folder_id={data?.drive_folder_id}
           index={data?.units.length}
           handleClose={() => setOpenCreateUnit(false)}
           course_id={Number(course_id)}
@@ -137,6 +138,7 @@ function UnitManagement() {
                       created_at: string;
                       topics: any[];
                       id: number;
+                      status: string;
                     },
                     i: number
                   ) => ({
@@ -146,6 +148,7 @@ function UnitManagement() {
                     createDate: formatTime(e.created_at),
                     numberTopics: e.topics.length,
                     unit_id: e.id,
+                    status: e.status,
                   })
                 )}
                 headerLabel={[
@@ -159,7 +162,11 @@ function UnitManagement() {
                   },
                   {
                     key: "numberTopics",
-                    title: "Số chủ đề",
+                    title: "Số bài học",
+                  },
+                  {
+                    key: "status",
+                    title: "Tình trạng",
                   },
                   {
                     key: "updateDate",

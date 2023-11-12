@@ -1,6 +1,6 @@
 import authApi from "@/apis/auth.api";
 import { getToken, removeToken, setToken } from "@/utils/authentication";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -51,9 +51,13 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const mutateLogout = useMutation(authApi.logout, {
     onSuccess: () => {
       removeToken();
+      queryClient.resetQueries();
+      navigate("/");
     },
   });
   const { mutate } = mutateLogout;

@@ -20,7 +20,7 @@ module.exports = {
     // },
     extend: {
       colors: {
-        green: "#1AB69D",
+        green_custom: "#1AB69D",
         light_gray: "#222222",
 
         border: "hsl(var(--border))",

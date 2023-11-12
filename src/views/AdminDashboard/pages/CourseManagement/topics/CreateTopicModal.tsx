@@ -7,10 +7,12 @@ function CreateTopicModal({
   handleClose,
   index,
   unit_id,
+  drive_folder_unit_id,
 }: {
   handleClose: any;
   index: any;
   unit_id: number;
+  drive_folder_unit_id: string;
 }) {
   const [formData, setFormData] = useState({});
   const { isLoading, mutateAsync } = useCreateTopic(unit_id);
@@ -93,6 +95,7 @@ function CreateTopicModal({
                 await mutateAsync({
                   ...formData,
                   unit_id,
+                  drive_folder_unit_id,
                 });
                 handleClose();
               }}

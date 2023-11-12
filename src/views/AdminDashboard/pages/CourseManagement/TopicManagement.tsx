@@ -5,14 +5,14 @@ import { useDeleteTopic, useGetListTopics } from "@/hooks/useCourse";
 import { formatTime } from "@/utils/time";
 import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ModalDelete from "@/components/ModalDelete";
 import { secondsToTime } from "@/utils/convertNumber";
 import CreateTopicModal from "./topics/CreateTopicModal";
 import UpdateTopicModal from "./topics/UpdateTopicModal";
 
 function TopicManagement() {
-  const { unit_id } = useParams();
+  const { unit_id, course_id } = useParams();
   const { isLoading, data } = useGetListTopics(Number(unit_id));
 
   const [openCreateTopic, setOpenCreateTopic] = useState(false);
@@ -46,13 +46,15 @@ function TopicManagement() {
   };
 
   const deleteTopicHook = useDeleteTopic(Number(unit_id));
+  const navigate = useNavigate();
 
   return (
     <div>
       <h1 className='-mt-4'>Quản lý nội dung chương</h1>
       {openCreateTopic && (
         <CreateTopicModal
-          index={data?.datas?.length}
+          drive_folder_unit_id={data?.drive_folder_unit_id}
+          index={data?.count}
           handleClose={() => setOpenCreateTopic(false)}
           unit_id={Number(unit_id)}
         />
@@ -125,11 +127,14 @@ function TopicManagement() {
             <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
               <Loader />
             </div>
-          ) : data.datas.length > 0 ? (
+          ) : data?.datas?.length > 0 ? (
             <div className='flex justify-center mt-6 w-full'>
               <Table
                 handleEdit={selectUpdateTopic}
                 handleDelete={selectDeleteTopic}
+                handleView={({ topic_id }: { topic_id: number }) => {
+                  navigate(`/learning/${Number(course_id)}/${topic_id}`);
+                }}
                 data={data.datas.map(
                   (
                     e: {
@@ -139,6 +144,7 @@ function TopicManagement() {
                       id: number;
                       description: string;
                       duration: number;
+                      status: string;
                     },
                     i: number
                   ) => ({
@@ -148,6 +154,7 @@ function TopicManagement() {
                     createDate: formatTime(e.created_at),
                     description: e.description,
                     topic_id: e.id,
+                    status: e.status,
                     duration: secondsToTime(e.duration),
                   })
                 )}
@@ -167,6 +174,10 @@ function TopicManagement() {
                   {
                     key: "duration",
                     title: "Thời lượng",
+                  },
+                  {
+                    key: "status",
+                    title: "Tình trạng",
                   },
                   {
                     key: "updateDate",

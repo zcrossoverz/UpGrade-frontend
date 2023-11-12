@@ -8,6 +8,7 @@ import Note from "./Note";
 import Review from "./Review";
 import { Link, useParams } from "react-router-dom";
 import { useGetCourse, useGetTopic } from "@/hooks/useCourse";
+import Badge from "@/components/Badge";
 
 enum EnumTab {
   CONTENT,
@@ -69,9 +70,15 @@ function Learning() {
               </Link>
               <p className='ml-12'>{data?.title}</p>
             </div>
-            <div className='flex items-center justify-end'>
-              <p className='mr-8'>Tiến độ của bạn</p>
-            </div>
+            {data?.status === "private" && (
+              <div className='flex items-center justify-end mr-12'>
+                <Badge
+                  color='text-red-700'
+                  bgColor='bg-red-100'
+                  text='Chưa xuất bản'
+                />
+              </div>
+            )}
           </div>
           <div className='h-[500px] bg-gray-800'>
             <ReactPlayer

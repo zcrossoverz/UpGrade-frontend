@@ -7,10 +7,12 @@ function CreateUnitModal({
   handleClose,
   index,
   course_id,
+  drive_folder_id,
 }: {
   handleClose: any;
   index: any;
   course_id: number;
+  drive_folder_id: string;
 }) {
   const [formData, setFormData] = useState({});
   const { isLoading, mutateAsync } = useCreateUnit(course_id);
@@ -77,6 +79,7 @@ function CreateUnitModal({
                 await mutateAsync({
                   ...formData,
                   course_id,
+                  drive_folder_id,
                 });
                 handleClose();
               }}

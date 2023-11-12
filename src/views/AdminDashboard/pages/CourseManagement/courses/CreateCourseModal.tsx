@@ -217,7 +217,7 @@ function CreateCourseModal({
                 >
                   {step === steps.length - 1
                     ? isLoading
-                      ? "..."
+                      ? "Đang xử lý..."
                       : "Khởi tạo khóa học"
                     : "Tiếp tục"}
                 </button>

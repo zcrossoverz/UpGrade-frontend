@@ -7,6 +7,11 @@ const TOPIC = "topic";
 
 const UNIT = "unit";
 
+export enum enumCourseStatus {
+  PUBLISHED = "published",
+  PRIVATE = "private",
+}
+
 const courseApi = {
   async getCourseDetail(id: number) {
     return http.get(`${PREFIX}/${id}`);
@@ -24,12 +29,26 @@ const courseApi = {
     return http.post(`${PREFIX}/get-my-courses`);
   },
 
+  async updateCourse(data: {
+    price: number;
+    course_id: number;
+    description: string;
+    status: enumCourseStatus;
+  }) {
+    return http.post(`${PREFIX}/update`, data);
+  },
+
   async createUnit(data: {
     title: string;
     course_id: number;
     description: string;
+    drive_folder_id: string;
   }) {
     return http.post(`${UNIT}/create`, data);
+  },
+
+  async deleteCourse(id: number) {
+    return http.post(`${PREFIX}/delete/${id}`);
   },
 
   async updateUnit(data: {
@@ -72,6 +91,23 @@ const courseApi = {
 
   async getTopic(id: number) {
     return http.post(`${TOPIC}/get/${id}`);
+  },
+
+  async submitApproval(course_id: number) {
+    return http.post(`${PREFIX}/submit-approval`, {
+      course_id,
+    });
+  },
+
+  async getListApproval() {
+    return http.post(`${PREFIX}/get-approval-list`);
+  },
+
+  async processApproval(id: number, isAccept: boolean) {
+    return http.post(`${PREFIX}/process-approval`, {
+      id,
+      status: isAccept ? "Approved" : "Rejected",
+    });
   },
 };
 

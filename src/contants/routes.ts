@@ -13,6 +13,8 @@ import Student from "@/views/AdminDashboard/pages/Performance/Student";
 import Review from "@/views/Learning/Review";
 import UnitManagement from "@/views/AdminDashboard/pages/CourseManagement/UnitManagement";
 import TopicManagement from "@/views/AdminDashboard/pages/CourseManagement/TopicManagement";
+import CourseDetailPage from "@/views/AdminDashboard/pages/CourseManagement/courses/CourseDetailPage";
+import ApprovalRequest from "@/views/AdminDashboard/pages/ApprovalRequest";
 
 interface IRoute {
   name: string;
@@ -85,6 +87,13 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
         adminRoute: true,
         hiddenInMenu: true,
       },
+      {
+        name: "Chỉnh sửa khóa học",
+        path: "/details/:course_id",
+        Element: CourseDetailPage,
+        adminRoute: true,
+        hiddenInMenu: true,
+      },
     ],
   },
   {
@@ -127,9 +136,9 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     adminRoute: true,
   },
   {
-    name: "Thiết lập",
-    path: "/tools",
-    Element: Tools,
+    name: "Đơn xét duyệt",
+    path: "/approval-request",
+    Element: ApprovalRequest,
     requireAdmin: true,
     adminRoute: true,
   },

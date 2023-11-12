@@ -349,7 +349,7 @@ function Header() {
               />
               <Button
                 text='Đăng nhập'
-                extraClass='bg-green text-white -mt-5'
+                extraClass='bg-red-400 text-white -mt-5'
                 properties={{
                   onClick: () => setOpenPopupAuth(true),
                 }}

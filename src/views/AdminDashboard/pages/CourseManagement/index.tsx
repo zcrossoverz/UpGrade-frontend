@@ -50,21 +50,31 @@ function CourseManagement() {
             <Loader />
           </div>
         ) : (
-          <div className='mt-8 min-h-[450px]'>
-            {data &&
-              data.datas.map(
-                (
-                  data: {
-                    thumbnail_url: string;
-                    description: string;
-                    title: string;
-                    updated_at: string;
-                    id: number;
-                  },
-                  i: number
-                ) => <CourseItem key={i.toString()} data={data} />
-              )}
-          </div>
+          <>
+            {data?.count > 0 ? (
+              <div className='mt-8 min-h-[450px]'>
+                {data &&
+                  data.datas.map(
+                    (
+                      data: {
+                        thumbnail_url: string;
+                        description: string;
+                        title: string;
+                        updated_at: string;
+                        id: number;
+                        status: string;
+                        members_count: number;
+                      },
+                      i: number
+                    ) => <CourseItem key={i.toString()} data={data} />
+                  )}
+              </div>
+            ) : (
+              <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
+                <p className='text-gray-600'>Chưa có nội dung nào</p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

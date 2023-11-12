@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 
 const key = "course";
 const key_topic = "topic";
+const key_my_course = "my_course";
+const key_approval = "approval_request";
 
 export const useCreateCourse = () => {
   const queryClient = useQueryClient();
@@ -14,7 +16,7 @@ export const useCreateCourse = () => {
     {
       onSuccess: () => {
         toast.success("Course created successfully");
-        queryClient.invalidateQueries([key, "my_course"]);
+        queryClient.invalidateQueries([key, key_my_course]);
       },
       onError: (error: AxiosError<{ message: string }>) => {
         toast.error(error.response?.data?.message);
@@ -26,7 +28,7 @@ export const useCreateCourse = () => {
 };
 
 export const useGetMyCourses = () => {
-  const query = useQuery([key, "my_course"], courseApi.getMyCourses);
+  const query = useQuery([key, key_my_course], courseApi.getMyCourses);
   return {
     ...query,
     data: query.data?.data?.data,
@@ -155,5 +157,82 @@ export const useDeleteTopic = (unit_id: number) => {
     }
   );
 
+  return mutation;
+};
+
+export const useDeleteCourse = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (data: { course_id: number }) => courseApi.deleteCourse(data.course_id),
+    {
+      onSuccess: () => {
+        toast.success("Course delete successfully");
+        queryClient.invalidateQueries([key, key_my_course]);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        toast.error(error.response?.data?.message);
+      },
+    }
+  );
+
+  return mutation;
+};
+
+export const useSubmitApprovalCourse = (course_id: number) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (data: { course_id: number }) => courseApi.submitApproval(data.course_id),
+    {
+      onSuccess: () => {
+        toast.success("Submit approval successfully");
+        queryClient.invalidateQueries([key, course_id]);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        toast.error(error.response?.data?.message);
+      },
+    }
+  );
+  return mutation;
+};
+
+export const useGetListApproval = () => {
+  const query = useQuery([key, key_approval], courseApi.getListApproval);
+  return {
+    ...query,
+    data: query.data?.data?.data,
+  };
+};
+
+export const useProcessApprovalCourse = (course_id: number) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (data: { course_id: number; isAccept: boolean }) =>
+      courseApi.processApproval(data.course_id, data.isAccept),
+    {
+      onSuccess: () => {
+        toast.success("Process approval successfully");
+        queryClient.invalidateQueries([key, key_approval]);
+        queryClient.invalidateQueries([key, course_id]);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        toast.error(error.response?.data?.message);
+      },
+    }
+  );
+  return mutation;
+};
+
+export const useUpdateCourse = (course_id: number) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation((data: any) => courseApi.updateCourse(data), {
+    onSuccess: () => {
+      toast.success("Course update successfully");
+      queryClient.invalidateQueries([key, course_id]);
+      queryClient.refetchQueries([key, key_my_course]);
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
   return mutation;
 };
