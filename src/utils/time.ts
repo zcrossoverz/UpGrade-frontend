@@ -27,5 +27,5 @@ export const commentTime = (timestamp: number) => {
 
 export const formatTime = (time: string) => {
   const date = new Date(time);
-  return date.toLocaleString("vi-VN", { timeZone: "UTC" });
+  return date.toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
 };
