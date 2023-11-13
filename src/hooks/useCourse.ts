@@ -4,10 +4,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
-const key = "course";
-const key_topic = "topic";
-const key_my_course = "my_course";
-const key_approval = "approval_request";
+export const key = "course";
+export const key_get_list_course = "get_list_course";
+export const key_topic = "topic";
+export const key_my_course = "my_course";
+export const key_approval = "approval_request";
 
 export const useCreateCourse = () => {
   const queryClient = useQueryClient();
@@ -186,6 +187,7 @@ export const useSubmitApprovalCourse = (course_id: number) => {
       onSuccess: () => {
         toast.success("Submit approval successfully");
         queryClient.invalidateQueries([key, course_id]);
+        queryClient.refetchQueries([key, key_my_course]);
       },
       onError: (error: AxiosError<{ message: string }>) => {
         toast.error(error.response?.data?.message);
@@ -212,7 +214,7 @@ export const useProcessApprovalCourse = (course_id: number) => {
       onSuccess: () => {
         toast.success("Process approval successfully");
         queryClient.invalidateQueries([key, key_approval]);
-        queryClient.invalidateQueries([key, course_id]);
+        queryClient.refetchQueries([key, course_id]);
       },
       onError: (error: AxiosError<{ message: string }>) => {
         toast.error(error.response?.data?.message);
@@ -234,5 +236,33 @@ export const useUpdateCourse = (course_id: number) => {
       toast.error(error.response?.data?.message);
     },
   });
+  return mutation;
+};
+
+export const useGetListCourses = (filter: any) => {
+  const query = useQuery([key, key_get_list_course], () =>
+    courseApi.getListCourses(filter)
+  );
+  return {
+    ...query,
+    data: query.data?.data?.data,
+  };
+};
+
+export const useEnrollCourse = (course_id: number) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (data: any) => courseApi.enroll(data.course_id),
+    {
+      onSuccess: () => {
+        toast.success("Course enroll successfully");
+        queryClient.invalidateQueries([key, course_id]);
+        queryClient.refetchQueries([key, key_my_course]);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        toast.error(error.response?.data?.message);
+      },
+    }
+  );
   return mutation;
 };

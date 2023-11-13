@@ -141,7 +141,13 @@ function CourseDetails() {
                     className='h-48 w-80 rounded-xl'
                   />
                 </div>
-                <Enroll price={data?.price} id={Number(id)} />
+                <Enroll
+                  price={data?.price}
+                  id={Number(id)}
+                  thumbnail_image={data?.thumbnail_url}
+                  title={data?.title}
+                  lecturer={data?.instructor_fullname}
+                />
                 <div className='mt-4'>
                   <h3 className='text-md font-bold mb-1'>
                     Khóa học này bao gồm

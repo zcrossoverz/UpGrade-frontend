@@ -29,6 +29,23 @@ const courseApi = {
     return http.post(`${PREFIX}/get-my-courses`);
   },
 
+  async getListCourses(filter: {
+    limit?: number;
+    page?: number;
+    order?: {
+      key: string;
+      value: string;
+    };
+    query?: {
+      key: string;
+      value: string;
+    }[];
+  }) {
+    return http.post(`${PREFIX}/get-list`, {
+      filter,
+    });
+  },
+
   async updateCourse(data: {
     price: number;
     course_id: number;
@@ -107,6 +124,12 @@ const courseApi = {
     return http.post(`${PREFIX}/process-approval`, {
       id,
       status: isAccept ? "Approved" : "Rejected",
+    });
+  },
+
+  async enroll(course_id: number) {
+    return http.post(`${PREFIX}/enroll`, {
+      course_id,
     });
   },
 };

@@ -24,7 +24,7 @@ const tabList = [
     tab: EnumTab.CONTENT,
   },
   {
-    title: "Thông tin khóa học",
+    title: "Tổng quan khóa học",
     tab: EnumTab.INFO,
   },
   {
@@ -111,7 +111,7 @@ function Learning() {
               {tabs === EnumTab.CONTENT && (
                 <CourseContent courseData={courseData.data} />
               )}
-              {tabs === EnumTab.INFO && <InfoContent />}
+              {tabs === EnumTab.INFO && <InfoContent data={courseData.data} />}
               {tabs === EnumTab.COMMENTS && <Comment />}
               {tabs === EnumTab.NOTE && <Note />}
               {tabs === EnumTab.REVIEW && <Review />}

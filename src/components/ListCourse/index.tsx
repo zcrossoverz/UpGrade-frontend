@@ -21,7 +21,6 @@ const ListCourse = ({
   return (
     <div>
       <p className='px-32 py-4 text-2xl font-bold'>{title}</p>
-      {/* <div className='flex flex-wrap gap-4 justify-center p-20 pt-0'> */}
       <Slider
         dots={false}
         infinite={true}
@@ -34,7 +33,6 @@ const ListCourse = ({
           <CourseContainer key={i.toString()} {...e} isEnroll={isEnroll} />
         ))}
       </Slider>
-      {/* </div> */}
     </div>
   );
 };

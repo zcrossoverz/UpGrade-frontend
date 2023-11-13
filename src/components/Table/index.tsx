@@ -75,9 +75,17 @@ function Table({
                       <AiOutlineDelete />
                     </button>
                   )}
+                  {handleForward !== undefined && (
+                    <button
+                      className='px-1 text-indigo-500 hover:text-indigo-700 text-xl'
+                      onClick={() => handleForward(row)}
+                    >
+                      <RiShareForwardFill />
+                    </button>
+                  )}
                   {handleTick !== undefined && (
                     <button
-                      className='px-1 text-red-500 hover:text-blue-700 text-xl'
+                      className='px-1 text-green-500 hover:text-green-700 text-xl'
                       onClick={() => handleTick(row)}
                     >
                       <TiTickOutline />
@@ -89,14 +97,6 @@ function Table({
                       onClick={() => handleCancel(row)}
                     >
                       <TiCancelOutline />
-                    </button>
-                  )}
-                  {handleForward !== undefined && (
-                    <button
-                      className='px-1 text-teal-500 hover:text-teal-700 text-xl'
-                      onClick={() => handleForward(row)}
-                    >
-                      <RiShareForwardFill />
                     </button>
                   )}
                 </td>

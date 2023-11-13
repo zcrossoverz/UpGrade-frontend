@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Billboard from "./Billboard";
@@ -14,70 +15,48 @@ import { MdOutlineDesignServices } from "react-icons/md";
 import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { FaMoneyBill } from "react-icons/fa";
 import { TbWriting } from "react-icons/tb";
+import { useGetListCourses } from "@/hooks/useCourse";
+import { useSearchParams } from "react-router-dom";
+import Loader from "@/components/Loader";
+import { PUBLIC_FILTER } from "@/contants/filter";
 
 function HomePage() {
-  const courses = [
-    {
-      id: 1,
-      title: "NestJS Zero to Hero - Modern TypeScript Back-end Development",
-      lecturer: "Ariel Weinberger",
-      rate: 4.7,
-      rate_number: 8870,
-      price: 2499000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/2053219_e620_2.jpg",
-    },
-    {
-      id: 7,
-      title: "Flutter & Dart - The Complete Guide [2023 Edition]",
-      lecturer: "Maximilian Schwarzmuller",
-      rate: 4.6,
-      rate_number: 66719,
-      price: 1499000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/1708340_7108_5.jpg",
-    },
-    {
-      id: 8,
-      title: "iOS & Swift - The Complete iOS App Development Bootcamp",
-      lecturer: "Dr. Angela Yu",
-      rate: 4.7,
-      rate_number: 86437,
-      price: 2899000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg",
-    },
-    {
-      id: 3,
-      title: "The Complete 2023 Web Development Bootcamp",
-      lecturer: "Dr. Angela Yu",
-      rate: 4.7,
-      rate_number: 317895,
-      price: 2199000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/1565838_e54e_16.jpg",
-    },
-    {
-      id: 2,
-      title: "The Ultimate Guide to Game Development with Unity (Official)",
-      lecturer: "Dr. Jonathan",
-      rate: 4.2,
-      rate_number: 7895,
-      price: 899000,
-      thumbnail_image:
-        "https://drive.google.com/uc?id=1ZS7flMxYJ_p_Aectn_RxaFsnt67RGD21&export=download",
-    },
-    {
-      id: 9,
-      title: "TensorFlow Developer Certificate in 2023: Zero to Mastery",
-      lecturer: "Dr. Davis",
-      rate: 4.4,
-      rate_number: 9895,
-      price: 1899000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/3693164_f87d_3.jpg",
-    },
-  ];
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const filter = {
+    ...(searchParams.get("page") !== null
+      ? { page: searchParams.get("page") }
+      : {}),
+    ...(searchParams.get("limit") !== null
+      ? { limit: searchParams.get("limit") }
+      : {}),
+    ...(searchParams.get("order_by") !== null &&
+    searchParams.get("order_direction") !== null
+      ? {
+          order: {
+            [searchParams.get("order_by") as string]:
+              searchParams.get("order_direction"),
+          },
+        }
+      : {}),
+    ...(searchParams.get("search") !== null
+      ? {
+          query: [
+            {
+              key: "title",
+              value: searchParams.get("search"),
+            },
+            PUBLIC_FILTER,
+          ],
+        }
+      : {
+          query: [PUBLIC_FILTER],
+        }),
+  };
+
+  console.log(filter);
+
+  const { data, isLoading } = useGetListCourses(filter);
 
   return (
     <div className='bg-white'>
@@ -87,12 +66,40 @@ function HomePage() {
       <div className='z-0 px-36 pt-24'>
         <Billboard />
       </div>
-      <ListCourse title='Học viên đang xem' data={courses} isEnroll={false} />
-      <ListCourse
-        title='Khóa học mới cập nhật'
-        data={courses}
-        isEnroll={false}
-      />
+      {!isLoading ? (
+        <>
+          <ListCourse
+            title='Học viên đang xem'
+            data={data?.datas?.map((e: any) => ({
+              id: e.id,
+              title: e.title,
+              lecturer: e.instructor_fullname,
+              rate: 4.8,
+              rate_number: 0,
+              price: e.price,
+              thumbnail_image: e.thumbnail_url,
+            }))}
+            isEnroll={false}
+          />
+          <ListCourse
+            title='Khóa học mới cập nhật'
+            data={data?.datas?.map((e: any) => ({
+              id: e.id,
+              title: e.title,
+              lecturer: e.instructor_fullname,
+              rate: 5,
+              rate_number: 0,
+              price: e.price,
+              thumbnail_image: e.thumbnail_url,
+            }))}
+            isEnroll={false}
+          />
+        </>
+      ) : (
+        <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
+          <Loader />
+        </div>
+      )}
       <div>
         <p className='px-32 py-4 text-2xl font-bold'>Các lĩnh vực hàng đầu</p>
         <div className='flex flex-wrap gap-x-14 gap-y-4 justify-center content-center mx-32 pt-0 pb-14'>

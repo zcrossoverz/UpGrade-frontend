@@ -10,63 +10,9 @@ import { commentTime } from "@/utils/time";
 import { BsFillCircleFill } from "react-icons/bs";
 import Auth from "../Auth";
 import { useAuth, useLogout } from "@/hooks/useAuth";
+import { useCart } from "@/hooks/useCart";
 
 function Header() {
-  const allCartProducts = [
-    {
-      title: "NestJS Zero to Hero - Modern TypeScript Back-end Development",
-      lecturer: "Ariel Weinberger",
-      price: 2499000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/2053219_e620_2.jpg",
-    },
-    {
-      title: "Flutter & Dart - The Complete Guide [2023 Edition]",
-      lecturer: "Maximilian Schwarzmuller",
-      price: 1499000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/1708340_7108_5.jpg",
-    },
-    {
-      title: "iOS & Swift - The Complete iOS App Development Bootcamp",
-      lecturer: "Dr. Angela Yu",
-      rate: 4.7,
-      rate_number: 86437,
-      price: 2899000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/1778502_f4b9_12.jpg",
-    },
-    {
-      title: "The Complete 2023 Web Development Bootcamp",
-      lecturer: "Dr. Angela Yu",
-      rate: 4.7,
-      rate_number: 317895,
-      price: 2199000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/1565838_e54e_16.jpg",
-    },
-    {
-      title: "The Ultimate Guide to Game Development with Unity (Official)",
-      lecturer: "Dr. Jonathan",
-      rate: 4.2,
-      rate_number: 7895,
-      price: 899000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/1328572_b05d_5.jpg",
-    },
-    {
-      title: "TensorFlow Developer Certificate in 2023: Zero to Mastery",
-      lecturer: "Dr. Davis",
-      rate: 4.4,
-      rate_number: 9895,
-      price: 1899000,
-      thumbnail_image:
-        "https://img-c.udemycdn.com/course/240x135/3693164_f87d_3.jpg",
-    },
-  ];
-
-  const cartProducts = allCartProducts.slice(0, 3);
-
   const allNotifications = [
     {
       content:
@@ -112,6 +58,8 @@ function Header() {
 
   const logout = useLogout();
 
+  const { cart } = useCart();
+
   return (
     <div className='bg-white border'>
       <div className='grid grid-cols-4 px-12'>
@@ -134,24 +82,25 @@ function Header() {
               <div className='p-1 hover:cursor-pointer text-gray-500 hover:text-red-400 mr-6 relative group transition duration-500 ease-out'>
                 <div className='relative'>
                   <BsCart className='text-2xl' />
-                  {allCartProducts.length > 0 && (
+                  {cart && cart?.length > 0 && (
                     <div className='select-none absolute -top-[9px] text-[10px] -right-[8px] bg-red-400 text-white rounded-2xl px-[8px] pt-[4px] pb-[2px] leading-tight flex items-center justify-center font-bold'>
-                      {allCartProducts.length}
+                      {cart?.length}
                     </div>
                   )}
                 </div>
                 <div className='absolute right-0 top-0 z-10 hidden bg-grey-200 group-hover:block'>
                   <div className='absolute pt-12 right-0 -left-12'>
                     <div className='absolute border border-gray-300 bg-white w-96 z-100 right-0 shadow-2xl rounded-sm'>
-                      {allCartProducts.length === 0 ? (
+                      {cart?.length === 0 ? (
                         <div className='text-black h-full p-4 text-center'>
                           Giỏ hàng trống
                         </div>
                       ) : (
                         <div className='text-black h-full'>
                           <div className='p-4'>
-                            {cartProducts.length > 0 &&
-                              cartProducts.map((e, i) => (
+                            {cart &&
+                              cart?.length > 0 &&
+                              cart?.map((e, i) => (
                                 <div
                                   className='mt-4 grid grid-cols-5'
                                   key={i.toString()}
@@ -176,9 +125,9 @@ function Header() {
                                   </div>
                                 </div>
                               ))}
-                            {allCartProducts.length > 3 && (
+                            {cart && cart?.length > 3 && (
                               <div className='mt-2'>
-                                và {allCartProducts.length - 3} khóa học khác...
+                                và {cart?.length - 3} khóa học khác...
                               </div>
                             )}
                           </div>

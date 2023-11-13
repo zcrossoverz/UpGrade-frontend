@@ -13,7 +13,7 @@ import { formatTime } from "@/utils/time";
 import React, { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const countTotalTopics = (units: any[]) => {
+export const countTotalTopics = (units: any[]) => {
   const totalTopics = units.reduce((accumulator, unit) => {
     return accumulator + unit.topics.length;
   }, 0);
@@ -21,7 +21,7 @@ const countTotalTopics = (units: any[]) => {
   return totalTopics;
 };
 
-const calculateTotalDuration = (units: any[]) => {
+export const calculateTotalDuration = (units: any[]) => {
   const totalDuration = units.reduce(
     (accumulator: any, unit: { topics: any }) => {
       const topics = unit.topics;
