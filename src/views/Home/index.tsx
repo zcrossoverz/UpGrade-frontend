@@ -74,8 +74,8 @@ function HomePage() {
               id: e.id,
               title: e.title,
               lecturer: e.instructor_fullname,
-              rate: 4.8,
-              rate_number: 0,
+              rate: Number(e.rate) > 0 ? Number(e.rate) : 5,
+              rate_number: e.rate_number,
               price: e.price,
               thumbnail_image: e.thumbnail_url,
             }))}
