@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { memo, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import Footer from "@/components/Footer";
 import CourseContent from "./CourseContent";
@@ -9,6 +10,7 @@ import Review from "./Review";
 import { Link, useParams } from "react-router-dom";
 import { useGetCourse, useGetTopic } from "@/hooks/useCourse";
 import Badge from "@/components/Badge";
+import Loader from "@/components/Loader";
 
 enum EnumTab {
   CONTENT,
@@ -41,9 +43,25 @@ const tabList = [
   },
 ];
 
+const Player = memo(
+  ({ configPlayer, data }: { configPlayer: any; data: any }) => {
+    return (
+      <div className='h-[500px] bg-gray-800'>
+        <ReactPlayer
+          width='100%'
+          height='100%'
+          {...configPlayer}
+          url={data?.video_url}
+        />
+      </div>
+    );
+  }
+);
+
 function Learning() {
   const { id, course_id } = useParams();
   const [tabs, setTabs] = useState<EnumTab>(EnumTab.CONTENT);
+  const [time, setTime] = useState(0);
 
   useEffect(() => {
     window.scrollTo({
@@ -57,6 +75,9 @@ function Learning() {
 
   const configPlayer = {
     controls: true,
+    onProgress: (e: any) => {
+      setTime(Math.round(e.playedSeconds));
+    },
   };
 
   return (
@@ -80,14 +101,13 @@ function Learning() {
               </div>
             )}
           </div>
-          <div className='h-[500px] bg-gray-800'>
-            <ReactPlayer
-              width='100%'
-              height='100%'
-              {...configPlayer}
-              url={data?.video_url}
-            />
-          </div>
+          {isLoading ? (
+            <div className='h-[500px] flex items-center justify-center'>
+              <Loader />
+            </div>
+          ) : (
+            <Player configPlayer={configPlayer} data={data} />
+          )}
           <div>
             <div className='text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700'>
               <ul className='flex flex-wrap justify-center'>
@@ -113,7 +133,7 @@ function Learning() {
               )}
               {tabs === EnumTab.INFO && <InfoContent data={courseData.data} />}
               {tabs === EnumTab.COMMENTS && <Comment />}
-              {tabs === EnumTab.NOTE && <Note />}
+              {tabs === EnumTab.NOTE && <Note time={time} />}
               {tabs === EnumTab.REVIEW && <Review />}
             </div>
           </div>

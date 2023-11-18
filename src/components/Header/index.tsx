@@ -167,7 +167,7 @@ function Header() {
                                         )}
                                       </div>
                                     </div>
-                                    <div className='flex justify-end items-center col-span-1'>
+                                    <div className='flex h-full justify-end items-center col-span-1'>
                                       <BsFillCircleFill className='text-sm text-red-400' />
                                     </div>
                                   </button>
