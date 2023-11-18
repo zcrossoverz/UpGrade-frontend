@@ -12,6 +12,7 @@ import {
 import { secondsToTime, secondsToTimeString } from "@/utils/convertNumber";
 import { useParams } from "react-router-dom";
 import { useGetCourse } from "@/hooks/useCourse";
+import { useAuth } from "@/hooks/useAuth";
 
 type Topic = {
   id: number;
@@ -68,6 +69,7 @@ function CourseDetails() {
   const { id } = useParams();
 
   const { data, isLoading } = useGetCourse(Number(id));
+  const auth = useAuth();
 
   const totalDuration = useMemo(() => {
     if (data && data.units) {
@@ -147,6 +149,12 @@ function CourseDetails() {
                   thumbnail_image={data?.thumbnail_url}
                   title={data?.title}
                   lecturer={data?.instructor_fullname}
+                  isEnroll={
+                    data?.members_id?.filter(
+                      (id: any) => Number(id) === auth.data.id
+                    ).length > 0
+                  }
+                  units={data?.units}
                 />
                 <div className='mt-4'>
                   <h3 className='text-md font-bold mb-1'>

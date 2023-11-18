@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCart } from "@/hooks/useCart";
 import { useEnrollCourse } from "@/hooks/useCourse";
 import { formatCurrency } from "@/utils/convertNumber";
 import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Enroll({
   price,
@@ -10,24 +12,46 @@ function Enroll({
   id,
   lecturer,
   thumbnail_image,
+  isEnroll,
+  units,
 }: {
   price: number;
   id: number;
   title: string;
   lecturer: string;
   thumbnail_image: string;
+  isEnroll: boolean;
+  units: any[];
 }) {
   const { addItem, isCourseInCart, cart } = useCart();
   const { mutateAsync, isLoading } = useEnrollCourse(id);
 
+  const navigate = useNavigate();
+
   const isExits = useMemo(() => isCourseInCart(id), [cart]);
+  const firstUnit = units[0] || [];
+  const topics = firstUnit.topics || [];
   return (
     <div>
       <div>
         <div className='text-3xl leading-loose text-center text-red-500'>
           {price > 0 ? formatCurrency(price) : "Miễn phí"}
         </div>
-        {price === 0 ? (
+        {isEnroll ? (
+          topics[0] !== undefined && (
+            <button
+              className={`bg-red-500 px-8 py-3 rounded-3xl text-white ${
+                isLoading && "opacity-50"
+              }`}
+              onClick={() => {
+                navigate(`/learning/${id}/${topics[0]?.id}`);
+              }}
+              disabled={isLoading}
+            >
+              ĐI TỚI KHÓA HỌC
+            </button>
+          )
+        ) : price === 0 ? (
           <button
             className={`bg-red-500 px-8 py-3 rounded-3xl text-white ${
               isLoading && "opacity-50"

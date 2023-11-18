@@ -29,3 +29,9 @@ export const formatTime = (time: string) => {
   const date = new Date(time);
   return date.toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
 };
+
+export const convertTimestamp = (time: string) => {
+  const dateObject = new Date(time);
+  const timestamp = dateObject.getTime();
+  return timestamp;
+};

@@ -24,7 +24,7 @@ const ListCourse = ({
       <Slider
         dots={false}
         infinite={true}
-        slidesToShow={5}
+        slidesToShow={data?.length >= 5 ? 5 : data?.length}
         slidesToScroll={1}
         swipeToSlide={true}
         className='flex flex-wrap gap-4 justify-center content-center mx-32 pt-0 pb-14'

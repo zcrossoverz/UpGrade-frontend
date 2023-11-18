@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import logo from "../../assets/logo_updrade.png";
 import Input from "../Input/Input";
@@ -6,51 +7,17 @@ import { Link, useNavigate } from "react-router-dom";
 import avatarEmpty from "../../assets/avatar.jpg";
 import { BsBell, BsCart } from "react-icons/bs";
 import { formatCurrency } from "@/utils/convertNumber";
-import { commentTime } from "@/utils/time";
+import { commentTime, convertTimestamp } from "@/utils/time";
 import { BsFillCircleFill } from "react-icons/bs";
 import Auth from "../Auth";
 import { useAuth, useLogout } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
+import {
+  useGetNotification,
+  useMarkNotificationAsRead,
+} from "@/hooks/useNotification";
 
 function Header() {
-  const allNotifications = [
-    {
-      content:
-        "Khóa học Typescript 2022 vừa có bài học mới, hãy vào học ngay thôi",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696349854856,
-    },
-    {
-      content:
-        "Bạn đã thanh toán thành công khóa học Nestjs cơ bản và nâng cao",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696341854856,
-    },
-    {
-      content: "Bình luận của bạn vừa nhận được lượt tương tác, xem ngay nào",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696349870983,
-    },
-    {
-      content:
-        "ABC đã trả lời bình luận của bạn trong khóa học Nestjs cơ bản và nâng cao",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696349872983,
-    },
-    {
-      content: "Chúc mừng! Khóa học CSS của bạn vừa có người đăng ký mới",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696349871983,
-    },
-  ];
-
-  const notifications = allNotifications.slice(0, 5);
-
   const [openPopupAuth, setOpenPopupAuth] = useState(false);
 
   const auth = useAuth();
@@ -59,6 +26,8 @@ function Header() {
   const logout = useLogout();
 
   const { cart } = useCart();
+  const notifications = useGetNotification();
+  const markReadHook = useMarkNotificationAsRead();
 
   return (
     <div className='bg-white border'>
@@ -159,47 +128,60 @@ function Header() {
               <div className='p-1 hover:cursor-pointer text-gray-500 hover:text-red-400 mr-8 relative group transition duration-500 ease-out'>
                 <div className='relative'>
                   <BsBell className='text-2xl' />
-                  {allNotifications.length > 0 && (
-                    <div className='select-none absolute -top-[9px] text-[10px] -right-[8px] bg-red-400 text-white rounded-2xl px-[8px] pt-[4px] pb-[2px] leading-tight flex items-center justify-center font-bold'>
-                      {allNotifications.length}
-                    </div>
-                  )}
+                  {!notifications?.isLoading &&
+                    notifications?.data?.datas?.length > 0 && (
+                      <div className='select-none absolute -top-[9px] text-[10px] -right-[8px] bg-red-400 text-white rounded-2xl px-[8px] pt-[4px] pb-[2px] leading-tight flex items-center justify-center font-bold'>
+                        {notifications?.data?.datas?.length}
+                      </div>
+                    )}
                 </div>
                 <div className='absolute right-0 top-0 z-10 hidden bg-grey-200 group-hover:block'>
                   <div className='absolute pt-12 right-0 -left-12'>
                     <div className='absolute border border-gray-300 bg-white w-96 z-100 right-0 shadow-2xl rounded-sm'>
-                      {notifications.length === 0 ? (
+                      {!notifications?.isLoading &&
+                      notifications?.data?.datas?.length === 0 ? (
                         <div className='text-black h-full p-4 text-center'>
                           Bạn không có thông báo nào
                         </div>
                       ) : (
                         <div className='text-black h-full'>
                           <div className='p-4 max-h-96 overflow-auto'>
-                            {notifications.length > 0 &&
-                              notifications.map((e, i) => (
-                                <div
-                                  className='mt-1 grid grid-cols-8 hover:bg-gray-100 px-4 py-2'
-                                  key={i.toString()}
-                                >
-                                  <div className='col-span-7'>
-                                    <div className='line-clamp-3 text-sm leading-[15px] h-8 font-medium'>
-                                      {e.content}
+                            {!notifications?.isLoading &&
+                              notifications?.data?.datas?.length &&
+                              notifications?.data?.datas.map(
+                                (e: any, i: any) => (
+                                  <button
+                                    className='mt-1 grid grid-cols-8 hover:bg-gray-100 px-4 py-2'
+                                    key={i.toString()}
+                                    onClick={() =>
+                                      markReadHook.mutateAsync({ id: e.id })
+                                    }
+                                  >
+                                    <div className='col-span-7'>
+                                      <div className='line-clamp-3 text-sm leading-[15px] h-8 font-medium'>
+                                        {e.text}
+                                      </div>
+                                      <div className='mt-1 text-[12px] leading-[14px]'>
+                                        {commentTime(
+                                          convertTimestamp(e.created_at)
+                                        )}
+                                      </div>
                                     </div>
-                                    <div className='mt-1 text-[12px] leading-[14px]'>
-                                      {commentTime(e.timestamp)}
+                                    <div className='flex justify-end items-center col-span-1'>
+                                      <BsFillCircleFill className='text-sm text-red-400' />
                                     </div>
-                                  </div>
-                                  <div className='flex justify-end items-center col-span-1'>
-                                    <BsFillCircleFill className='text-sm text-red-400' />
-                                  </div>
-                                </div>
-                              ))}
+                                  </button>
+                                )
+                              )}
                           </div>
                           <hr className='mt-2' />
                           <div className='p-4'>
                             <div className='grid grid-cols-3'>
                               <div className='col-span-2 text-sm font-semibold flex items-center'>
-                                <button className='text-indigo-600'>
+                                <button
+                                  className='text-indigo-600'
+                                  onClick={() => markReadHook.mutateAsync({})}
+                                >
                                   Đánh dấu tất cả là đã đọc
                                 </button>
                               </div>

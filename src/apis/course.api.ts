@@ -132,6 +132,10 @@ const courseApi = {
       course_id,
     });
   },
+
+  async getLibrary() {
+    return http.post(`${PREFIX}/get-library`);
+  },
 };
 
 export default courseApi;

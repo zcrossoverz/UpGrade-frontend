@@ -9,6 +9,7 @@ export const key_get_list_course = "get_list_course";
 export const key_topic = "topic";
 export const key_my_course = "my_course";
 export const key_approval = "approval_request";
+export const key_get_library = "library";
 
 export const useCreateCourse = () => {
   const queryClient = useQueryClient();
@@ -265,4 +266,12 @@ export const useEnrollCourse = (course_id: number) => {
     }
   );
   return mutation;
+};
+
+export const useGetLibrary = () => {
+  const query = useQuery([key, key_get_library], () => courseApi.getLibrary());
+  return {
+    ...query,
+    data: query.data?.data?.data,
+  };
 };
