@@ -22,7 +22,7 @@ function Comment({ author_id }: { author_id: number }) {
       <div className='w-fullbg-white rounded-lg p-1 md:p-3 m-10'>
         <h3 className='font-semibold text-2xl leading-6 pl-2'>Thảo luận</h3>
         <div className='flex flex-col gap-2 m-3'>
-          <div className='w-full px-3 mt-6'>
+          <div className='w-full px-3 mt-3'>
             {parentReply.id > 0 && (
               <p className='mb-1 flex'>
                 <p className='mr-2'>Trả lời bình luận của </p>
