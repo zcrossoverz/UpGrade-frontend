@@ -64,3 +64,19 @@ export const useDeleteComment = () => {
   });
   return mutation;
 };
+
+export const useReactComment = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (data: any) => commentApi.react(data.id, data.isLike),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([key, key_get_list]);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        toast.error(error.response?.data?.message);
+      },
+    }
+  );
+  return mutation;
+};

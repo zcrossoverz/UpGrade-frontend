@@ -59,7 +59,7 @@ const Player = memo(
 );
 
 function Learning() {
-  const { id, course_id } = useParams();
+  const { topic_id, course_id } = useParams();
   const [tabs, setTabs] = useState<EnumTab>(EnumTab.CONTENT);
   const [time, setTime] = useState(0);
 
@@ -70,7 +70,8 @@ function Learning() {
     });
   }, []);
 
-  const { data, isLoading } = useGetTopic(Number(id));
+  const { data, isLoading } = useGetTopic(Number(topic_id));
+
   const courseData = useGetCourse(Number(course_id));
 
   const configPlayer = {
@@ -131,8 +132,10 @@ function Learning() {
               {tabs === EnumTab.CONTENT && (
                 <CourseContent courseData={courseData.data} />
               )}
-              {tabs === EnumTab.INFO && <InfoContent data={courseData.data} />}
-              {tabs === EnumTab.COMMENTS && <Comment />}
+              {tabs === EnumTab.INFO && <InfoContent data={courseData?.data} />}
+              {tabs === EnumTab.COMMENTS && (
+                <Comment author_id={courseData?.data?.instructor_id} />
+              )}
               {tabs === EnumTab.NOTE && <Note time={time} />}
               {tabs === EnumTab.REVIEW && <Review />}
             </div>

@@ -21,6 +21,12 @@ const commentApi = {
       id,
     });
   },
+  async react(id: number, isLike: boolean) {
+    return http.post(`${PREFIX}/react`, {
+      id,
+      isLike,
+    });
+  },
   async getList(topic_id: number) {
     return http.post(`${PREFIX}/get-list`, {
       order: {

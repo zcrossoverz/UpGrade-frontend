@@ -57,7 +57,7 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
   },
   {
     name: "course detail",
-    path: "/learning/:course_id/:id",
+    path: "/learning/:course_id/:topic_id",
     Element: Learning,
   },
   {
