@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import Footer from "@/components/Footer";
 import CourseContent from "./CourseContent";
@@ -44,14 +44,26 @@ const tabList = [
 ];
 
 const Player = memo(
-  ({ configPlayer, data }: { configPlayer: any; data: any }) => {
+  ({
+    configPlayer,
+    data,
+    playerRef,
+    playing,
+  }: {
+    configPlayer: any;
+    data: any;
+    playerRef: any;
+    playing: boolean;
+  }) => {
     return (
       <div className='h-[500px] bg-gray-800'>
         <ReactPlayer
           width='100%'
           height='100%'
           {...configPlayer}
+          playing={playing}
           url={data?.video_url}
+          onReady={(player: ReactPlayer) => (playerRef.current = player)}
         />
       </div>
     );
@@ -70,15 +82,26 @@ function Learning() {
     });
   }, []);
 
-  const { data, isLoading } = useGetTopic(Number(topic_id));
+  const playerRef = useRef<ReactPlayer | null>(null);
 
+  const { data, isLoading } = useGetTopic(Number(topic_id));
+  const [playing, setPlaying] = useState({
+    playing: true,
+    controls: true,
+  });
   const courseData = useGetCourse(Number(course_id));
 
   const configPlayer = {
-    controls: true,
+    controls: playing.controls,
     onProgress: (e: any) => {
       setTime(Math.round(e.playedSeconds));
     },
+  };
+
+  const jumpToSecond = (second: number) => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(second);
+    }
   };
 
   return (
@@ -107,7 +130,12 @@ function Learning() {
               <Loader />
             </div>
           ) : (
-            <Player configPlayer={configPlayer} data={data} />
+            <Player
+              configPlayer={configPlayer}
+              data={data}
+              playerRef={playerRef}
+              playing={playing.playing}
+            />
           )}
           <div>
             <div className='text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700'>
@@ -136,7 +164,26 @@ function Learning() {
               {tabs === EnumTab.COMMENTS && (
                 <Comment author_id={courseData?.data?.instructor_id} />
               )}
-              {tabs === EnumTab.NOTE && <Note time={time} />}
+              {tabs === EnumTab.NOTE && (
+                <Note
+                  time={time}
+                  topic_id={topic_id}
+                  jumpToSecond={jumpToSecond}
+                  handlePlaying={(play: boolean) => {
+                    if (play) {
+                      setPlaying({
+                        playing: true,
+                        controls: true,
+                      });
+                    } else {
+                      setPlaying({
+                        playing: false,
+                        controls: false,
+                      });
+                    }
+                  }}
+                />
+              )}
               {tabs === EnumTab.REVIEW && <Review />}
             </div>
           </div>

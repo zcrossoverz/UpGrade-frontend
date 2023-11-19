@@ -40,6 +40,10 @@ const courseApi = {
       key: string;
       value: string;
     }[];
+    exclude?: {
+      key: string;
+      value: string;
+    }[];
   }) {
     return http.post(`${PREFIX}/get-list`, {
       filter,
