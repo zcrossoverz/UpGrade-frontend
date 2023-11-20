@@ -1,50 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import avatarEmpty from "../../../assets/avatar.jpg";
-import { BsBell } from "react-icons/bs";
-import { commentTime } from "@/utils/time";
-import { BsFillCircleFill } from "react-icons/bs";
 import { useAuth, useLogout } from "@/hooks/useAuth";
 
 function Header() {
-  const allNotifications = [
-    {
-      content:
-        "Khóa học Typescript 2022 vừa có bài học mới, hãy vào học ngay thôi",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696349854856,
-    },
-    {
-      content:
-        "Bạn đã thanh toán thành công khóa học Nestjs cơ bản và nâng cao",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696341854856,
-    },
-    {
-      content: "Bình luận của bạn vừa nhận được lượt tương tác, xem ngay nào",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696349870983,
-    },
-    {
-      content:
-        "ABC đã trả lời bình luận của bạn trong khóa học Nestjs cơ bản và nâng cao",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696349872983,
-    },
-    {
-      content: "Chúc mừng! Khóa học CSS của bạn vừa có người đăng ký mới",
-      link: "/orders",
-      status: "unread",
-      timestamp: 1696349871983,
-    },
-  ];
-
-  const notifications = allNotifications.slice(0, 5);
-
   const auth = useAuth();
 
   const logout = useLogout();
@@ -56,7 +15,7 @@ function Header() {
         <div className='flex items-center px-4 col-span-2'></div>
         <div className='flex justify-end py-6 px-2 mt-2'>
           <div className='-mt-5 w-full flex justify-end items-center select-none pt-1'>
-            <div className='p-1 hover:cursor-pointer text-gray-500 hover:text-red-400 mr-8 relative group transition duration-500 ease-out'>
+            {/* <div className='p-1 hover:cursor-pointer text-gray-500 hover:text-red-400 mr-8 relative group transition duration-500 ease-out'>
               <div className='relative'>
                 <BsBell className='text-2xl' />
                 {allNotifications.length > 0 && (
@@ -115,7 +74,7 @@ function Header() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className='relative group hover:cursor-pointer'>
               <img
                 src={avatarEmpty}

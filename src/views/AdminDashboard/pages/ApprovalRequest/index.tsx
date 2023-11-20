@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Badge from "@/components/Badge";
 import Loader from "@/components/Loader";
+import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import {
   useGetListApproval,
@@ -26,92 +27,100 @@ function ApprovalRequest() {
           <Loader />
         </div>
       ) : data?.count > 0 ? (
-        <div className='flex justify-center mt-6 w-full'>
-          <Table
-            handleForward={(data: any) => {
-              navigate(`/admin/course-management/details/${data.course_id}`);
-            }}
-            handleTick={async (data: any) => {
-              setCourseId(data.course_id);
-              await approveRequestHook.mutateAsync({
-                course_id: data.id,
-                isAccept: true,
-              });
-            }}
-            handleCancel={async (data: any) => {
-              setCourseId(data.course_id);
-              await approveRequestHook.mutateAsync({
-                course_id: data.id,
-                isAccept: false,
-              });
-            }}
-            data={data?.datas?.map(
-              (
-                e: {
-                  course_title: string;
-                  instructor_id: string;
-                  course_id: string;
-                  status: string;
-                  created_at: string;
-                  updated_at: string;
-                  id: number;
+        <>
+          <div className='flex justify-center mt-6 w-full'>
+            <Table
+              handleForward={(data: any) => {
+                navigate(`/admin/course-management/details/${data.course_id}`);
+              }}
+              handleTick={async (data: any) => {
+                setCourseId(data.course_id);
+                await approveRequestHook.mutateAsync({
+                  course_id: data.id,
+                  isAccept: true,
+                });
+              }}
+              handleCancel={async (data: any) => {
+                setCourseId(data.course_id);
+                await approveRequestHook.mutateAsync({
+                  course_id: data.id,
+                  isAccept: false,
+                });
+              }}
+              data={data?.datas?.map(
+                (
+                  e: {
+                    course_title: string;
+                    instructor_id: string;
+                    course_id: string;
+                    status: string;
+                    created_at: string;
+                    updated_at: string;
+                    id: number;
+                  },
+                  i: number
+                ) => ({
+                  order: (i + 1).toString(),
+                  course_title: e.course_title,
+                  updateDate: formatTime(e.updated_at),
+                  createDate: formatTime(e.created_at),
+                  status:
+                    (e.status === "Pending" && (
+                      <Badge
+                        text='Chờ duyệt'
+                        color='text-yellow-700'
+                        bgColor='bg-yellow-200'
+                      />
+                    )) ||
+                    (e.status === "Approved" && (
+                      <Badge
+                        text='Chấp thuận'
+                        color='text-green-700'
+                        bgColor='bg-green-200'
+                      />
+                    )) ||
+                    (e.status === "Rejected" && (
+                      <Badge
+                        text='Từ chối'
+                        color='text-red-700'
+                        bgColor='bg-red-200'
+                      />
+                    )),
+                  course_id: e.course_id,
+                  id: e.id,
+                })
+              )}
+              headerLabel={[
+                {
+                  key: "order",
+                  title: "#",
                 },
-                i: number
-              ) => ({
-                order: (i + 1).toString(),
-                course_title: e.course_title,
-                updateDate: formatTime(e.updated_at),
-                createDate: formatTime(e.created_at),
-                status:
-                  (e.status === "Pending" && (
-                    <Badge
-                      text='Chờ duyệt'
-                      color='text-yellow-700'
-                      bgColor='bg-yellow-200'
-                    />
-                  )) ||
-                  (e.status === "Approved" && (
-                    <Badge
-                      text='Chấp thuận'
-                      color='text-green-700'
-                      bgColor='bg-green-200'
-                    />
-                  )) ||
-                  (e.status === "Rejected" && (
-                    <Badge
-                      text='Từ chối'
-                      color='text-red-700'
-                      bgColor='bg-red-200'
-                    />
-                  )),
-                course_id: e.course_id,
-                id: e.id,
-              })
-            )}
-            headerLabel={[
-              {
-                key: "order",
-                title: "#",
-              },
-              {
-                key: "course_title",
-                title: "Tiêu đề",
-              },
-              {
-                key: "status",
-                title: "Tình trạng",
-              },
-              {
-                key: "updateDate",
-                title: "CẬP NHẬT LÚC",
-              },
-              {
-                key: "createDate",
-                title: "KHỞI TẠO LÚC",
-              },
-            ]}
+                {
+                  key: "course_title",
+                  title: "Tiêu đề",
+                },
+                {
+                  key: "status",
+                  title: "Tình trạng",
+                },
+                {
+                  key: "updateDate",
+                  title: "CẬP NHẬT LÚC",
+                },
+                {
+                  key: "createDate",
+                  title: "KHỞI TẠO LÚC",
+                },
+              ]}
+            />
+          </div>
+          <Pagination
+            currentPage={8}
+            totalCount={10}
+            pageSize={5}
+            siblingCount={1}
           />
-        </div>
+        </>
       ) : (
         <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
           <p className='text-gray-600'>Chưa có nội dung nào</p>

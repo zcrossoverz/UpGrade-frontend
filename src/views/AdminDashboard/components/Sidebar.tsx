@@ -38,7 +38,9 @@ const Sidebar = () => {
                   <Link
                     key={i.toString()}
                     to={`${path.replace("/", "")}${
-                      params !== undefined && !isAdmin ? `/${data.id}` : ``
+                      params !== undefined && !isAdmin && data
+                        ? `/${data.id}`
+                        : ``
                     }`}
                     className={`mt-[5px] relative group min-w-[230px]`}
                   >

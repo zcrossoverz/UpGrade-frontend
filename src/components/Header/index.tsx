@@ -25,7 +25,7 @@ function Header() {
 
   const logout = useLogout();
 
-  const { cart } = useCart();
+  const { cart, totalPrice } = useCart();
   const notifications = useGetNotification();
   const markReadHook = useMarkNotificationAsRead();
 
@@ -107,7 +107,7 @@ function Header() {
                                 Tổng:
                               </p>
                               <p className='text-xl leading-relaxed '>
-                                {formatCurrency(90000000)}
+                                {formatCurrency(totalPrice())}
                               </p>
                             </div>
                             <div className='mt-2'>
