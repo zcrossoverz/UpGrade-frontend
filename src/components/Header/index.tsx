@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import logo from "../../assets/logo_updrade.png";
-import Input from "../Input/Input";
 import Button from "../Button/button";
 import { Link, useNavigate } from "react-router-dom";
 import { BsBell, BsCart } from "react-icons/bs";
@@ -29,6 +28,8 @@ function Header() {
   const notifications = useGetNotification();
   const markReadHook = useMarkNotificationAsRead();
 
+  const [search, setSearch] = useState("");
+
   return (
     <div className='bg-white border'>
       <div className='grid grid-cols-4 px-12'>
@@ -38,10 +39,14 @@ function Header() {
           </Link>
         </div>
         <div className='flex items-center px-4 col-span-2'>
-          <Input
-            extraClass='rounded-xl w-[450px] py-[4px] hover:border-[0.5px]'
-            properties={{
-              placeholder: "search",
+          <input
+            className='px-4 rounded-xl w-[450px] py-[4px] border focus:outline-none bg-gray-200/10'
+            placeholder='search'
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                navigate(`/search/?q=${search}`);
+              }
             }}
           />
         </div>

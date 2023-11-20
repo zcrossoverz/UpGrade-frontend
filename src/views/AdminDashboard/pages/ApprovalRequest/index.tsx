@@ -30,6 +30,7 @@ function ApprovalRequest() {
     pageSize: Number(searchParams.get("pageSize") || 5),
     siblingCount: 1,
   });
+
   const { data, isLoading, refetch } = useGetListApproval({
     page: paginationProps.currentPage,
     limit: paginationProps.pageSize,

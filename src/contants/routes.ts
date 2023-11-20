@@ -15,6 +15,7 @@ import UnitManagement from "@/views/AdminDashboard/pages/CourseManagement/UnitMa
 import TopicManagement from "@/views/AdminDashboard/pages/CourseManagement/TopicManagement";
 import CourseDetailPage from "@/views/AdminDashboard/pages/CourseManagement/courses/CourseDetailPage";
 import ApprovalRequest from "@/views/AdminDashboard/pages/ApprovalRequest";
+import Search from "@/views/Search";
 
 interface IRoute {
   name: string;
@@ -37,6 +38,11 @@ export const PUBLIC_ROUTES: Array<IRoute> = [
     name: "course detail",
     path: "/course-details/:id",
     Element: CourseDetails,
+  },
+  {
+    name: "tìm kiếm",
+    path: "/search",
+    Element: Search,
   },
   {
     name: "course detail",
@@ -131,16 +137,16 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     adminRoute: true,
   },
   {
-    name: "Người dùng",
-    path: "/tools",
-    Element: Tools,
+    name: "Kiểm duyệt",
+    path: "/approval-request",
+    Element: ApprovalRequest,
     requireAdmin: true,
     adminRoute: true,
   },
   {
-    name: "Đơn xét duyệt",
-    path: "/approval-request",
-    Element: ApprovalRequest,
+    name: "Tài khoản",
+    path: "/tools",
+    Element: Tools,
     requireAdmin: true,
     adminRoute: true,
   },
