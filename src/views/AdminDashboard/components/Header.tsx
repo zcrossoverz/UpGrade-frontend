@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import avatarEmpty from "../../../assets/avatar.jpg";
 import { useAuth, useLogout } from "@/hooks/useAuth";
+import Avatar from "@/components/Avatar";
 
 function Header() {
   const auth = useAuth();
@@ -76,22 +76,15 @@ function Header() {
               </div>
             </div> */}
             <div className='relative group hover:cursor-pointer'>
-              <img
-                src={avatarEmpty}
-                alt='avatar'
-                className='w-10 h-10 rounded-full'
-              />
+              <Avatar size={10} avatar={auth?.data?.avatar} />
+
               <div className='absolute right-0 top-0 z-100 hidden bg-grey-200 group-hover:block'>
                 <div className='absolute pt-12 right-0 -left-12'>
                   <div className='absolute border border-gray-300 bg-white min-w-[250px] py-4 z-100 right-0 shadow-2xl rounded-sm px-4'>
                     <div>
                       <div className='grid grid-cols-6 mb-4'>
                         <div className='col-span-2 flex justify-center items-center'>
-                          <img
-                            src={avatarEmpty}
-                            alt='avatar'
-                            className='w-12 h-12 rounded-full'
-                          />
+                          <Avatar size={12} avatar={auth?.data?.avatar} />
                         </div>
                         <div className='col-span-4 flex flex-col'>
                           <p className='w-full line-clamp-2'>

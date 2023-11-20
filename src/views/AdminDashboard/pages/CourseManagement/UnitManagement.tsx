@@ -37,8 +37,8 @@ function UnitManagement() {
   const selectDeleteUnit = (data: { title: string; unit_id: number }) => {
     setDeleteUnitModal({
       isOpen: true,
-      title: `Xóa ${data.title}`,
-      unit_id: data.unit_id,
+      title: `Xóa ${data?.title}`,
+      unit_id: data?.unit_id,
     });
   };
 
@@ -50,7 +50,7 @@ function UnitManagement() {
       {openCreateUnit && (
         <CreateUnitModal
           drive_folder_id={data?.drive_folder_id}
-          index={data?.units.length}
+          index={data?.units?.length}
           handleClose={() => setOpenCreateUnit(false)}
           course_id={Number(course_id)}
         />
@@ -123,15 +123,15 @@ function UnitManagement() {
             <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
               <Loader />
             </div>
-          ) : data.units.length > 0 ? (
+          ) : data?.units?.length > 0 ? (
             <div className='flex justify-center mt-6 w-full'>
               <Table
                 handleEdit={selectUpdateUnit}
                 handleDelete={selectDeleteUnit}
                 handleView={(data: { unit_id: number }) =>
-                  navigate(`./${data.unit_id}`)
+                  navigate(`./${data?.unit_id}`)
                 }
-                data={data.units.map(
+                data={data?.units?.map(
                   (
                     e: {
                       title: string;

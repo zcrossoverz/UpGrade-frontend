@@ -1,4 +1,5 @@
 import http from "@/utils/http";
+import { IfilterSearch } from "@/contants/filter";
 
 const PREFIX = "comment";
 
@@ -27,7 +28,7 @@ const commentApi = {
       isLike,
     });
   },
-  async getList(topic_id: number) {
+  async getList(topic_id: number, filter?: IfilterSearch) {
     return http.post(`${PREFIX}/get-list`, {
       order: {
         key: "id",
@@ -39,6 +40,7 @@ const commentApi = {
           value: topic_id,
         },
       ],
+      ...filter,
     });
   },
 };

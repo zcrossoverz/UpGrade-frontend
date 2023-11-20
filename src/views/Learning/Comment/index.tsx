@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommentItem from "./CommentItem";
 import { useCreateComment, useGetComments } from "@/hooks/useComment";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { Loader } from "lucide-react";
 import EmptyData from "@/components/EmptyData";
+import Pagination from "@/components/Pagination";
 
 function Comment({ author_id }: { author_id: number }) {
   const { topic_id } = useParams();
-  const { data, isLoading } = useGetComments(Number(topic_id));
+
   const [parentReply, setParentReply] = useState({
     id: -1,
     user_fullname: "",
@@ -16,6 +17,38 @@ function Comment({ author_id }: { author_id: number }) {
   const [comment, setComment] = useState("");
 
   const createCommentHook = useCreateComment();
+
+  // pagination
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [paginationProps, setPagination] = useState({
+    currentPage: Number(searchParams.get("page") || 1),
+    totalCount: 0,
+    pageSize: Number(searchParams.get("pageSize") || 5),
+    siblingCount: 1,
+  });
+
+  const { data, isLoading, refetch } = useGetComments(Number(topic_id), {
+    page: paginationProps.currentPage,
+    limit: paginationProps.pageSize,
+    order: {
+      key: "id",
+      value: "DESC",
+    },
+  });
+
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      totalCount: Number(data?.count || 0),
+    }));
+  }, [data?.count]);
+
+  useEffect(() => {
+    refetch();
+  }, [paginationProps.currentPage, paginationProps.pageSize]);
+
+  // end pagination
 
   return (
     <div>
@@ -84,31 +117,86 @@ function Comment({ author_id }: { author_id: number }) {
             {isLoading ? (
               <Loader />
             ) : data && data.datas?.length > 0 ? (
-              data.datas?.map((e: any, i: number) => (
-                <CommentItem
-                  key={i.toString()}
-                  id={e.id}
-                  user_fullname={e.user_fullname}
-                  user_avatar={e.user_avatar}
-                  user_email={e.user_email}
-                  text={e.text}
-                  likes={e.likes}
-                  dislikes={e.dislikes}
-                  created_at={e.created_at}
-                  children={e.children}
-                  author_id={author_id}
-                  user_id={e.user_id}
-                  isAdmin={e.user_role === "admin"}
-                  handleReply={(comment_id: number, user_fullname: string) =>
-                    setParentReply({
-                      id: comment_id,
-                      user_fullname,
-                    })
-                  }
+              <>
+                {data.datas?.map((e: any, i: number) => (
+                  <CommentItem
+                    key={i.toString()}
+                    id={e.id}
+                    user_fullname={e.user_fullname}
+                    user_avatar={e.user_avatar}
+                    user_email={e.user_email}
+                    text={e.text}
+                    likes={e.likes}
+                    dislikes={e.dislikes}
+                    created_at={e.created_at}
+                    children={e.children}
+                    author_id={author_id}
+                    user_id={e.user_id}
+                    isAdmin={e.user_role === "admin"}
+                    handleReply={(comment_id: number, user_fullname: string) =>
+                      setParentReply({
+                        id: comment_id,
+                        user_fullname,
+                      })
+                    }
+                  />
+                ))}
+                <Pagination
+                  {...paginationProps}
+                  next={() => {
+                    setSearchParams((prevSearchParams) => {
+                      const newParams = new URLSearchParams(prevSearchParams);
+                      newParams.set(
+                        "page",
+                        `${paginationProps.currentPage + 1}`
+                      );
+                      return newParams;
+                    });
+                    setPagination((prev) => ({
+                      ...prev,
+                      currentPage: Number(prev.currentPage) + 1,
+                    }));
+                  }}
+                  prev={() => {
+                    setSearchParams((prevSearchParams) => {
+                      const newParams = new URLSearchParams(prevSearchParams);
+                      newParams.set(
+                        "page",
+                        `${paginationProps.currentPage - 1}`
+                      );
+                      return newParams;
+                    });
+                    setPagination((prevData) => ({
+                      ...prevData,
+                      currentPage: Number(prevData.currentPage) - 1,
+                    }));
+                  }}
+                  goTo={(page: number) => {
+                    setSearchParams((prevSearchParams) => {
+                      const newParams = new URLSearchParams(prevSearchParams);
+                      newParams.set("page", `${Number(page)}`);
+                      return newParams;
+                    });
+                    setPagination((prevData) => ({
+                      ...prevData,
+                      currentPage: page,
+                    }));
+                  }}
+                  pageSizeChange={(pageSize: number) => {
+                    setSearchParams((prevSearchParams) => {
+                      const newParams = new URLSearchParams(prevSearchParams);
+                      newParams.set("pageSize", `${Number(pageSize)}`);
+                      return newParams;
+                    });
+                    setPagination((prev) => ({
+                      ...prev,
+                      pageSize,
+                    }));
+                  }}
                 />
-              ))
+              </>
             ) : (
-              <EmptyData />
+              <div />
             )}
           </div>
         </div>

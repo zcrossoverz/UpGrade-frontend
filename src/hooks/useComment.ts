@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import commentApi from "@/apis/comment.api";
+import { IfilterSearch } from "@/contants/filter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
@@ -7,9 +8,9 @@ import { toast } from "react-toastify";
 const key = "comment";
 const key_get_list = "comments_get_list";
 
-export const useGetComments = (topic_id: number) => {
+export const useGetComments = (topic_id: number, filter?: IfilterSearch) => {
   const query = useQuery([key, key_get_list], () =>
-    commentApi.getList(topic_id)
+    commentApi.getList(topic_id, filter)
   );
   return {
     ...query,

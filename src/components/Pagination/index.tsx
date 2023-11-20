@@ -10,9 +10,18 @@ function Pagination(props: {
   next: any;
   prev: any;
   goTo: any;
+  pageSizeChange: any;
 }) {
-  const { currentPage, totalCount, pageSize, siblingCount, next, prev, goTo } =
-    props;
+  const {
+    currentPage,
+    totalCount,
+    pageSize,
+    siblingCount,
+    next,
+    prev,
+    goTo,
+    pageSizeChange,
+  } = props;
 
   const paginationRange = usePagination({
     currentPage,
@@ -36,7 +45,10 @@ function Pagination(props: {
           <div className='flex items-center justify-center'>
             <div className='flex items-center space-x-2 filament-tables-pagination-records-per-page-selector rtl:space-x-reverse'>
               <label>
-                <select className='h-8 border text-sm pr-4 leading-none transition duration-75 border-gray-300 rounded-lg shadow-sm outline-none focus:border-cyan-500 focus:ring-1 focus:ring-inset focus:ring-cyan-500'>
+                <select
+                  className='h-8 border text-sm pr-4 leading-none transition duration-75 border-gray-300 rounded-lg shadow-sm outline-none focus:border-cyan-500 focus:ring-1 focus:ring-inset focus:ring-cyan-500'
+                  onChange={(e) => pageSizeChange(Number(e.target.value))}
+                >
                   <option value='5'>5</option>
                   <option value='10'>10</option>
                   <option value='25'>25</option>

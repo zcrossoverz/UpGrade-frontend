@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Badge from "@/components/Badge";
 import Loader from "@/components/Loader";
@@ -18,15 +19,15 @@ function ApprovalRequest() {
 
   const approveRequestHook = useProcessApprovalCourse(course_id);
 
+  // pagination
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [paginationProps, setPagination] = useState({
     currentPage: Number(searchParams.get("page") || 1),
     totalCount: 0,
-    pageSize: 5,
+    pageSize: Number(searchParams.get("pageSize") || 5),
     siblingCount: 1,
   });
-
   const { data, isLoading, refetch } = useGetListApproval({
     page: paginationProps.currentPage,
     limit: paginationProps.pageSize,
@@ -37,17 +38,17 @@ function ApprovalRequest() {
   });
 
   useEffect(() => {
-    setPagination({
-      currentPage: Number(searchParams.get("page") || 1),
+    setPagination((prev) => ({
+      ...prev,
       totalCount: Number(data?.count || 0),
-      pageSize: 5,
-      siblingCount: 1,
-    });
+    }));
   }, [data?.count]);
 
   useEffect(() => {
     refetch();
-  }, [paginationProps.currentPage, paginationProps.currentPage]);
+  }, [paginationProps.currentPage, paginationProps.pageSize]);
+
+  // end pagination
 
   return (
     <div className='mt-2 min-h-[350px]'>
@@ -177,6 +178,19 @@ function ApprovalRequest() {
               setPagination((prevData) => ({
                 ...prevData,
                 currentPage: page,
+              }));
+            }}
+            pageSizeChange={(pageSize: number) => {
+              setSearchParams((prevSearchParams) => {
+                const newParams = new URLSearchParams(prevSearchParams);
+                newParams.set("pageSize", `${Number(pageSize)}`);
+                newParams.set("page", `1`);
+                return newParams;
+              });
+              setPagination((prev) => ({
+                ...prev,
+                pageSize,
+                page: 1,
               }));
             }}
           />

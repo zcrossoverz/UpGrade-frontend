@@ -41,8 +41,8 @@ function TopicManagement() {
   const selectDeleteTopic = (data: { title: string; topic_id: number }) => {
     setDeleteTopicModal({
       isOpen: true,
-      title: `Xóa ${data.title}`,
-      topic_id: data.topic_id,
+      title: `Xóa ${data?.title}`,
+      topic_id: data?.topic_id,
     });
   };
 
@@ -136,7 +136,7 @@ function TopicManagement() {
                 handleView={({ topic_id }: { topic_id: number }) => {
                   navigate(`/learning/${Number(course_id)}/${topic_id}`);
                 }}
-                data={data.datas.map(
+                data={data?.datas?.map(
                   (
                     e: {
                       title: string;

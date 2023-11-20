@@ -153,12 +153,15 @@ function Header() {
                                   <button
                                     className='mt-1 grid grid-cols-8 hover:bg-gray-100 px-4 py-2'
                                     key={i.toString()}
-                                    onClick={() =>
-                                      markReadHook.mutateAsync({ id: e.id })
-                                    }
+                                    onClick={async () => {
+                                      await markReadHook.mutateAsync({
+                                        id: e.id,
+                                      });
+                                      navigate(`${e.href}`);
+                                    }}
                                   >
                                     <div className='col-span-7'>
-                                      <div className='line-clamp-3 text-sm leading-[15px] h-8 font-medium text-left'>
+                                      <div className='line-clamp-2 text-sm leading-[15px] h-8 font-medium text-left'>
                                         {e.text}
                                       </div>
                                       <div className='mt-1 text-[12px] leading-[14px] text-left'>
@@ -199,14 +202,14 @@ function Header() {
                 </div>
               </div>
               <div className='relative group hover:cursor-pointer'>
-                <Avatar size={10} />
+                <Avatar size={10} avatar={auth?.data?.avatar} />
                 <div className='absolute right-0 top-0 z-10 hidden bg-grey-200 group-hover:block'>
                   <div className='absolute pt-12 right-0 -left-12'>
                     <div className='absolute border border-gray-300 bg-white min-w-[250px] py-4 z-100 right-0 shadow-2xl rounded-sm px-4'>
                       <div>
                         <div className='grid grid-cols-6 mb-4'>
                           <div className='col-span-2 flex justify-center items-center'>
-                            <Avatar size={12} />
+                            <Avatar size={12} avatar={auth?.data?.avatar} />
                           </div>
                           <div className='col-span-4 flex flex-col'>
                             <p className='w-full line-clamp-2'>

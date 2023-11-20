@@ -20,6 +20,12 @@ export const useCreateCourse = () => {
       onSuccess: () => {
         toast.success("Course created successfully");
         queryClient.invalidateQueries([key, key_my_course]);
+        queryClient.refetchQueries([key, key_get_list_course]);
+        queryClient.refetchQueries([
+          key,
+          key_get_list_course,
+          "course_management",
+        ]);
       },
       onError: (error: AxiosError<{ message: string }>) => {
         toast.error(error.response?.data?.message);
@@ -185,6 +191,12 @@ export const useDeleteCourse = () => {
       onSuccess: () => {
         toast.success("Course delete successfully");
         queryClient.invalidateQueries([key, key_my_course]);
+        queryClient.refetchQueries([key, key_get_list_course]);
+        queryClient.refetchQueries([
+          key,
+          key_get_list_course,
+          "course_management",
+        ]);
       },
       onError: (error: AxiosError<{ message: string }>) => {
         toast.error(error.response?.data?.message);
