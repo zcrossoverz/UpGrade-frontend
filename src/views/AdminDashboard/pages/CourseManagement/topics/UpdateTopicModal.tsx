@@ -63,6 +63,21 @@ function UpdateTopicModal({
                 }
               />
             </div>
+            <div className='mt-4'>
+              <p className='text-left font-medium text-black'>Trạng thái</p>
+              <select
+                className='border border-gray-500 w-full px-2 py-2 text-sm pr-8 rounded-md mt-2'
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, status: e.target.value }));
+                }}
+              >
+                <option value='' disabled selected>
+                  Chọn trạng thái
+                </option>
+                <option value='private'>Riêng tư</option>
+                <option value='public'>Công khai</option>
+              </select>
+            </div>
           </div>
           <div className='flex justify-end w-full'>
             <button

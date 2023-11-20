@@ -1,14 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import CourseItem from "./CourseItem";
 import CreateCourseModal from "./courses/CreateCourseModal";
-import { useGetMyCourses } from "@/hooks/useCourse";
+import { useGetListCourses } from "@/hooks/useCourse";
 import Loader from "@/components/Loader";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate, useParams } from "react-router-dom";
 
 function CourseManagement() {
   const [showCreateCourseModal, setShowCreateCourseModal] = useState(false);
 
-  const { data, isLoading } = useGetMyCourses();
+  const authHook = useAuth();
+
+  const { user_id } = useParams();
+
+  const { data, isLoading, remove } = useGetListCourses(
+    {
+      ...(authHook?.isAdmin
+        ? {}
+        : {
+            explicit: [
+              {
+                key: "instructor_id",
+                value: user_id,
+              },
+            ],
+          }),
+    },
+    "course_management"
+  );
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authHook.isLoading && authHook?.isAdmin === false && !user_id) {
+      navigate("/");
+      remove();
+    }
+  }, [authHook]);
 
   return (
     <div>

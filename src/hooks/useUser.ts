@@ -13,8 +13,18 @@ export const useGetUsers = () => {
 
 export const useCreateUser = () => {
   const createUserMutation = useMutation(
-    (userData: { email: string; password: string }) =>
-      userApi.register(userData.email, userData.password),
+    (userData: {
+      email: string;
+      password: string;
+      firstName: string;
+      lastName: string;
+    }) =>
+      userApi.register(
+        userData.email,
+        userData.password,
+        userData.firstName,
+        userData.lastName
+      ),
     {
       onSuccess: (response: AxiosResponse) => {
         toast.success("User created successfully");

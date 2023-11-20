@@ -229,7 +229,7 @@ function Header() {
                           to={
                             auth.isAdmin
                               ? "/admin/overview"
-                              : "`/admin/course-management`"
+                              : `/admin/course-management/${auth?.data?.id}`
                           }
                         >
                           {auth.isAdmin

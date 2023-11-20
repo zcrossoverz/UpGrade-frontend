@@ -3,10 +3,17 @@ import http from "@/utils/http";
 const PREFIX = "user";
 
 const userApi = {
-  async register(email: string, password: string) {
+  async register(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string
+  ) {
     return http.post(`${PREFIX}/create`, {
       email,
       password,
+      firstName,
+      lastName,
     });
   },
   async getUsers() {

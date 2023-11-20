@@ -102,6 +102,7 @@ const courseApi = {
     topic_id: number;
     title: string;
     description: string;
+    status: string;
   }) {
     return http.post(`${TOPIC}/update`, data);
   },

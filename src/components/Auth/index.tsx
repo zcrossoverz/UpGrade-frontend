@@ -93,6 +93,8 @@ const RegisterByAccount = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
 
   const { isLoading, mutateAsync } = useCreateUser();
 
@@ -101,28 +103,46 @@ const RegisterByAccount = () => {
       toast.error("Mật khẩu không khớp");
       return;
     }
-    await mutateAsync({ email, password });
+    await mutateAsync({ email, password, firstName, lastName });
   };
 
   return (
     <div className='mt-8 flex justify-center flex-col'>
-      <div className='w-full px-8'>
+      <div className='w-full px-8 -mt-4'>
+        <input
+          type='text'
+          placeholder='Họ'
+          className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
+          onChange={(e) => setfirstName(e.target.value)}
+        />
+      </div>
+      <div className='w-full px-8 mt-2'>
+        <input
+          type='text'
+          placeholder='Tên'
+          className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
+          onChange={(e) => setlastName(e.target.value)}
+        />
+      </div>
+      <div className='w-full px-8 mt-2'>
         <input
           type='text'
           placeholder='Địa chỉ email'
+          name='email_register'
           className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <div className='w-full px-8 mt-4'>
+      <div className='w-full px-8 mt-2'>
         <input
           type='password'
           placeholder='Mật khẩu'
+          name='password_register'
           onChange={(e) => setPassword(e.target.value)}
           className='border w-full px-6 py-2 rounded-3xl focus:outline-none'
         />
       </div>
-      <div className='w-full px-8 mt-4'>
+      <div className='w-full px-8 mt-2'>
         <input
           type='password'
           placeholder='Nhập lại mật khẩu'

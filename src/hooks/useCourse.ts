@@ -254,8 +254,8 @@ export const useUpdateCourse = (course_id: number) => {
   return mutation;
 };
 
-export const useGetListCourses = (filter: any) => {
-  const query = useQuery([key, key_get_list_course], () =>
+export const useGetListCourses = (filter: any, keyCustom?: string) => {
+  const query = useQuery([key, key_get_list_course, keyCustom], () =>
     courseApi.getListCourses(filter)
   );
   return {

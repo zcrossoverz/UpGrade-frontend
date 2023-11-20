@@ -23,6 +23,7 @@ interface IRoute {
   requireAdmin?: boolean;
   adminRoute?: boolean;
   hiddenInMenu?: boolean;
+  params?: string[];
   children?: Array<IRoute>;
 }
 
@@ -71,6 +72,7 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     name: "Khóa học",
     path: "/course-management",
     Element: CourseManagement,
+    params: ["user_id"],
     adminRoute: true,
     children: [
       {
