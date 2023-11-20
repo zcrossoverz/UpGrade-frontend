@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Billboard from "./Billboard";
@@ -21,7 +21,7 @@ import Loader from "@/components/Loader";
 import { PUBLIC_FILTER } from "@/contants/filter";
 
 function HomePage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const filter = {
     ...(searchParams.get("page") !== null
@@ -53,8 +53,6 @@ function HomePage() {
           query: [PUBLIC_FILTER],
         }),
   };
-
-  console.log(filter);
 
   const { data, isLoading } = useGetListCourses(filter);
 

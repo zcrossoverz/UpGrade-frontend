@@ -49,7 +49,7 @@ function UpdateUnitModal({
                 }
               />
             </div>
-            <div className='mt-4'>
+            {/* <div className='mt-4'>
               <p className='text-left font-medium text-black'>Mô tả</p>
               <textarea
                 rows={3}
@@ -62,6 +62,22 @@ function UpdateUnitModal({
                   }))
                 }
               />
+            </div> */}
+            <div className='mt-4'>
+              <p className='text-left font-medium text-black'>Trạng thái</p>
+              <select
+                className='border border-gray-500 w-full px-2 py-2 text-sm pr-8 rounded-md'
+                // defaultValue={data.status}
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, status: e.target.value }));
+                }}
+              >
+                <option value='' disabled selected>
+                  Chọn trạng thái
+                </option>
+                <option value='private'>Riêng tư</option>
+                <option value='public'>Công khai</option>
+              </select>
             </div>
           </div>
           <div className='flex justify-end w-full'>

@@ -10,6 +10,7 @@ import ModalDelete from "@/components/ModalDelete";
 import { secondsToTime } from "@/utils/convertNumber";
 import CreateTopicModal from "./topics/CreateTopicModal";
 import UpdateTopicModal from "./topics/UpdateTopicModal";
+import Badge from "@/components/Badge";
 
 function TopicManagement() {
   const { unit_id, course_id } = useParams();
@@ -154,7 +155,20 @@ function TopicManagement() {
                     createDate: formatTime(e.created_at),
                     description: e.description,
                     topic_id: e.id,
-                    status: e.status,
+                    status:
+                      e.status === "public" ? (
+                        <Badge
+                          text='Công khai'
+                          color='text-green-600'
+                          bgColor='bg-green-200'
+                        />
+                      ) : (
+                        <Badge
+                          text='Riêng tư'
+                          color='text-red-600'
+                          bgColor='bg-red-200'
+                        />
+                      ),
                     duration: secondsToTime(e.duration),
                   })
                 )}

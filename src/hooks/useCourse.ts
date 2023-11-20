@@ -37,11 +37,25 @@ export const useGetMyCourses = () => {
   };
 };
 
-export const useGetCourse = (id: number) => {
+export const useGetCourse = (id: number, filterPrivate?: boolean) => {
   const query = useQuery([key, id], () => courseApi.getCourseDetail(id));
+
   return {
     ...query,
-    data: query.data?.data?.data,
+    data:
+      filterPrivate !== undefined && filterPrivate === true
+        ? {
+            ...query.data?.data?.data,
+            units: query.data?.data?.data.units
+              .map((unit: any) => ({
+                ...unit,
+                topics: unit.topics.filter(
+                  (topic: any) => topic.status !== "private"
+                ),
+              }))
+              .filter((unit: any) => unit.status !== "private"),
+          }
+        : query.data?.data?.data,
   };
 };
 

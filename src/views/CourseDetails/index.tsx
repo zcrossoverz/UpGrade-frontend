@@ -68,7 +68,7 @@ const countTotalTopics = (units: any[]) => {
 function CourseDetails() {
   const { id } = useParams();
 
-  const { data, isLoading } = useGetCourse(Number(id));
+  const { data, isLoading } = useGetCourse(Number(id), true);
   const auth = useAuth();
 
   const totalDuration = useMemo(() => {
@@ -163,10 +163,10 @@ function CourseDetails() {
                   <div className='gap-1'>
                     <p className='ml-4'>
                       Tổng số {data?.units?.length} chương với{" "}
-                      {data?.topics?.length} bài học
+                      {data?.topics?.length || 0} bài học
                     </p>
                     <p className='ml-4'>
-                      Thời lượng {secondsToTimeString(totalDuration)}
+                      Thời lượng {secondsToTimeString(totalDuration || 0)}
                     </p>
                     <p className='ml-4'>Học mọi lúc, mọi nơi</p>
                   </div>

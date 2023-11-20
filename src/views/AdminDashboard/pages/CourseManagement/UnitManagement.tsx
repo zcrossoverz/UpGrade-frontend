@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CreateUnitModal from "./units/CreateUnitModal";
 import UpdateUnitModal from "./units/UpdateUnitModal";
 import ModalDelete from "@/components/ModalDelete";
+import Badge from "@/components/Badge";
 
 function UnitManagement() {
   const { course_id } = useParams();
@@ -148,7 +149,20 @@ function UnitManagement() {
                     createDate: formatTime(e.created_at),
                     numberTopics: e.topics.length,
                     unit_id: e.id,
-                    status: e.status,
+                    status:
+                      e.status === "public" ? (
+                        <Badge
+                          text='Công khai'
+                          color='text-green-600'
+                          bgColor='bg-green-200'
+                        />
+                      ) : (
+                        <Badge
+                          text='Riêng tư'
+                          color='text-red-600'
+                          bgColor='bg-red-200'
+                        />
+                      ),
                   })
                 )}
                 headerLabel={[
