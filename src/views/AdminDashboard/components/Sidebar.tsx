@@ -8,7 +8,7 @@ const Sidebar = () => {
   const location = useLocation();
   const currentPath = location.pathname.replace("/admin", "");
 
-  const { isAdmin } = useAuth();
+  const { data, isAdmin } = useAuth();
 
   return (
     <aside
@@ -34,10 +34,12 @@ const Sidebar = () => {
                 .filter(({ requireAdmin }) =>
                   requireAdmin === undefined ? true : requireAdmin === isAdmin
                 )
-                .map(({ name, path, children }, i) => (
+                .map(({ name, path, children, params }, i) => (
                   <Link
                     key={i.toString()}
-                    to={path.replace("/", "")}
+                    to={`${path.replace("/", "")}${
+                      params !== undefined && !isAdmin ? `/${data.id}` : ``
+                    }`}
                     className={`mt-[5px] relative group min-w-[230px]`}
                   >
                     <div
