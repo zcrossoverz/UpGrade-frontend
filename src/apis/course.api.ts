@@ -121,8 +121,10 @@ const courseApi = {
     });
   },
 
-  async getListApproval() {
-    return http.post(`${PREFIX}/get-approval-list`);
+  async getListApproval(filter: any) {
+    return http.post(`${PREFIX}/get-approval-list`, {
+      ...filter,
+    });
   },
 
   async processApproval(id: number, isAccept: boolean) {

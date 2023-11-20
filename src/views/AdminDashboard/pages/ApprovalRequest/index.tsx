@@ -8,16 +8,46 @@ import {
   useProcessApprovalCourse,
 } from "@/hooks/useCourse";
 import { formatTime } from "@/utils/time";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function ApprovalRequest() {
-  const { data, isLoading } = useGetListApproval();
   const navigate = useNavigate();
 
   const [course_id, setCourseId] = useState(-1);
 
   const approveRequestHook = useProcessApprovalCourse(course_id);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [paginationProps, setPagination] = useState({
+    currentPage: Number(searchParams.get("page") || 1),
+    totalCount: 0,
+    pageSize: 5,
+    siblingCount: 1,
+  });
+
+  const { data, isLoading, refetch } = useGetListApproval({
+    page: paginationProps.currentPage,
+    limit: paginationProps.pageSize,
+    order: {
+      key: "id",
+      value: "DESC",
+    },
+  });
+
+  useEffect(() => {
+    setPagination({
+      currentPage: Number(searchParams.get("page") || 1),
+      totalCount: Number(data?.count || 0),
+      pageSize: 5,
+      siblingCount: 1,
+    });
+  }, [data?.count]);
+
+  useEffect(() => {
+    refetch();
+  }, [paginationProps.currentPage, paginationProps.currentPage]);
 
   return (
     <div className='mt-2 min-h-[350px]'>
@@ -115,10 +145,40 @@ function ApprovalRequest() {
             />
           </div>
           <Pagination
-            currentPage={8}
-            totalCount={10}
-            pageSize={5}
-            siblingCount={1}
+            {...paginationProps}
+            next={() => {
+              setSearchParams((prevSearchParams) => {
+                const newParams = new URLSearchParams(prevSearchParams);
+                newParams.set("page", `${paginationProps.currentPage + 1}`);
+                return newParams;
+              });
+              setPagination((prev) => ({
+                ...prev,
+                currentPage: Number(prev.currentPage) + 1,
+              }));
+            }}
+            prev={() => {
+              setSearchParams((prevSearchParams) => {
+                const newParams = new URLSearchParams(prevSearchParams);
+                newParams.set("page", `${paginationProps.currentPage - 1}`);
+                return newParams;
+              });
+              setPagination((prevData) => ({
+                ...prevData,
+                currentPage: Number(prevData.currentPage) - 1,
+              }));
+            }}
+            goTo={(page: number) => {
+              setSearchParams((prevSearchParams) => {
+                const newParams = new URLSearchParams(prevSearchParams);
+                newParams.set("page", `${Number(page)}`);
+                return newParams;
+              });
+              setPagination((prevData) => ({
+                ...prevData,
+                currentPage: page,
+              }));
+            }}
           />
         </>
       ) : (

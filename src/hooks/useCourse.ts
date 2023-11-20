@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import courseApi from "@/apis/course.api";
+import { IfilterSearch } from "@/contants/filter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
@@ -212,8 +213,10 @@ export const useSubmitApprovalCourse = (course_id: number) => {
   return mutation;
 };
 
-export const useGetListApproval = () => {
-  const query = useQuery([key, key_approval], courseApi.getListApproval);
+export const useGetListApproval = (filter: IfilterSearch) => {
+  const query = useQuery([key, key_approval], () =>
+    courseApi.getListApproval(filter)
+  );
   return {
     ...query,
     data: query.data?.data?.data,
