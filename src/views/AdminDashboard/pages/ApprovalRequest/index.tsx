@@ -10,6 +10,7 @@ import {
 } from "@/hooks/useCourse";
 import { formatTime } from "@/utils/time";
 import React, { useEffect, useState } from "react";
+import { BsSearch } from "react-icons/bs";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 function ApprovalRequest() {
@@ -21,6 +22,7 @@ function ApprovalRequest() {
 
   // pagination
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [paginationProps, setPagination] = useState({
     currentPage: Number(searchParams.get("page") || 1),
@@ -31,9 +33,22 @@ function ApprovalRequest() {
   const { data, isLoading, refetch } = useGetListApproval({
     page: paginationProps.currentPage,
     limit: paginationProps.pageSize,
+    ...(searchParams.get("search") !== null
+      ? {
+          query: [
+            {
+              key: "course_title",
+              value: searchParams.get("search"),
+            },
+          ],
+        }
+      : {}),
     order: {
       key: "id",
-      value: "DESC",
+      value:
+        searchParams.get("order") !== null
+          ? searchParams.get("order")!
+          : "DESC",
     },
   });
 
@@ -46,7 +61,12 @@ function ApprovalRequest() {
 
   useEffect(() => {
     refetch();
-  }, [paginationProps.currentPage, paginationProps.pageSize]);
+  }, [
+    paginationProps.currentPage,
+    paginationProps.pageSize,
+    searchParams.get("search"),
+    searchParams.get("order"),
+  ]);
 
   // end pagination
 
@@ -59,7 +79,44 @@ function ApprovalRequest() {
         </div>
       ) : data?.count > 0 ? (
         <>
-          <div className='flex justify-center mt-6 w-full'>
+          <div className='flex mt-4'>
+            <div className='border flex'>
+              <input
+                type='text'
+                className='py-[8px] px-4 outline-0'
+                placeholder='Tìm kiếm khóa học'
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button
+                className='px-3 bg-gray-600 text-white h-[40px] text-md'
+                onClick={() =>
+                  setSearchParams((prevSearchParams) => {
+                    const newParams = new URLSearchParams(prevSearchParams);
+                    newParams.set("search", searchQuery);
+                    return newParams;
+                  })
+                }
+              >
+                <BsSearch />
+              </button>
+            </div>
+            <div className='ml-4 flex'>
+              <select
+                className='border px-2 py-1 text-sm pr-8'
+                onChange={(e) =>
+                  setSearchParams((prevSearchParams) => {
+                    const newParams = new URLSearchParams(prevSearchParams);
+                    newParams.set("order", e.target.value);
+                    return newParams;
+                  })
+                }
+              >
+                <option value='DESC'>Mới nhất</option>
+                <option value='ASC'>Cũ nhất</option>
+              </select>
+            </div>
+          </div>
+          <div className='flex justify-center mt-4 w-full'>
             <Table
               handleForward={(data: any) => {
                 navigate(`/admin/course-management/details/${data.course_id}`);
