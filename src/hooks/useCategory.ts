@@ -11,3 +11,11 @@ export const useGetListCategories = () => {
     data: query.data?.data?.data,
   };
 };
+
+export const useGetAnalystCategories = () => {
+  const query = useQuery([key, "analyst"], categoryApi.getAnalyst);
+  return {
+    ...query,
+    data: query.data?.data?.data,
+  };
+};
