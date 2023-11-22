@@ -40,12 +40,6 @@ function NotificationSetting() {
                 <Switch checked />
               </div>
             </div>
-            <div className='ml-4 grid grid-cols-2'>
-              <div className='ml-2 mb-2'>Lượt đăng nhập</div>
-              <div>
-                <Switch checked />
-              </div>
-            </div>
           </div>
         </div>
       </div>

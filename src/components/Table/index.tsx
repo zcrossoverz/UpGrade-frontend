@@ -45,7 +45,10 @@ function Table({
         <tbody>
           {data.map((row, i) =>
             i !== data.length - 1 ? (
-              <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'>
+              <tr
+                key={i.toString()}
+                className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'
+              >
                 {headerLabel.map(
                   ({ key, component }: { key: string; component?: any }, i) => (
                     <td className='px-6 py-4' key={i.toString()}>
@@ -75,7 +78,7 @@ function Table({
                       <AiOutlineDelete />
                     </button>
                   )}
-                  {handleForward !== undefined && (
+                  {handleForward !== undefined && !row?.hiddenForward && (
                     <button
                       className='px-1 text-indigo-500 hover:text-indigo-700 text-xl'
                       onClick={() => handleForward(row)}
@@ -83,7 +86,7 @@ function Table({
                       <RiShareForwardFill />
                     </button>
                   )}
-                  {handleTick !== undefined && (
+                  {handleTick !== undefined && !row?.hiddenTick && (
                     <button
                       className='px-1 text-green-500 hover:text-green-700 text-xl'
                       onClick={() => handleTick(row)}
@@ -91,7 +94,7 @@ function Table({
                       <TiTickOutline />
                     </button>
                   )}
-                  {handleCancel !== undefined && (
+                  {handleCancel !== undefined && !row?.hiddenCancel && (
                     <button
                       className='px-1 text-red-500 hover:text-blue-700 text-xl'
                       onClick={() => handleCancel(row)}
@@ -130,7 +133,7 @@ function Table({
                       <AiOutlineDelete />
                     </button>
                   )}
-                  {handleForward !== undefined && (
+                  {handleForward !== undefined && !row?.hiddenForward && (
                     <button
                       className='px-1 text-indigo-500 hover:text-indigo-700 text-xl'
                       onClick={() => handleForward(row)}
@@ -138,7 +141,7 @@ function Table({
                       <RiShareForwardFill />
                     </button>
                   )}
-                  {handleTick !== undefined && (
+                  {handleTick !== undefined && !row?.hiddenTick && (
                     <button
                       className='px-1 text-green-500 hover:text-green-700 text-xl'
                       onClick={() => handleTick(row)}
@@ -146,7 +149,7 @@ function Table({
                       <TiTickOutline />
                     </button>
                   )}
-                  {handleCancel !== undefined && (
+                  {handleCancel !== undefined && !row?.hiddenCancel && (
                     <button
                       className='px-1 text-red-500 hover:text-blue-700 text-xl'
                       onClick={() => handleCancel(row)}

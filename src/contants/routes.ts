@@ -8,7 +8,6 @@ import CourseManagement from "@/views/AdminDashboard/pages/CourseManagement";
 import Dashboard from "@/views/AdminDashboard/pages/Dashboard";
 import Communication from "@/views/AdminDashboard/pages/Communication";
 import Performance from "@/views/AdminDashboard/pages/Performance";
-import Tools from "@/views/AdminDashboard/pages/Tools";
 import Student from "@/views/AdminDashboard/pages/Performance/Student";
 import Review from "@/views/Learning/Review";
 import UnitManagement from "@/views/AdminDashboard/pages/CourseManagement/UnitManagement";
@@ -16,6 +15,7 @@ import TopicManagement from "@/views/AdminDashboard/pages/CourseManagement/Topic
 import CourseDetailPage from "@/views/AdminDashboard/pages/CourseManagement/courses/CourseDetailPage";
 import ApprovalRequest from "@/views/AdminDashboard/pages/ApprovalRequest";
 import Search from "@/views/Search";
+import UserManagement from "@/views/AdminDashboard/pages/UserManagement";
 
 interface IRoute {
   name: string;
@@ -131,12 +131,6 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
     ],
   },
   {
-    name: "Công cụ",
-    path: "/tools",
-    Element: Tools,
-    adminRoute: true,
-  },
-  {
     name: "Kiểm duyệt",
     path: "/approval-request",
     Element: ApprovalRequest,
@@ -145,8 +139,8 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
   },
   {
     name: "Tài khoản",
-    path: "/tools",
-    Element: Tools,
+    path: "/user-management",
+    Element: UserManagement,
     requireAdmin: true,
     adminRoute: true,
   },

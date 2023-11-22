@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import http from "@/utils/http";
 
 const PREFIX = "user";
@@ -16,8 +17,10 @@ const userApi = {
       lastName,
     });
   },
-  async getUsers() {
-    return http.get(`${PREFIX}/getList`);
+  async getListUsers(filter: any) {
+    return http.post(`${PREFIX}/get-list`, {
+      ...filter,
+    });
   },
   async updateUser(dataUpdate: {
     firstName?: string;

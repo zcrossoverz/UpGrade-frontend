@@ -1,29 +1,24 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Badge from "@/components/Badge";
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import {
-  useGetListApproval,
-  useProcessApprovalCourse,
-} from "@/hooks/useCourse";
+import { useAuth } from "@/hooks/useAuth";
+import { useGetListUser, useUpdateUser } from "@/hooks/useUser";
 import { formatTime } from "@/utils/time";
 import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-function ApprovalRequest() {
+function UserManagement() {
   const navigate = useNavigate();
-
-  const [course_id, setCourseId] = useState(-1);
-
-  const approveRequestHook = useProcessApprovalCourse(course_id);
 
   // pagination
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
 
+  const authHook = useAuth();
+  const useUserUpdate = useUpdateUser(true);
   const [paginationProps, setPagination] = useState({
     currentPage: Number(searchParams.get("page") || 1),
     totalCount: 0,
@@ -31,36 +26,19 @@ function ApprovalRequest() {
     siblingCount: 1,
   });
 
-  const { data, isLoading, refetch } = useGetListApproval({
+  const { data, isLoading, refetch } = useGetListUser({
     page: paginationProps.currentPage,
     limit: paginationProps.pageSize,
     ...(searchParams.get("search") !== null
       ? {
           query: [
             {
-              key: "course_title",
+              key: "email",
               value: searchParams.get("search"),
             },
           ],
         }
       : {}),
-    ...(searchParams.get("status") !== null
-      ? {
-          explicit: [
-            {
-              key: "status",
-              value: searchParams.get("status"),
-            },
-          ],
-        }
-      : {
-          explicit: [
-            {
-              key: "status",
-              value: "Pending",
-            },
-          ],
-        }),
     order: {
       key: "id",
       value:
@@ -84,14 +62,13 @@ function ApprovalRequest() {
     paginationProps.pageSize,
     searchParams.get("search"),
     searchParams.get("order"),
-    searchParams.get("status"),
   ]);
 
   // end pagination
 
   return (
     <div className='mt-2 min-h-[350px]'>
-      <h1 className='-mt-4'>Quản lý khóa học</h1>
+      <h1 className='-mt-4'>Quản lý tài khoản</h1>
       {isLoading ? (
         <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
           <Loader />
@@ -103,7 +80,7 @@ function ApprovalRequest() {
               <input
                 type='text'
                 className='py-[8px] px-4 outline-0'
-                placeholder='Tìm kiếm khóa học'
+                placeholder='Tìm kiếm thành viên bằng email'
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button
@@ -134,7 +111,7 @@ function ApprovalRequest() {
                 <option value='ASC'>Cũ nhất</option>
               </select>
             </div>
-            <div className='ml-4 flex'>
+            {/* <div className='ml-4 flex'>
               <select
                 className='border px-2 py-1 text-sm pr-8'
                 onChange={(e) =>
@@ -149,89 +126,92 @@ function ApprovalRequest() {
                 <option value='Approved'>Chấp thuận</option>
                 <option value='Rejected'>Từ chối</option>
               </select>
-            </div>
+            </div> */}
           </div>
           <>
             {data?.count > 0 ? (
               <>
                 <div className='flex justify-center mt-4 w-full'>
                   <Table
-                    handleForward={(data: any) => {
-                      navigate(
-                        `/admin/course-management/details/${data.course_id}`
-                      );
-                    }}
-                    handleTick={async (data: any) => {
-                      setCourseId(data.course_id);
-                      await approveRequestHook.mutateAsync({
-                        course_id: data.id,
-                        isAccept: true,
-                      });
+                    handleForward={() => {
+                      navigate(`/settings`);
                     }}
                     handleCancel={async (data: any) => {
-                      setCourseId(data.course_id);
-                      await approveRequestHook.mutateAsync({
-                        course_id: data.id,
-                        isAccept: false,
+                      await useUserUpdate.mutateAsync({
+                        id: data.id,
+                        isActive: false,
                       });
                     }}
-                    data={data?.datas?.map(
-                      (
-                        e: {
-                          course_title: string;
-                          instructor_id: string;
-                          course_id: string;
-                          status: string;
-                          created_at: string;
-                          updated_at: string;
-                          id: number;
-                        },
-                        i: number
-                      ) => ({
-                        order: (i + 1).toString(),
-                        course_title: e.course_title,
-                        updateDate: formatTime(e.updated_at),
-                        createDate: formatTime(e.created_at),
-                        status:
-                          (e.status === "Pending" && (
-                            <Badge
-                              text='Chờ duyệt'
-                              color='text-yellow-700'
-                              bgColor='bg-yellow-200'
-                            />
-                          )) ||
-                          (e.status === "Approved" && (
-                            <Badge
-                              text='Chấp thuận'
-                              color='text-green-700'
-                              bgColor='bg-green-200'
-                            />
-                          )) ||
-                          (e.status === "Rejected" && (
-                            <Badge
-                              text='Từ chối'
-                              color='text-red-700'
-                              bgColor='bg-red-200'
-                            />
-                          )),
-                        course_id: e.course_id,
-                        id: e.id,
-                        hiddenTick: e.status !== "Pending",
-                        hiddenCancel: e.status !== "Pending",
-                      })
-                    )}
+                    handleTick={async (data: any) => {
+                      await useUserUpdate.mutateAsync({
+                        id: data.id,
+                        isActive: true,
+                      });
+                    }}
+                    data={data?.datas?.map((e: any, i: number) => ({
+                      order: (i + 1).toString(),
+                      fullname: e.firstName + " " + e.lastName,
+                      email: e.email,
+                      role:
+                        (e.role === "user" && (
+                          <Badge
+                            text='Thành viên'
+                            color='text-yellow-700'
+                            bgColor='bg-yellow-200'
+                          />
+                        )) ||
+                        (e.role === "admin" && (
+                          <Badge
+                            text='Quản trị viên'
+                            color='text-pink-700'
+                            bgColor='bg-pink-200'
+                          />
+                        )),
+
+                      updateDate: formatTime(e.updated_at),
+                      createDate: formatTime(e.created_at),
+                      isActive:
+                        (e.isActive === true && (
+                          <Badge
+                            text='Đang hoạt động'
+                            color='text-green-700'
+                            bgColor='bg-green-200'
+                          />
+                        )) ||
+                        (e.isActive === false && (
+                          <Badge
+                            text='Bị khóa'
+                            color='text-red-700'
+                            bgColor='bg-red-200'
+                          />
+                        )),
+                      id: e.id,
+                      hiddenForward: authHook?.data?.id !== e.id,
+                      hiddenCancel:
+                        authHook?.data?.id === e.id || e.isActive === false,
+                      hiddenTick:
+                        authHook?.data?.id === e.id || e.isActive === true,
+                    }))}
                     headerLabel={[
                       {
                         key: "order",
                         title: "#",
                       },
                       {
-                        key: "course_title",
-                        title: "Tiêu đề",
+                        key: "fullname",
+                        title: "Họ tên",
                       },
                       {
-                        key: "status",
-                        title: "Tình trạng",
+                        key: "email",
+                        title: "Email",
+                      },
+                      {
+                        key: "role",
+                        title: "Vai trò",
+                      },
+                      {
+                        key: "isActive",
+                        title: "Trạng thái",
                       },
                       {
                         key: "updateDate",
@@ -312,4 +292,4 @@ function ApprovalRequest() {
   );
 }
 
-export default ApprovalRequest;
+export default UserManagement;

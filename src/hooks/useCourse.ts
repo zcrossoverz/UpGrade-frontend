@@ -297,8 +297,10 @@ export const useEnrollCourse = (course_id: number) => {
   return mutation;
 };
 
-export const useGetLibrary = () => {
-  const query = useQuery([key, key_get_library], () => courseApi.getLibrary());
+export const useGetLibrary = (filter: IfilterSearch) => {
+  const query = useQuery([key, key_get_library], () =>
+    courseApi.getLibrary(filter)
+  );
   return {
     ...query,
     data: query.data?.data?.data,

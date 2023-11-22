@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { formatTime } from "@/utils/time";
-import ModalDelete from "@/components/ModalDelete";
-import { useDeleteCourse } from "@/hooks/useCourse";
 
 function CourseItemLibrary({
   data,
   currentTopic,
-  topicCompleted,
 }: {
   data: {
     thumbnail_url: string;
@@ -24,13 +21,7 @@ function CourseItemLibrary({
   currentTopic: any;
   topicCompleted: any;
 }) {
-  const { thumbnail_url, title, updated_at, id, status, members_count } = data;
-  const [modalDelete, setModalDelete] = useState({
-    isOpen: false,
-    course_id: -1,
-    title: "",
-  });
-  const deleteCourseHook = useDeleteCourse();
+  const { thumbnail_url, title, updated_at, status, members_count } = data;
 
   const navigate = useNavigate();
 
@@ -39,29 +30,6 @@ function CourseItemLibrary({
 
   return (
     <div className='flex border-[1px] border-gray-200 mt-4 select-none z-10'>
-      {modalDelete.isOpen && (
-        <ModalDelete
-          title={modalDelete.title}
-          handleClose={() =>
-            setModalDelete({
-              isOpen: false,
-              course_id: -1,
-              title: "",
-            })
-          }
-          handleSubmit={async () => {
-            await deleteCourseHook.mutateAsync({
-              course_id: modalDelete.course_id,
-            });
-            setModalDelete({
-              isOpen: false,
-              course_id: -1,
-              title: "",
-            });
-          }}
-          isLoading={deleteCourseHook.isLoading}
-        />
-      )}
       <div>
         <LazyLoadImage
           alt='placeholder-course'
@@ -70,31 +38,31 @@ function CourseItemLibrary({
           src={thumbnail_url}
         />
       </div>
-      <div className='relative group flex flex-col w-full justify-between pl-6 pt-2 hover:text-gray-100'>
-        <div className='absolute group inset-0 bg-gray-200 bg-opacity-0 h-full text-black hover:bg-opacity-10'>
-          <div className='flex justify-center h-full items-center flex-col hidden group-hover:flex'>
-            {topics[0] !== undefined && (
-              <button
-                className='hover:text-violet-700 text-lg font-semibold'
-                onClick={() => navigate(`/learning/${data.id}/${topics[0].id}`)}
-              >
-                Tiếp tục học
-              </button>
-            )}
-            <button
-              className='hover:text-red-700 text-lg font-semibold mt-2'
-              onClick={() => {
-                setModalDelete({
-                  isOpen: true,
-                  title: `Xóa ${title}`,
-                  course_id: id,
-                });
-              }}
-            >
-              Xóa khỏi thư viện
-            </button>
+      <div
+        className={`relative  flex flex-col w-full justify-between pl-6 pt-2  ${
+          data?.units.length > 0 && "hover:text-gray-100 group"
+        }`}
+      >
+        {data?.units.length > 0 && (
+          <div className='absolute group inset-0 bg-gray-200 bg-opacity-0 h-full text-black hover:bg-opacity-10'>
+            <div className='flex justify-center h-full items-center flex-col hidden group-hover:flex'>
+              {topics[0] !== undefined && (
+                <button
+                  className='hover:text-violet-700 text-lg font-semibold'
+                  onClick={() =>
+                    navigate(
+                      `/learning/${data.id}/${
+                        currentTopic === null ? topics[0].id : currentTopic.id
+                      }`
+                    )
+                  }
+                >
+                  {currentTopic !== null ? "Tiếp tục học" : "Bắt đầu học"}
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
         <div className='flex justify-between'>
           <p className='text-lg font-semibold'>{title}</p>
           <p className='mr-4'>{formatTime(updated_at)}</p>

@@ -140,8 +140,10 @@ const courseApi = {
     });
   },
 
-  async getLibrary() {
-    return http.post(`${PREFIX}/get-library`);
+  async getLibrary(filter: any) {
+    return http.post(`${PREFIX}/get-library`, {
+      ...filter,
+    });
   },
 };
 
