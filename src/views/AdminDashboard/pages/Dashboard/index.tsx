@@ -1,3 +1,4 @@
+import { LineChart } from "./chart/Line";
 import { PieChart } from "./chart/Pie";
 
 const InfoCart = () => {
@@ -104,15 +105,43 @@ function Dashboard() {
       </div>
       <div className='flex gap-4 mt-4'>
         <div className='w-2/3 bg-white h-[320px] flex justify-center items-center border shadow-md rounded-md'>
-          sdf
+          <LineChart />
         </div>
         <div className='w-1/3 bg-white h-[320px] p-6 flex justify-center items-center border shadow-md rounded-md'>
           <PieChart />
         </div>
       </div>
       <div className='flex gap-4 mt-4'>
-        <div className='w-1/2 bg-red-300 h-[200px]'>đánh giá</div>
-        <div className='w-1/2 bg-red-300'>bình luận</div>
+        <div className='w-2/5 min-h-[200px] border rounded-md shadow-md p-4 bg-white'>
+          <div>
+            <div className='font-bold mb-2'>
+              Top khóa học có số lượng đăng ký nhiều nhất
+            </div>
+            <div>
+              <div className='flex gap-2'>
+                <p>1.</p>
+                <p>Nhập môn js</p>
+                <p className='ml-auto text-sm text-gray-500'>100329 Học viên</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className='w-3/5 border rounded-md shadow-md p-4 bg-white'>
+          <div>
+            <div className='font-bold mb-2'>
+              Top khóa học có đánh giá cao nhất
+            </div>
+            <div>
+              <div className='flex gap-2'>
+                <p>1.</p>
+                <p>Nhập môn js</p>
+                <p className='ml-auto text-sm text-gray-500'>
+                  xếp hạng 4.5 sao trên tổng số 50 đánh giá
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

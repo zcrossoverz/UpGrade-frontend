@@ -64,6 +64,14 @@ function CommentItem({
                       bgColor='bg-pink-200'
                     />
                   </div>
+                ) : isAdmin ? (
+                  <div className='ml-2 h-full'>
+                    <Badge
+                      text='Admin'
+                      color='text-amber-700'
+                      bgColor='bg-amber-200'
+                    />
+                  </div>
                 ) : (
                   <div className='ml-2'>
                     <Badge
@@ -73,15 +81,7 @@ function CommentItem({
                     />
                   </div>
                 )}
-                {isAdmin && (
-                  <div className='ml-2 h-full'>
-                    <Badge
-                      text='Admin'
-                      color='text-amber-700'
-                      bgColor='bg-amber-200'
-                    />
-                  </div>
-                )}
+
                 <div className='ml-4 text-sm text-gray-400 mt-[4px] flex items-center'>
                   •
                 </div>
@@ -96,7 +96,22 @@ function CommentItem({
               </span>
             </div>
           </div>
-          <p className='text-gray-600 mt-3'>{text}</p>
+          <p className='text-gray-600 mt-3'>
+            <div
+              className='flex gap-2'
+              dangerouslySetInnerHTML={{
+                __html: text
+                  .replace(
+                    /@\[([^\]]+)\]/,
+                    "<p class='text-red-400 font-bold'>@$1</p>"
+                  )
+                  .replace(
+                    "@bot",
+                    "<p class='text-cyan-600 font-bold'>@bot</p>"
+                  ),
+              }}
+            />
+          </p>
           <button
             className='text-right text-blue-500 mt-2'
             onClick={() => handleReply(id, user_fullname)}
@@ -276,6 +291,14 @@ function CommentItem({
                             bgColor='bg-pink-200'
                           />
                         </div>
+                      ) : e.user_role === "admin" ? (
+                        <div className='ml-2 h-full'>
+                          <Badge
+                            text='Admin'
+                            color='text-amber-700'
+                            bgColor='bg-amber-200'
+                          />
+                        </div>
                       ) : (
                         <div className='ml-2'>
                           <Badge
@@ -285,15 +308,7 @@ function CommentItem({
                           />
                         </div>
                       )}
-                      {e.user_role === "admin" && (
-                        <div className='ml-2 h-full'>
-                          <Badge
-                            text='Admin'
-                            color='text-amber-700'
-                            bgColor='bg-amber-200'
-                          />
-                        </div>
-                      )}
+
                       <div className='ml-4 text-sm text-gray-400 mt-[4px] flex items-center'>
                         •
                       </div>
@@ -308,7 +323,21 @@ function CommentItem({
                     </span>
                   </div>
                 </div>
-                <p className='text-gray-600 mt-3'>{e.text}</p>
+                <p className='text-gray-600 mt-3'>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: e.text
+                        .replace(
+                          /@\[([^\]]+)\]/,
+                          "<p class='text-red-400 font-bold'>@$1</p>"
+                        )
+                        .replace(
+                          "@bot",
+                          "<p class='text-cyan-600 font-bold'>@bot</p>"
+                        ),
+                    }}
+                  />
+                </p>
                 <button
                   className='text-right text-blue-500 mt-2'
                   onClick={() => handleReply(id, e.user_fullname)}

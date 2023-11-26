@@ -30,7 +30,7 @@ interface Props {
   inventory?: boolean;
   titleText?: string;
 }
-export const LineChart = ({ inventory, titleText }: Props) => {
+export const LineChart = ({ titleText }: Props) => {
   const options = useMemo(() => {
     return {
       responsive: true,
@@ -46,74 +46,24 @@ export const LineChart = ({ inventory, titleText }: Props) => {
     };
   }, [titleText]);
 
-  const data = useMemo(() => {
-    const data_raw = statistic.data?.data;
-    if (statistic.data !== undefined && data_raw && inventory) {
-      return {
-        labels: data_raw.map((e: { month: string }) => e.month),
-        datasets: [
-          {
-            label: "Outbound (item)",
-            data: data_raw.map((e: { out: number }) => e.out),
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-            tension: 0.1,
-          },
-          {
-            label: "Orders (order)",
-            data: data_raw.map((e: { total_order: number }) => e.total_order),
-            borderColor: "rgb(53, 162, 235)",
-            backgroundColor: "rgba(53, 162, 235, 0.5)",
-            tension: 0.1,
-          },
-          {
-            label: "Inbound (item)",
-            data: data_raw.map((e: { in: number }) => e.in),
-            borderColor: "rgb(252, 169, 3)",
-            backgroundColor: "rgba(252, 169, 3, 0.5)",
-            tension: 0.1,
-          },
-        ],
-      };
-    }
-    return (
-      data_raw && {
-        labels: data_raw.map((e: { month: string }) => e.month),
-        datasets: [
-          {
-            label: "Outbound (item)",
-            data: data_raw.map((e: { out: number }) => e.out),
-            borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-            tension: 0.1,
-          },
-          {
-            label: "Orders (order)",
-            data: data_raw.map((e: { total_order: number }) => e.total_order),
-            borderColor: "rgb(53, 162, 235)",
-            backgroundColor: "rgba(53, 162, 235, 0.5)",
-            tension: 0.1,
-          },
-          {
-            label: "Inbound (item)",
-            data: data_raw.map((e: { in: number }) => e.in),
-            borderColor: "rgb(252, 169, 3)",
-            backgroundColor: "rgba(252, 169, 3, 0.5)",
-            tension: 0.1,
-          },
-          {
-            label: "Revenue (million vnd)",
-            data: data_raw.map((e: { amount: number }) =>
-              (e.amount / 1_000_000).toFixed(3)
-            ),
-            borderColor: "rgb(66, 245, 78)",
-            backgroundColor: "rgba(66, 245, 78, 0.5)",
-            tension: 0.1,
-          },
-        ],
-      }
-    );
-  }, []);
+  const data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+      {
+        label: "Dataset 1",
+        data: [1, 2, 3, 4, 5],
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+      {
+        label: "Dataset 2",
+        data: [2, 3, 4, 5, 5],
+        borderColor: "rgb(53, 162, 235)",
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+      },
+    ],
+  };
+
   return (
     <Line
       options={options}

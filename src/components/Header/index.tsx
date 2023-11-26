@@ -162,7 +162,9 @@ function Header() {
                                       await markReadHook.mutateAsync({
                                         id: e.id,
                                       });
-                                      navigate(`${e.href}`);
+                                      if (e.href) {
+                                        navigate(`${e.href}`);
+                                      }
                                     }}
                                   >
                                     <div className='col-span-7'>
