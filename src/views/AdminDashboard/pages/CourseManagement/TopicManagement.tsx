@@ -51,7 +51,10 @@ function TopicManagement() {
 
   return (
     <div>
-      <h1 className='-mt-4'>Quản lý nội dung chương</h1>
+      <div className='font-semibold leading-loose text-lg -mt-8'>
+        Quản lý nội dung chương
+      </div>
+
       {openCreateTopic && (
         <CreateTopicModal
           drive_folder_unit_id={data?.drive_folder_unit_id}

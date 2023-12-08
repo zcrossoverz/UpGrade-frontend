@@ -6,16 +6,15 @@ import Cart from "@/views/Cart";
 import MyLibrary from "@/views/MyLibrary";
 import CourseManagement from "@/views/AdminDashboard/pages/CourseManagement";
 import Dashboard from "@/views/AdminDashboard/pages/Dashboard";
-import Communication from "@/views/AdminDashboard/pages/Communication";
 import Performance from "@/views/AdminDashboard/pages/Performance";
 import Student from "@/views/AdminDashboard/pages/Performance/Student";
-import Review from "@/views/Learning/Review";
 import UnitManagement from "@/views/AdminDashboard/pages/CourseManagement/UnitManagement";
 import TopicManagement from "@/views/AdminDashboard/pages/CourseManagement/TopicManagement";
 import CourseDetailPage from "@/views/AdminDashboard/pages/CourseManagement/courses/CourseDetailPage";
 import ApprovalRequest from "@/views/AdminDashboard/pages/ApprovalRequest";
 import Search from "@/views/Search";
 import UserManagement from "@/views/AdminDashboard/pages/UserManagement";
+import ReviewPerformancce from "@/views/AdminDashboard/pages/Performance/Review";
 
 interface IRoute {
   name: string;
@@ -104,32 +103,32 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
       },
     ],
   },
-  {
-    name: "Tương tác",
-    path: "/communication",
-    Element: Communication,
-    adminRoute: true,
-  },
-  {
-    name: "Hiệu suất",
-    path: "/performance",
-    Element: Performance,
-    adminRoute: true,
-    children: [
-      {
-        name: "Học viên",
-        path: "/performance/question",
-        Element: Student,
-        adminRoute: true,
-      },
-      {
-        name: "Đánh giá",
-        path: "/performance/question",
-        Element: Review,
-        adminRoute: true,
-      },
-    ],
-  },
+  // {
+  //   name: "Hiệu suất",
+  //   path: "/performance",
+  //   Element: Performance,
+  //   adminRoute: true,
+  //   children: [
+  //     {
+  //       name: "Tổng quan",
+  //       path: "",
+  //       Element: Performance,
+  //       adminRoute: true,
+  //     },
+  //     {
+  //       name: "Học viên",
+  //       path: "/performance/question",
+  //       Element: Student,
+  //       adminRoute: true,
+  //     },
+  //     {
+  //       name: "Đánh giá",
+  //       path: "/performance/review",
+  //       Element: ReviewPerformancce,
+  //       adminRoute: true,
+  //     },
+  //   ],
+  // },
   {
     name: "Kiểm duyệt",
     path: "/approval-request",

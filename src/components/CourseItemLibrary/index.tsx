@@ -25,7 +25,7 @@ function CourseItemLibrary({
 
   const navigate = useNavigate();
 
-  const firstUnit = data?.units[0] || [];
+  const firstUnit = data?.units[data?.units?.length - 1] || [];
   const topics = firstUnit.topics || [];
 
   return (
@@ -35,7 +35,7 @@ function CourseItemLibrary({
           alt='placeholder-course'
           height={110}
           width={234}
-          src={thumbnail_url}
+          src={`http://localhost:3000/proxy/?image=${thumbnail_url}`}
         />
       </div>
       <div
@@ -52,7 +52,9 @@ function CourseItemLibrary({
                   onClick={() =>
                     navigate(
                       `/learning/${data.id}/${
-                        currentTopic === null ? topics[0].id : currentTopic.id
+                        currentTopic === null
+                          ? topics[topics.length - 1].id
+                          : currentTopic.id
                       }`
                     )
                   }

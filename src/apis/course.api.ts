@@ -145,6 +145,12 @@ const courseApi = {
       ...filter,
     });
   },
+
+  async getListRecommend(filter: any) {
+    return http.post(`${PREFIX}/get-recommend`, {
+      ...filter,
+    });
+  },
 };
 
 export default courseApi;

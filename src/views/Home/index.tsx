@@ -15,7 +15,7 @@ import { MdOutlineDesignServices } from "react-icons/md";
 import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { FaMoneyBill } from "react-icons/fa";
 import { TbWriting } from "react-icons/tb";
-import { useGetListCourses } from "@/hooks/useCourse";
+import { useGetListCourses, useGetListRecommend } from "@/hooks/useCourse";
 import { useSearchParams } from "react-router-dom";
 import Loader from "@/components/Loader";
 import { PUBLIC_FILTER } from "@/contants/filter";
@@ -56,6 +56,14 @@ function HomePage() {
 
   const { data, isLoading } = useGetListCourses(filter);
 
+  const recommend = useGetListRecommend({
+    page: 1,
+    limit: 8,
+    query: [PUBLIC_FILTER],
+  });
+
+  console.log(recommend.data);
+
   return (
     <div className='bg-white'>
       <div className='shadow-md z-40 fixed w-full'>
@@ -66,6 +74,22 @@ function HomePage() {
       </div>
       {!isLoading ? (
         <>
+          {recommend?.data && recommend?.data?.length > 0 && (
+            <ListCourse
+              title='Khóa học gợi ý'
+              data={recommend?.data?.map((e: any) => ({
+                id: e.id,
+                title: e.title,
+                lecturer: e.instructor_fullname,
+                rate: 5,
+                rate_number: 0,
+                price: e.price,
+                thumbnail_image: e.thumbnail_url,
+              }))}
+              isEnroll={false}
+            />
+          )}
+
           <ListCourse
             title='Học viên đang xem'
             data={data?.datas?.map((e: any) => ({

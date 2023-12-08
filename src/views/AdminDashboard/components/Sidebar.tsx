@@ -86,6 +86,16 @@ const Sidebar = () => {
                     </div>
                   </Link>
                 ))}
+              <Link
+                to={`/`}
+                className={`mt-[5px] relative group min-w-[230px]`}
+              >
+                <div
+                  className={`flex justify-between py-2 px-4 rounded-sm group-hover:bg-gray-600`}
+                >
+                  Trở về trang chủ
+                </div>
+              </Link>
             </div>
           </div>
         </nav>

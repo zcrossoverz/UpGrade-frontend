@@ -113,8 +113,45 @@ function Footer() {
             </a>
           </div>
         </div>
-
         <div className='w-full p-4 text-center'>© 2023 Copyright UpGrade</div>
+        {/* <PayPalScriptProvider
+          options={{
+            clientId: "your-client-id",
+            dataClientToken: "your-data-client-token",
+          }}
+        >
+          <PayPalHostedFieldsProvider
+            createOrder={() => {
+              // Here define the call to create and order
+              return fetch("/your-server-side-integration-endpoint/orders")
+                .then((response) => response.json())
+                .then((order) => order.id)
+                .catch((err) => {
+                  // Handle any error
+                });
+            }}
+          >
+            <PayPalHostedField
+              id='card-number'
+              hostedFieldType='number'
+              options={{ selector: "#card-number" }}
+            />
+            <PayPalHostedField
+              id='cvv'
+              hostedFieldType='cvv'
+              options={{ selector: "#cvv" }}
+            />
+            <PayPalHostedField
+              id='expiration-date'
+              hostedFieldType='expirationDate'
+              options={{
+                selector: "#expiration-date",
+                placeholder: "MM/YY",
+              }}
+            />
+            <SubmitPayment />
+          </PayPalHostedFieldsProvider>
+        </PayPalScriptProvider> */}
       </footer>
     </>
   );

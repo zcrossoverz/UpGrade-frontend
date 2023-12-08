@@ -138,7 +138,7 @@ function CourseDetails() {
               <div className='grid place-items-center sticky top-24 mb-40'>
                 <div className='mt-2 rounded-xl'>
                   <img
-                    src={data?.thumbnail_url}
+                    src={`http://localhost:3000/proxy/?image=${data?.thumbnail_url}`}
                     alt='thumbnail course'
                     className='h-48 w-80 rounded-xl'
                   />

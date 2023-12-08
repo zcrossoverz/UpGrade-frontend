@@ -68,7 +68,9 @@ function UserManagement() {
 
   return (
     <div className='mt-2 min-h-[350px]'>
-      <h1 className='-mt-4'>Quản lý tài khoản</h1>
+      <div className='font-semibold leading-loose text-lg -mt-8'>
+        Quản lý tài khoản
+      </div>
       {isLoading ? (
         <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
           <Loader />

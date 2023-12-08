@@ -59,7 +59,7 @@ function CourseItem({
           alt='placeholder-course'
           height={110}
           width={234}
-          src={thumbnail_url}
+          src={`http://localhost:3000/proxy/?image=${thumbnail_url}`}
         />
       </div>
       <div className='relative group flex flex-col w-full justify-between pl-6 pt-2 hover:text-gray-100'>

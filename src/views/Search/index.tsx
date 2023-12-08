@@ -97,7 +97,7 @@ function Search() {
                         <div className='relative flex flex-col w-full justify-between pl-6 pt-2'>
                           <div className='flex justify-between -mt-1'>
                             <button
-                              className='text-lg font-semibold'
+                              className='text-lg font-semibold hover:text-indigo-400'
                               onClick={() =>
                                 navigate(`/course-details/${data?.id}`)
                               }

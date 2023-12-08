@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useGetOverview } from "@/hooks/useAnalystic";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,12 +23,7 @@ ChartJS.register(
   Legend
 );
 
-// const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-// const data1 = [200, 159, 280, 181, 156, 155, 100];
-// const data2 = [45, 78, 21, 90, 13, 88, 22];
-// const data3 = [100, 89, 93, 122, 109, 111, 156];
 interface Props {
-  inventory?: boolean;
   titleText?: string;
 }
 export const LineChart = ({ titleText }: Props) => {
@@ -40,26 +36,34 @@ export const LineChart = ({ titleText }: Props) => {
         },
         title: {
           display: true,
-          text: titleText ? titleText : "Sale Analytics",
+          text: titleText ? titleText : "Thống kê nội dung theo tháng",
         },
       },
     };
   }, [titleText]);
 
+  const getOverview = useGetOverview();
+
   const data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: getOverview.data?.lineChart?.map((e: any) => e.key),
     datasets: [
       {
-        label: "Dataset 1",
-        data: [1, 2, 3, 4, 5],
+        label: "Tổng khóa học",
+        data: getOverview.data?.lineChart?.map((e: any) => e.countCourse),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
-        label: "Dataset 2",
-        data: [2, 3, 4, 5, 5],
+        label: "Tổng số chương",
+        data: getOverview.data?.lineChart?.map((e: any) => e.countUnit),
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
+      },
+      {
+        label: "Tổng số bài học",
+        data: getOverview.data?.lineChart?.map((e: any) => e.countTopic),
+        borderColor: "rgb(129, 240, 65)",
+        backgroundColor: "rgba(129, 240, 65, 0.5)",
       },
     ],
   };

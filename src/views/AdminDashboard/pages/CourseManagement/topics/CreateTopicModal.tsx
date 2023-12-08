@@ -24,7 +24,7 @@ function CreateTopicModal({
         <div className='grid grid-cols-2 gap-4'>
           <div className='absolute top-3 left-4'>
             <p className='font-semibold text-xl leading-loose'>
-              Tạo chương mới
+              Tạo bài học mới
             </p>
           </div>
           <button

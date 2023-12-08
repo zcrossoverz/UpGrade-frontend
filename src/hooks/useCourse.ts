@@ -306,3 +306,13 @@ export const useGetLibrary = (filter: IfilterSearch) => {
     data: query.data?.data?.data,
   };
 };
+
+export const useGetListRecommend = (filter: IfilterSearch) => {
+  const query = useQuery([key, "key_get_list_recommend"], () =>
+    courseApi.getListRecommend(filter)
+  );
+  return {
+    ...query,
+    data: query.data?.data?.data,
+  };
+};

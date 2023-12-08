@@ -89,7 +89,10 @@ function CourseManagement() {
 
   return (
     <div>
-      <div className='px-4 py-4 bg-white shadow-sm rounded-sm min-h-[500px]'>
+      <div className='font-semibold leading-loose text-lg -mt-8 mb-4'>
+        Khóa học
+      </div>
+      <div className='px-4 py-4 bg-white shadow-sm border rounded-sm min-h-[500px]'>
         <CreateCourseModal
           isPopupOpen={showCreateCourseModal}
           handleClose={() => setShowCreateCourseModal(false)}
@@ -101,7 +104,9 @@ function CourseManagement() {
                 type='text'
                 className='py-[8px] px-4 outline-0'
                 placeholder='Tìm kiếm khóa học'
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                }}
               />
               <button
                 className='px-3 bg-gray-600 text-white h-[40px] text-md'
@@ -109,6 +114,8 @@ function CourseManagement() {
                   setSearchParams((prevSearchParams) => {
                     const newParams = new URLSearchParams(prevSearchParams);
                     newParams.set("search", searchQuery);
+                    newParams.set("page", "1");
+                    setPagination((prev) => ({ ...prev, currentPage: 1 }));
                     return newParams;
                   })
                 }

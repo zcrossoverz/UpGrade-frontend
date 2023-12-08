@@ -30,6 +30,8 @@ function Header() {
 
   const [search, setSearch] = useState("");
 
+  console.log("noti", notifications?.data?.datas?.length);
+
   return (
     <div className='bg-white border'>
       <div className='grid grid-cols-4 px-12'>
@@ -143,8 +145,8 @@ function Header() {
                 <div className='absolute right-0 top-0 z-10 hidden bg-grey-200 group-hover:block'>
                   <div className='absolute pt-12 right-0 -left-12'>
                     <div className='absolute border border-gray-300 bg-white w-96 z-100 right-0 shadow-2xl rounded-sm'>
-                      {!notifications?.isLoading &&
-                      notifications?.data?.datas?.length === 0 ? (
+                      {!notifications?.data?.datas?.length ||
+                      notifications?.data?.datas?.length < 1 ? (
                         <div className='text-black h-full p-4 text-center'>
                           Bạn không có thông báo nào
                         </div>
@@ -195,11 +197,11 @@ function Header() {
                                   Đánh dấu tất cả là đã đọc
                                 </button>
                               </div>
-                              <div className='ml-2'>
+                              {/* <div className='ml-2'>
                                 <button className='border text-md border-gray-500 hover:bg-gray-100 py-2 px-2 text-gray-600'>
                                   Xem tất cả
                                 </button>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </div>

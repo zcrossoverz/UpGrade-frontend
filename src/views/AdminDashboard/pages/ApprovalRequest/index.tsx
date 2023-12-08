@@ -91,7 +91,9 @@ function ApprovalRequest() {
 
   return (
     <div className='mt-2 min-h-[350px]'>
-      <h1 className='-mt-4'>Quản lý khóa học</h1>
+      <div className='font-semibold leading-loose text-lg -mt-8'>
+        Kiểm duyệt nội dung
+      </div>
       {isLoading ? (
         <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
           <Loader />
@@ -301,7 +303,7 @@ function ApprovalRequest() {
                 />
               </>
             ) : (
-              <div className='flex justify-center items-center min-h-[200px] mt-4 w-full'>
+              <div className='flex justify-center items-center min-h-[500px] mt-4 w-full'>
                 <p className='text-gray-600'>Chưa có nội dung nào</p>
               </div>
             )}

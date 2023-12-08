@@ -1,7 +1,7 @@
 import React from "react";
 
-function Review() {
+function ReviewPerformancce() {
   return <div>Review</div>;
 }
 
-export default Review;
+export default ReviewPerformancce;

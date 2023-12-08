@@ -5,7 +5,7 @@ function NotificationSetting() {
   return (
     <div>
       <h1 className='text-xl font-semibold mb-8'>Cài đặt thông báo</h1>
-      <div className='mb-8'>
+      {/* <div className='mb-8'>
         <div className='font-semibold'>Email</div>
         <div className='mt-2'>
           <div className='ml-4 grid grid-cols-2'>
@@ -15,10 +15,10 @@ function NotificationSetting() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className='mb-8'>
-        <div className='font-semibold'>Thông báo</div>
+        <div className='font-semibold'>Thông báo email</div>
         <div className='mb-8'>
           <div className='mt-2'>
             <div className='mb-4 mt-2'>Thông báo khi có</div>

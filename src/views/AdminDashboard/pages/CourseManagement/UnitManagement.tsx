@@ -46,7 +46,9 @@ function UnitManagement() {
 
   return (
     <div>
-      <h1 className='-mt-4'>Quản lý nội dung khóa học</h1>
+      <div className='font-semibold leading-loose text-lg -mt-8'>
+        Quản lý nội dung khóa học
+      </div>
       {openCreateUnit && (
         <CreateUnitModal
           drive_folder_id={data?.drive_folder_id}

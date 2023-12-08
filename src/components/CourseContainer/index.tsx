@@ -51,7 +51,7 @@ function CourseContainer({
         <div
           className='h-32'
           style={{
-            backgroundImage: `url(${thumbnail_image})`,
+            backgroundImage: `url(http://localhost:3000/proxy/?image=${thumbnail_image})`,
           }}
         />
         <button
