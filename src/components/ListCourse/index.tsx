@@ -27,6 +27,8 @@ const ListCourse = ({
         slidesToShow={data?.length >= 5 ? 5 : data?.length}
         slidesToScroll={1}
         swipeToSlide={true}
+        autoplay={true}
+        autoplaySpeed={2000}
         className='flex flex-wrap gap-4 justify-center content-center mx-32 pt-0 pb-14'
       >
         {data.map((e, i) => (

@@ -9,7 +9,7 @@ const key = "comment";
 const key_get_list = "comments_get_list";
 
 export const useGetComments = (topic_id: number, filter?: IfilterSearch) => {
-  const query = useQuery([key, key_get_list], () =>
+  const query = useQuery([key, key_get_list, topic_id], () =>
     commentApi.getList(topic_id, filter)
   );
   return {
@@ -24,7 +24,7 @@ export const useCreateComment = () => {
     (data: any) => commentApi.create(data.topic_id, data.text, data.parent_id),
     {
       onSuccess: () => {
-        toast.success("create comment successfully");
+        // toast.success("create comment successfully");
         queryClient.invalidateQueries([key, key_get_list]);
       },
       onError: (error: AxiosError<{ message: string }>) => {

@@ -30,8 +30,6 @@ function Header() {
 
   const [search, setSearch] = useState("");
 
-  console.log("noti", notifications?.data?.datas?.length);
-
   return (
     <div className='bg-white border'>
       <div className='grid grid-cols-4 px-12'>
@@ -83,7 +81,7 @@ function Header() {
                                 >
                                   <div className='h-16 w-18'>
                                     <img
-                                      src={e.thumbnail_image}
+                                      src={`http://localhost:3000/proxy/?image=${e.thumbnail_image}`}
                                       className='h-full w-full'
                                       alt='course thumbnail'
                                     />

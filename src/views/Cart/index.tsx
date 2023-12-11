@@ -3,8 +3,12 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { useCart } from "@/hooks/useCart";
 import { formatCurrency } from "@/utils/convertNumber";
-import React from "react";
+import React, { useState } from "react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "react-toastify";
+import { useEnrollMultiCourses } from "@/hooks/useCourse";
 
 const CartItem = ({
   data,
@@ -21,11 +25,12 @@ const CartItem = ({
 }) => {
   const { title, lecturer, price, thumbnail_image, course_id } = data;
   const navigate = useNavigate();
+
   return (
     <div className='grid grid-cols-6 my-4'>
       <div className='h-20 w-[156px]'>
         <img
-          src={thumbnail_image}
+          src={`http://localhost:3000/proxy/?image=${thumbnail_image}`}
           className='h-full w-full'
           alt='course thumbnail'
         />
@@ -57,6 +62,9 @@ const CartItem = ({
 
 function Cart() {
   const { cart, deleteItem, totalPrice } = useCart();
+  const authHook = useAuth();
+  const [checkoutFlag, setCheckoutFlag] = useState(false);
+  const enrollHook = useEnrollMultiCourses();
 
   return (
     <div className='bg-white'>
@@ -94,12 +102,85 @@ function Cart() {
               <div className='mt-2 text-[26px] font-bold'>
                 {formatCurrency(totalPrice())}
               </div>
-              <div className='mt-2 py-2'>
-                <button className='px-4 py-2 bg-violet-500 text-white w-full'>
-                  Thanh toán
-                </button>
-              </div>
+              {!checkoutFlag && (
+                <div className='mt-2 py-2'>
+                  <button
+                    className='px-4 py-2 bg-violet-500 text-white w-full'
+                    onClick={() => {
+                      if (authHook.isAuthenticated) {
+                        setCheckoutFlag(true);
+                      } else {
+                        toast.error("Vui lòng đăng nhập để thanh toán");
+                      }
+                    }}
+                  >
+                    Thanh toán
+                  </button>
+                </div>
+              )}
               <hr className='mt-2' />
+              {checkoutFlag && (
+                <PayPalScriptProvider
+                  options={{
+                    clientId:
+                      "ARhc83F9ivtDxMMCiPqi0xHJUEna0-60ItEcG5yCF4AJRGjNYTIXg12HJbwwDUWIebfRVG4WwpU7VIyc",
+                  }}
+                >
+                  <PayPalButtons
+                    style={{ layout: "horizontal" }}
+                    createOrder={(data, actions) => {
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            description: `Đơn hàng của ${authHook.data?.firstName} ${authHook.data?.lastName}`,
+                            amount: {
+                              value: `${(totalPrice() * 0.000043).toFixed(2)}`,
+                              breakdown: {
+                                item_total: {
+                                  currency_code: "USD",
+                                  value: `${(totalPrice() * 0.000043).toFixed(
+                                    2
+                                  )}`,
+                                },
+                              },
+                            },
+                            items: cart?.map((e) => {
+                              return {
+                                name: e.title,
+                                unit_amount: {
+                                  currency_code: "USD",
+                                  value: `${(e.price * 0.000043).toFixed(2)}`,
+                                },
+                                quantity: "1",
+                                category: "DIGITAL_GOODS",
+                              };
+                            }),
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={(data, actions) => {
+                      return actions.order
+                        ? actions.order?.capture().then((detail) => {
+                            if (detail.status === "COMPLETED") {
+                              toast.success("Thanh toán thành công");
+                              enrollHook(
+                                cart?.map((e) => e.course_id)
+                                  ? cart?.map((e) => e.course_id)
+                                  : []
+                              );
+                              cart?.map((e) => {
+                                deleteItem(e.course_id);
+                              });
+                            } else {
+                              toast.error("Thanh toán thất bại");
+                            }
+                          })
+                        : Promise.resolve();
+                    }}
+                  />
+                </PayPalScriptProvider>
+              )}
               {/* <div className='mt-4'>Khuyến mãi</div>
             <div className='flex mt-4'>
               <input

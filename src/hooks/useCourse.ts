@@ -285,7 +285,7 @@ export const useEnrollCourse = (course_id: number) => {
     (data: any) => courseApi.enroll(data.course_id),
     {
       onSuccess: () => {
-        toast.success("Course enroll successfully");
+        // toast.success("Course enroll successfully");
         queryClient.invalidateQueries([key, course_id]);
         queryClient.refetchQueries([key, key_my_course]);
       },
@@ -295,6 +295,30 @@ export const useEnrollCourse = (course_id: number) => {
     }
   );
   return mutation;
+};
+
+export const useEnrollMultiCourses = () => {
+  const queryClient = useQueryClient();
+
+  const enrollCourses = async (courseIds: number[]) => {
+    if (!courseIds.length) {
+      return;
+    }
+    const enrollPromises = courseIds.map((course_id) =>
+      courseApi.enroll(course_id)
+    );
+
+    try {
+      await Promise.all(enrollPromises);
+      queryClient.invalidateQueries([key, ...courseIds]);
+      queryClient.refetchQueries([key, key_my_course]);
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      toast.error(axiosError.response?.data?.message);
+    }
+  };
+
+  return enrollCourses;
 };
 
 export const useGetLibrary = (filter: IfilterSearch) => {

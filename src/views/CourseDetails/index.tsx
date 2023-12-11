@@ -149,6 +149,7 @@ function CourseDetails() {
                   thumbnail_image={data?.thumbnail_url}
                   title={data?.title}
                   lecturer={data?.instructor_fullname}
+                  lecturer_id={data?.instructor_id}
                   isEnroll={
                     data?.members_id?.filter(
                       (id: any) => Number(id) === auth.data.id

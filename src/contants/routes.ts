@@ -103,32 +103,32 @@ export const PRIVATE_ROUTES: Array<IRoute> = [
       },
     ],
   },
-  // {
-  //   name: "Hiệu suất",
-  //   path: "/performance",
-  //   Element: Performance,
-  //   adminRoute: true,
-  //   children: [
-  //     {
-  //       name: "Tổng quan",
-  //       path: "",
-  //       Element: Performance,
-  //       adminRoute: true,
-  //     },
-  //     {
-  //       name: "Học viên",
-  //       path: "/performance/question",
-  //       Element: Student,
-  //       adminRoute: true,
-  //     },
-  //     {
-  //       name: "Đánh giá",
-  //       path: "/performance/review",
-  //       Element: ReviewPerformancce,
-  //       adminRoute: true,
-  //     },
-  //   ],
-  // },
+  {
+    name: "Hiệu suất",
+    path: "/performance",
+    Element: Performance,
+    adminRoute: true,
+    children: [
+      {
+        name: "Tổng quan",
+        path: "",
+        Element: Performance,
+        adminRoute: true,
+      },
+      {
+        name: "Học viên",
+        path: "/performance/question",
+        Element: Student,
+        adminRoute: true,
+      },
+      {
+        name: "Đánh giá",
+        path: "/performance/review",
+        Element: ReviewPerformancce,
+        adminRoute: true,
+      },
+    ],
+  },
   {
     name: "Kiểm duyệt",
     path: "/approval-request",

@@ -71,259 +71,284 @@ function Review() {
   const reviewHook = useCreateReview();
   const updateReviewHook = useUpdateReview();
 
+  const totalRates = data?.datas?.reduce(
+    (sum: any, data: any) => sum + data.rate,
+    0
+  );
+  const averageRate = (totalRates / data?.datas?.length).toFixed(1);
+
+  const rateCounts = data?.datas?.reduce((countMap: any, data: any) => {
+    countMap[data.rate] = (countMap[data.rate] || 0) + 1;
+    return countMap;
+  }, {});
+
+  const totalReviews = data?.datas?.length;
+
   return (
     <div>
       <div className='w-fullbg-white rounded-lg p-1 md:p-3 m-10'>
-        <div className='mb-4'>
-          <h3 className='font-semibold text-2xl leading-6 pl-2'>
-            Phản hồi từ học viên
-          </h3>
-          <div className='pl-6 my-8 grid grid-cols-5'>
-            <div className='text-yellow-700 flex flex-col justify-center items-center gap-2'>
-              <div className='text-6xl font-bold'>4.5</div>
-              <div className='flex text-xl gap-1'>
-                <BsStarFill className='h-6 text-yellow-600' />
-                <BsStarFill className='h-6 text-yellow-600' />
-                <BsStarFill className='h-6 text-yellow-600' />
-                <BsStarFill className='h-6 text-yellow-600' />
-                <BsStarHalf className='h-6 text-yellow-600' />
-              </div>
-              <div className='font-semibold'>Xếp hạng khóa học</div>
-            </div>
-            <div className='col-span-4 flex flex-col gap-1'>
-              <div className='flex justify-between items-center gap-4'>
-                <Progress percent={50} />
-                <div className='flex'>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
+        {data?.datas?.length > 0 && (
+          <div className='mb-4'>
+            <h3 className='font-semibold text-2xl leading-6 pl-2'>
+              Phản hồi từ học viên
+            </h3>
+            <div className='pl-6 my-8 grid grid-cols-5'>
+              <div className='text-yellow-700 flex flex-col justify-center items-center gap-2'>
+                <div className='text-6xl font-bold'>{averageRate}</div>
+                <div className='flex text-xl gap-1'>
+                  <BsStarFill className='h-6 text-yellow-600' />
+                  <BsStarFill className='h-6 text-yellow-600' />
+                  <BsStarFill className='h-6 text-yellow-600' />
+                  <BsStarFill className='h-6 text-yellow-600' />
+                  <BsStarHalf className='h-6 text-yellow-600' />
                 </div>
+                <div className='font-semibold'>Xếp hạng khóa học</div>
               </div>
-              <div className='flex justify-between items-center gap-4'>
-                <Progress percent={50} />
-                <div className='flex'>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
+              <div className='col-span-4 flex flex-col gap-1'>
+                <div className='flex justify-between items-center gap-4'>
+                  <Progress
+                    percent={((rateCounts[5] || 0) / totalReviews) * 100}
+                  />
+                  <div className='flex'>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className='flex justify-between items-center gap-4'>
-                <Progress percent={0} />
-                <div className='flex'>
-                  <button>
+                <div className='flex justify-between items-center gap-4'>
+                  <Progress
+                    percent={((rateCounts[4] || 0) / totalReviews) * 100}
+                  />
+                  <div className='flex'>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
                     <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
+                      className='w-6 h-6 fill-current text-gray-300'
                       xmlns='http://www.w3.org/2000/svg'
                       viewBox='0 0 20 20'
                     >
                       <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
                     </svg>
-                  </button>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <button>
-                    <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                    >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                  </button>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
+                  </div>
                 </div>
-              </div>
-              <div className='flex justify-between items-center gap-4'>
-                <Progress percent={0} />
-                <div className='flex'>
-                  <button>
+                <div className='flex justify-between items-center gap-4'>
+                  <Progress
+                    percent={((rateCounts[3] || 0) / totalReviews) * 100}
+                  />
+                  <div className='flex'>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
                     <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
+                      className='w-6 h-6 fill-current text-gray-300'
                       xmlns='http://www.w3.org/2000/svg'
                       viewBox='0 0 20 20'
                     >
                       <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
                     </svg>
-                  </button>
-                  <button>
                     <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
+                      className='w-6 h-6 fill-current text-gray-300'
                       xmlns='http://www.w3.org/2000/svg'
                       viewBox='0 0 20 20'
                     >
                       <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
                     </svg>
-                  </button>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
+                  </div>
                 </div>
-              </div>
-              <div className='flex justify-between items-center gap-4'>
-                <Progress percent={0} />
-                <div className='flex'>
-                  <button>
+                <div className='flex justify-between items-center gap-4'>
+                  <Progress
+                    percent={((rateCounts[2] || 0) / totalReviews) * 100}
+                  />
+                  <div className='flex'>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
                     <svg
-                      className='w-6 h-6 fill-current text-yellow-600'
+                      className='w-6 h-6 fill-current text-gray-300'
                       xmlns='http://www.w3.org/2000/svg'
                       viewBox='0 0 20 20'
                     >
                       <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
                     </svg>
-                  </button>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
-                  <svg
-                    className='w-6 h-6 fill-current text-gray-300'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 20 20'
-                  >
-                    <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                  </svg>
+                    <svg
+                      className='w-6 h-6 fill-current text-gray-300'
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 20 20'
+                    >
+                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                    </svg>
+                    <svg
+                      className='w-6 h-6 fill-current text-gray-300'
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 20 20'
+                    >
+                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                    </svg>
+                  </div>
+                </div>
+                <div className='flex justify-between items-center gap-4'>
+                  <Progress
+                    percent={((rateCounts[1] || 0) / totalReviews) * 100}
+                  />
+                  <div className='flex'>
+                    <button>
+                      <svg
+                        className='w-6 h-6 fill-current text-yellow-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 20 20'
+                      >
+                        <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                      </svg>
+                    </button>
+                    <svg
+                      className='w-6 h-6 fill-current text-gray-300'
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 20 20'
+                    >
+                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                    </svg>
+                    <svg
+                      className='w-6 h-6 fill-current text-gray-300'
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 20 20'
+                    >
+                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                    </svg>
+                    <svg
+                      className='w-6 h-6 fill-current text-gray-300'
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 20 20'
+                    >
+                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                    </svg>
+                    <svg
+                      className='w-6 h-6 fill-current text-gray-300'
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 20 20'
+                    >
+                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         <h3 className='font-semibold text-2xl leading-6 pl-2'>Đánh giá</h3>
         {isLoading ? (

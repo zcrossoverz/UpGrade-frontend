@@ -8,7 +8,9 @@ const key = "notes";
 const key_get_list = "note_get_list";
 
 export const useGetNotes = (topic_id: number) => {
-  const query = useQuery([key, key_get_list], () => noteApi.getList(topic_id));
+  const query = useQuery([key, key_get_list, topic_id], () =>
+    noteApi.getList(topic_id)
+  );
 
   return {
     ...query,

@@ -8,7 +8,7 @@ const key = "reviews";
 const key_get_list = "reviews_get_list";
 
 export const useGetReviews = (course_id: number, user_id: number) => {
-  const query = useQuery([key, key_get_list], () =>
+  const query = useQuery([key, key_get_list, course_id], () =>
     reviewApi.getList(course_id)
   );
   const isAlreadyReview = query.data?.data?.data?.datas?.some(
