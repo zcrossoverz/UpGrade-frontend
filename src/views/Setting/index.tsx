@@ -20,10 +20,10 @@ const tabList = [
     title: "Bảo mật và đăng nhập",
     tab: EnumTab.SECURITY,
   },
-  {
-    title: "Cài đặt thông báo",
-    tab: EnumTab.NOTIFICATION,
-  },
+  // {
+  //   title: "Cài đặt thông báo",
+  //   tab: EnumTab.NOTIFICATION,
+  // },
 ];
 
 function Setting() {
